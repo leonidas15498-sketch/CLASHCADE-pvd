@@ -1,0 +1,11 @@
+{
+  // Publicação na Cloudflare (Workers com arquivos estáticos).
+  // O deploy roda `npm run build` e envia só a pasta dist (sem código-fonte).
+  "name": "clashcade-pvd",
+  "compatibility_date": "2026-11-01",
+  "build": { "command": "npm run build" },
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
