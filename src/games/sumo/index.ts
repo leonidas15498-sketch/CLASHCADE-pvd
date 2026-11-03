@@ -13,7 +13,7 @@ const HELP_PT = `<ul>
 <li><b>Avanço ⚡:</b> toque rápido (sem arrastar) dá um tranco para a frente. Recarrega em ~1 s (anel em volta do lutador).</li>
 <li>Os dois saindo juntos anula o round. Depois de ${SUMO.shrinkStart} s o ringue começa a encolher; aos ${SUMO.roundTime} s vence quem estiver mais perto do centro.</li>
 <li><b>2 jogadores:</b> ao mesmo tempo, cada um na sua metade (celular em pé: coral embaixo, azul em cima; deitado: coral à esquerda).</li>
-<li><b>Teclado:</b> Jogador 1 com W A S D e espaço (avanço); Jogador 2 com as setas e Enter.</li>
+<li><b>Teclado:</b> Jogador 1 com W A S D e avanço no espaço, Q, E, F ou Shift esquerdo; Jogador 2 com as setas e avanço no Enter, Shift direito ou 0.</li>
 </ul>`;
 const HELP_EN = `<ul>
 <li><b>Goal:</b> push your rival out of the ring. First to win <b>${SUMO.roundsToWin} rounds</b> takes the match.</li>
@@ -21,7 +21,7 @@ const HELP_EN = `<ul>
 <li><b>Dash ⚡:</b> a quick tap (no drag) lunges forward. Recharges in ~1 s (ring around the wrestler).</li>
 <li>Both going out together cancels the round. After ${SUMO.shrinkStart} s the ring starts shrinking; at ${SUMO.roundTime} s whoever is closer to the center wins.</li>
 <li><b>2 players:</b> at the same time, each on their own half (portrait: coral at the bottom, blue on top; landscape: coral on the left).</li>
-<li><b>Keyboard:</b> Player 1 with W A S D and space (dash); Player 2 with the arrows and Enter.</li>
+<li><b>Keyboard:</b> Player 1 with W A S D and dash on space, Q, E, F or left Shift; Player 2 with the arrows and dash on Enter, right Shift or 0.</li>
 </ul>`;
 
 /** Joystick: distância (px) do toque até a força máxima. */
@@ -210,10 +210,13 @@ class SumoGame {
         if (this.shell.paused || this.shell.overlayOpen()) return;
         this.keys.add(k);
         if (!this.s || this.shell.paused) return;
-        if (k === ' ') {
-          this.tryDash(0);
+        // Avanço: J1 em teclas perto do WASD (espaço, Q, E, F, Shift esquerdo); J2 perto das setas (Enter, Shift direito, 0, Ctrl direito).
+        const c = e.code;
+        if (k === ' ' || c === 'KeyQ' || c === 'KeyE' || c === 'KeyF' || c === 'ShiftLeft') {
+          if (!e.repeat) this.tryDash(0);
           e.preventDefault();
-        } else if (k === 'enter') {
+        } else if (k === 'enter' || c === 'ShiftRight' || c === 'Numpad0' || c === 'Digit0' || c === 'ControlRight') {
+          if (e.repeat) { e.preventDefault(); return; }
           this.tryDash(this.cfg?.mode === 'local' ? 1 : 0);
           e.preventDefault();
         }

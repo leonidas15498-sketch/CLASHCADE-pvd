@@ -7,7 +7,7 @@
 - Controle: joystick que nasce onde o dedo toca (46 px = força máxima), na metade da tela de cada jogador
   (em pé: J1 embaixo, J2 em cima, o mundo gira 90°; deitado: J1 à esquerda). Toque rápido (< 260 ms, < 10 px) = avanço
   (+2,3 u/s, recarga 1,15 s, anel âmbar quando pronto). Segundo dedo do mesmo jogador só dá avanço.
-  Teclado: J1 WASD + espaço; J2 setas + Enter.
+  Teclado: J1 WASD + avanço em espaço/Q/E/F/Shift esq.; J2 setas + avanço em Enter/Shift dir./0 (pedido do Leon 02/11).
 - Física: passo fixo 1/120 s; aceleração 4,4 u/s², arrasto 2,75/s (cruzeiro ≈ 1,6 u/s); choque com restituição 0,85.
 - IA (mesmos controles; reação e erro de mira por nível): Fácil 0,38 s, mira ±0,5 rad, sem cuidado com a borda;
   Médio 0,22 s, fica entre o rival e o centro, foge da borda; Difícil 0,12 s, prevê o rival, desvia de avanço perto da borda.
