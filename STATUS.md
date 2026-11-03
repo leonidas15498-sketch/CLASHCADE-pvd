@@ -1,5 +1,12 @@
 # STATUS — Clashcade (nome provisório; antes "Jogaço") — 02/11/2026, 21h30
 
+## Publicação (02/11, 22h15)
+- Repositório OFICIAL: leonidas15498-sketch/CLASHCADE-pvd (Cloudflare Worker "clashcade-pvd" publica a cada push na main).
+  CLASHCADE- vira backup (copiar só nos marcos). wrangler.jsonc roda `npm run build` e publica só dist/ (sem código-fonte).
+- Deploy da V13 na Cloudflare: Success (confirmado pelo Leon).
+- Supabase (projeto tgybollzkrnnndvzqjoi): migração já aplicada; conferido no SQL Editor: protocolo 1, função do jogo,
+  RLS e Realtime OK. Falta confirmar login anônimo ligado e testar partida online em 2 aparelhos.
+
 ## V13 (02/11) — recebida do Leon; conferida aqui
 - V12/V13 feitas fora desta sessão: ver RELATORIO_IMPLEMENTACAO_CLASHCADE_V12.md e RELATORIO_IMPLEMENTACAO_V13.md.
 - V13: ajustes de jogabilidade (Pong, Rastros, Torre, Golfe, Sinuca), filtros na home, Quatro em Linha ONLINE
