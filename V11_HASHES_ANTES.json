@@ -1,0 +1,834 @@
+﻿[
+    {
+        "Path":  "ARCHITECTURE.md",
+        "Hash":  "5CBC322408FBDE59A87E60131F121CC81FAC0F6904E2DD676334404C808C29C0"
+    },
+    {
+        "Path":  "AUDITORIA_TECNICA_V11.md",
+        "Hash":  "51730037D4F7EDB05180D2696214AC42496BB06FCE9AC7B6EC915CF2DEEC698C"
+    },
+    {
+        "Path":  "CLAUDE.md",
+        "Hash":  "D794CB89A932FE5C49890C774F7D426B75E4B4A80D2C440CD9CF2E49F33D0B9B"
+    },
+    {
+        "Path":  "eslint.config.js",
+        "Hash":  "ED02C0DD573A6BF0B6ED9D1437546F376308BEA8788BC965A23395ECAF1B969E"
+    },
+    {
+        "Path":  "GAME_DESIGN.md",
+        "Hash":  "98CBE48FD3ED76549166EEAFFCF2BD0D956813B07699902AF5BE45BB6FAAC834"
+    },
+    {
+        "Path":  "index.html",
+        "Hash":  "55E1E4E8191264D16A6BD7A229C89D4CDC9CC5FDA23660E43F2BE4386D85036F"
+    },
+    {
+        "Path":  "package-lock.json",
+        "Hash":  "E43E56F2261B8A19D0AC997E76EC11E045172F9F54E11AE26312E10D3E40B7B8"
+    },
+    {
+        "Path":  "package.json",
+        "Hash":  "C5EE34E5773E0ACEC6A13793A86A1952849D50E4BDD0ED56D78746A4F9A33C17"
+    },
+    {
+        "Path":  "README.md",
+        "Hash":  "3DD1B159C47EF6C083B62946BF61EE231E1FB5DA5454CCD695B0AACE3AEC586A"
+    },
+    {
+        "Path":  "RELATORIO_CLASHCADE.md",
+        "Hash":  "F364088BB0D367853C271EFF980C64C5EE9936E52371B0DDBAAA4ABB839CBEE0"
+    },
+    {
+        "Path":  "ROADMAP.md",
+        "Hash":  "15A99F26D2175C648F70145E970757C4768D0D5996A741D62461DE74C6DEE634"
+    },
+    {
+        "Path":  "STATUS.md",
+        "Hash":  "30A6DD63A269DF47CCEDFB03B96B894F2439A2A739C005E1A3881A79D7E96B8D"
+    },
+    {
+        "Path":  "TEST_REPORT.md",
+        "Hash":  "5F679ACDF889EC54D355F92FE5AC0DD3512B17943B81643C49B522F4ED50CCD2"
+    },
+    {
+        "Path":  "tsconfig.json",
+        "Hash":  "8E1DDF6414ED1D5B3503EA0202E3C09475D5A1485B2F19EF18FBE756FB3EB82D"
+    },
+    {
+        "Path":  "vite.config.ts",
+        "Hash":  "E1994C28A475CFFD3A49F166F56E20A6CD84EE5F4A67F5018A4049E122D92A8B"
+    },
+    {
+        "Path":  "docs\\comparativo-2playergames.md",
+        "Hash":  "842BF496FF8C9D7730EED83B3C75E19499A7C5FEF7949784D33877CB6869C0F6"
+    },
+    {
+        "Path":  "docs\\marca.md",
+        "Hash":  "A8101CC737AC3269DDF500837089593EE5F092E98062E368E4A24EE2372AC230"
+    },
+    {
+        "Path":  "docs\\arte\\prompts-gpt.md",
+        "Hash":  "6AFE4A6BF2EE9926EAE63B1E01B43F31E200A881E776913540D7747647F259ED"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\air-hockey.png",
+        "Hash":  "929DDDB3F3E3647CBC2BA6FDE221BA78A584BAADA11EE3A456F7CA9340F9B96D"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\bichinhos.png",
+        "Hash":  "000693AEAFC665DAA81FF0B0EBCB9F86DA3182838754E963694DAC8F8C9B671D"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\blocos-cromaticos.png",
+        "Hash":  "B35C6208CC0192AAC7C313BE4C6ADDDCB236242ABE84624BE9AA5F657B162FD3"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\empilha-arena-previa.png",
+        "Hash":  "2C88F3A78A423865D4E40AC91EB04D411D38F7D663B89278188B8F567020C1B7"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\GUIA_PARA_CLAUDE.md",
+        "Hash":  "C71D36FC42FF43A0862AB0F97D1F0D2AD7BE34347DCAA5E0081671A416E3C6EC"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\pong.png",
+        "Hash":  "33A70088E7FF8DBD56E9D22D2A6F6898AE9F17579CB88EEE63A3C60F6CCE6313"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\prancha-completa-01.png",
+        "Hash":  "DCCB81D1F8FE18C9C1ACDA62F9B0FA88F78F9B40D6D110F165E6B5A57F01A357"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\prancha-completa-02.png",
+        "Hash":  "276781C21D32197E6D2D9DB1551545C7DF99867023DC4B4C24801C6BDCED4CBB"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\PROMPTS_ORIGINAIS.md",
+        "Hash":  "6AFE4A6BF2EE9926EAE63B1E01B43F31E200A881E776913540D7747647F259ED"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\quatro-em-linha.png",
+        "Hash":  "A29A237E0D5689F5E6561D3DE75FD26B81C7BF74CAA965A3CCBC1C549A57312F"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\rastros-arena-previa.png",
+        "Hash":  "A56B52DF8CFBB5AF93FC91ECBE35F108B22CACB95B1C1D8024ED783F7AC8B70C"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\rastros-motos.png",
+        "Hash":  "62FD39559E4E44E68910432ABEC46FFCEDFF9712CE81B0839726E32564180A02"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\universo-visual-aprovado.png",
+        "Hash":  "A1977ABA3BAA47FA582D8EF3461BF420C7C18D22FA0D4599B8BBB46B5B66B4BA"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\capas\\air-hockey.png",
+        "Hash":  "ECD8F04B103CF8B7D68E4696AEAB2E94935D9262DFE8DE9C20F9009DFE8C475C"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\capas\\blocos-cromaticos.png",
+        "Hash":  "163C7A0F01DF238961E3AD386DBF7BACE31A19A48A109539E4699EC45C56AF83"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\capas\\empilha.png",
+        "Hash":  "9D65B1A1D851668F92F7AC83956682ABE58203606FB9989A1A32747C1B0A552D"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\capas\\minigolfe.png",
+        "Hash":  "F6985AE26AC6BF2789864481649C13F30039C66171F55FA5026219C0ADF79CEA"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\capas\\pong.png",
+        "Hash":  "EF1C5171781614811EA6A60FB774EE84B539022A4BE0B3F5DD69719F0440C7D5"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\capas\\quatro-em-linha.png",
+        "Hash":  "7DB2973C3B482539FA38143340FF8EB8A7D3EA8A9C4329444AF4B164DC39F311"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\capas\\rastros.png",
+        "Hash":  "4F583DC0F0DCEECD24A6E35E4B93E38ADBBAA5077D50441E92A9A06DBE041795"
+    },
+    {
+        "Path":  "docs\\arte\\referencias-gpt\\capas\\sinuca.png",
+        "Hash":  "1AEEC762C5049F9E8EB299111EAC9CB8FC522C3C2AB4D3400BB0BA56991954E0"
+    },
+    {
+        "Path":  "docs\\jogos\\blocos.md",
+        "Hash":  "03416189965F192E534E6A5D3C33CBCCA07AE608949001EACF20A716E1030A79"
+    },
+    {
+        "Path":  "docs\\jogos\\cabo-de-guerra.md",
+        "Hash":  "9CF2336FD457F6F0DE10E6683E8248C1A4EA741F1759D033868FF43728695AF1"
+    },
+    {
+        "Path":  "docs\\jogos\\duelo-rastros.md",
+        "Hash":  "6141CF8E961DA0D93946F12C0BB0D9725962E0C67B0EAA547AE8C53D61088F1D"
+    },
+    {
+        "Path":  "docs\\jogos\\empilha.md",
+        "Hash":  "0B3FBB27A3179F11D2950B09A6DCB4250826472DE329EF804E3662A195198D4C"
+    },
+    {
+        "Path":  "docs\\jogos\\lig-4.md",
+        "Hash":  "62C337A68D803A28950DFB5AB4C6658B2ED508A44FDED0F42FCE77B2EC0E2960"
+    },
+    {
+        "Path":  "docs\\jogos\\musica.md",
+        "Hash":  "86DCC4777DFAFAC25C5D49550C9027570125B31CEE096CA87C8914971F3A5A14"
+    },
+    {
+        "Path":  "docs\\jogos\\pong.md",
+        "Hash":  "93EDFDB09C8DD9DD48C41AF39F1E81743001B21B83576AB936B20F0C88BCA719"
+    },
+    {
+        "Path":  "docs\\jogos\\sumo.md",
+        "Hash":  "446AE23BF98FF587641682C67DD5050B2330EE7096EC072BB392C6B84C8CF539"
+    },
+    {
+        "Path":  "docs\\jogos\\_padrao.md",
+        "Hash":  "86F830353283CA27ABC884240F7E1379F9F988A9E225115672C9F5ADADC2473C"
+    },
+    {
+        "Path":  "docs\\proximas-etapas\\minigolfe-prompt.md",
+        "Hash":  "1082538C3B1B2E40CEE06D77D51E32C4CF4D9699EFE2D6CC9F5126C13B22C6AA"
+    },
+    {
+        "Path":  "docs\\proximas-etapas\\minigolfe-referencia.png",
+        "Hash":  "5FB36ADFF827F3FF811D413625B06132FF766C3DD09D5D5D2457152A3E580ACA"
+    },
+    {
+        "Path":  "docs\\proximas-etapas\\plataforma-multijogos.md",
+        "Hash":  "9777F193A9911FD8AEAD35157FCDEDDA645F88FA9CE401C7B290967E865A5D02"
+    },
+    {
+        "Path":  "docs\\sinuca\\PHYSICS.md",
+        "Hash":  "A42B7CAC63E4A0C294798554D1FD9E0A8FDF51F4C762BCA0ABD3E3F116F5AE41"
+    },
+    {
+        "Path":  "docs\\sinuca\\ROADMAP-sinuca.md",
+        "Hash":  "3E4E42A3A20E07F5551D67A25203FD784EF871FF13007ECF3599B73F353C9D65"
+    },
+    {
+        "Path":  "docs\\sinuca\\RULES.md",
+        "Hash":  "FCC5EB3458602D22B8D48B33FBD3E61A404D29F7BCF99DBB4CD477438E8B6971"
+    },
+    {
+        "Path":  "public\\icon-192.png",
+        "Hash":  "3D6BAE997D09623B3864F19EBB8FB074EA3A12D41F202A594074B39155E61E88"
+    },
+    {
+        "Path":  "public\\icon-512.png",
+        "Hash":  "C0DF8CA93C61805C1E3637F74957E48E74798AE6513F163B604F793845D20101"
+    },
+    {
+        "Path":  "public\\icon.svg",
+        "Hash":  "34FFE6DFAC1C30DD940FEEC696085B294FEB703064DC563446A982D80574961E"
+    },
+    {
+        "Path":  "public\\manifest.webmanifest",
+        "Hash":  "743207B430E24D7E8CDCED4A9830A44482572A4A2AB63D2115535BD724E9F5D4"
+    },
+    {
+        "Path":  "public\\sw.js",
+        "Hash":  "8E0A0AE8F132B81AE57C628D0FE2F3708B19049244E9AE84459F8D6C84FCFE33"
+    },
+    {
+        "Path":  "public\\music\\apex-cornering.mp3",
+        "Hash":  "4F3FC65AE3410288968817086E91CAAA38EC6D3179EE5E831E3A4627206E9521"
+    },
+    {
+        "Path":  "public\\music\\calculated-gambit.mp3",
+        "Hash":  "02309FBB00F1FEDBFA9DD53552BBA3ADCB3B8B622994077F99745CD1BC614818"
+    },
+    {
+        "Path":  "public\\music\\center-court-rally.mp3",
+        "Hash":  "BFD27637FC0FF5CBE2809B47204D43A5DF4B84C01FD6BE38887C0FC4362019B6"
+    },
+    {
+        "Path":  "public\\music\\midnight-felt.mp3",
+        "Hash":  "83E7B547E8CED899467ED017DB44CC16652F42348FB561E2CA0AFE1E91C25366"
+    },
+    {
+        "Path":  "public\\music\\ricochet-velocity.mp3",
+        "Hash":  "795979B22A30433E6675E435E228C7E0FBC08D2072A72C0038CE0E98849D8F2B"
+    },
+    {
+        "Path":  "public\\music\\seven-blue-tiles.mp3",
+        "Hash":  "78BB49607C1C9B901839555C822C7C94A044C0A7A3C4DEF92083F9C8A93E6B81"
+    },
+    {
+        "Path":  "public\\music\\sunday-on-the-velvet-green.mp3",
+        "Hash":  "A2DCFE1E9B3AD940DAF22ADD2BB19B7AC38E489B689192CBEC0665531C2CE918"
+    },
+    {
+        "Path":  "public\\music\\sunny-stacks.mp3",
+        "Hash":  "76B76E3D2CE392B9E7F6D10FE52F03C67658C139DA4437C0ADAB323B479EEB2B"
+    },
+    {
+        "Path":  "qa\\blocos.cjs",
+        "Hash":  "0471B95367B83D6EB00971E8C1716BAA238ACC424AAFE46853258289E0F51DDD"
+    },
+    {
+        "Path":  "qa\\cabo.cjs",
+        "Hash":  "5D625E3943475C911F751337A1CB1C5D72AF2C2A57CB0D1A0633837302D986E3"
+    },
+    {
+        "Path":  "qa\\capturas-todos.cjs",
+        "Hash":  "26209D65EB8924B33439BA6E4F096444B724F6F1CBDA7213EE0A381628DCD632"
+    },
+    {
+        "Path":  "qa\\efeitos-desligados.cjs",
+        "Hash":  "C21203CD7C355BBBD3016DF8D7415A8769F446EC964503A96D6059CEF4208CED"
+    },
+    {
+        "Path":  "qa\\empilha.cjs",
+        "Hash":  "3E86626B84DFD3951D75F86F409313558EAD2DA5A23EDA71F101689B354FC856"
+    },
+    {
+        "Path":  "qa\\fps.cjs",
+        "Hash":  "7E1A0A29D206FB0F9F53D32DC418105AB7D5204AABCAAC547F995F02335D0D0E"
+    },
+    {
+        "Path":  "qa\\fx-golfe-hockey.cjs",
+        "Hash":  "608CED23C04026B6EC91E2E45DB6ACB1BAD4653ADD5E74CC192CEAC55CB5EFD1"
+    },
+    {
+        "Path":  "qa\\i18n-faltando.cjs",
+        "Hash":  "ED67C7E31CF8E2BA6C0507851DF2ECDF61DAB0FD7712A207B5D2A5DAA69AF65E"
+    },
+    {
+        "Path":  "qa\\lig4.cjs",
+        "Hash":  "1A275112EEA5FA82621EBAF89B8127EA7D1F8796EC940F794B6877BD7CF795CA"
+    },
+    {
+        "Path":  "qa\\menu.cjs",
+        "Hash":  "500C7452B710C099180D4EFF13C36382B5FFFB38FDF75E1F02B8D54B0849CCDB"
+    },
+    {
+        "Path":  "qa\\musica-painel.cjs",
+        "Hash":  "13D22152CA629F44B0EA931A32F672CF302BE286958CA1EAA7707D29EC82198E"
+    },
+    {
+        "Path":  "qa\\offline-e-sorteio.cjs",
+        "Hash":  "448719BA7C089EA25ABAA50035EC48C23FC3936113A6AA3F9870E8F1258579EA"
+    },
+    {
+        "Path":  "qa\\pong.cjs",
+        "Hash":  "7AE09794EBB5520F95D3C4A940D5A843BC2A5A80721D42EE649F7B22831068BF"
+    },
+    {
+        "Path":  "qa\\rastros-tacos.cjs",
+        "Hash":  "F86E990EDAD393ADE420E52C451A48071E9D7F471DB6F2D600C560A60524B408"
+    },
+    {
+        "Path":  "qa\\rastros.cjs",
+        "Hash":  "17538D8920AA0E8D77DE4EA934373680620BF4815F19F670A70ED7C93F4D0DE7"
+    },
+    {
+        "Path":  "qa\\README.md",
+        "Hash":  "C9DAA934D800731A48243A03D91D27E1729F8E822A5C8278A4AB32DC47ADE599"
+    },
+    {
+        "Path":  "qa\\smoke-todos.cjs",
+        "Hash":  "ACF28B9A3D9AE53220D3DAE2AF5EA8A1DBE6EC995172E7866A4AADBDA77E822C"
+    },
+    {
+        "Path":  "qa\\sumo.cjs",
+        "Hash":  "6C36C0702CEECD0F75C518753DFEA2C8B846C687BD674E0B7BF4BC04760DD227"
+    },
+    {
+        "Path":  "qa\\torneio.cjs",
+        "Hash":  "2CEFE7E2C90A349E40EB834919B1BD8A4ACF3DCA568C8F4E04D98759C7DE8F15"
+    },
+    {
+        "Path":  "qa\\torre-feel.cjs",
+        "Hash":  "D2E1AC1090D159DCC0B49A0240E84496B453A6698C86AC76A55D90913E196ACC"
+    },
+    {
+        "Path":  "scripts\\ab-hockey-pong.ts",
+        "Hash":  "1A0F9AF2C42F47579893083E6934390D7309CD5869316FF4F8739A78BBBB67C7"
+    },
+    {
+        "Path":  "scripts\\bench.ts",
+        "Hash":  "5AC076BE6BAA481ABE594B0BC29D061CF312BAAB73D6BDD571A82C9B8929574A"
+    },
+    {
+        "Path":  "scripts\\golfe-hole-in-one.ts",
+        "Hash":  "48FDAE00347B50649B6AECE9E658BCE2E067989349A75273B8E9371FB2499F62"
+    },
+    {
+        "Path":  "scripts\\pong-raquete.ts",
+        "Hash":  "AFA423BD3F73F37DB53661893BB6CAD08B4AB1B03696F6C29AE8DEA521E69728"
+    },
+    {
+        "Path":  "scripts\\torre-feel.ts",
+        "Hash":  "DEAB51996CF6692025C834AE52FF537C68A0D0942A68B8FFCBAFBF00DB9F179F"
+    },
+    {
+        "Path":  "src\\brand.ts",
+        "Hash":  "A4E7BBFDCD075C686CE0048F9E70DD30541B565708936E550F0973146B3D844F"
+    },
+    {
+        "Path":  "src\\main.tsx",
+        "Hash":  "A68C67C69A0D12BF165C9BC10CC94A8DD771FE4BBB131F53AA66A043EC75797C"
+    },
+    {
+        "Path":  "src\\vite-env.d.ts",
+        "Hash":  "65996936FBB042915F7B74A200FCDDE7E410F32A669B1AB9597CFAA4B0FADDB5"
+    },
+    {
+        "Path":  "src\\app\\App.tsx",
+        "Hash":  "A6F9E66E8782F7979C5820745CB36DB4F2EE07857FDFE23BCE44A6FFA677427E"
+    },
+    {
+        "Path":  "src\\components\\Cover.tsx",
+        "Hash":  "B175E64F8A3910CAD282672036C208945939CF9E06A13E99F9329F55D26D05BA"
+    },
+    {
+        "Path":  "src\\games\\registry.ts",
+        "Hash":  "DF9F54A425FCF455D3A132E1A038C5FE339C3456116CDFE53C95D5BBBE8E68ED"
+    },
+    {
+        "Path":  "src\\games\\airhockey\\ai.ts",
+        "Hash":  "60C86DD8F23FB23C2AF599BC2652B16517BA40FC7A6EBF039CF977C05226257E"
+    },
+    {
+        "Path":  "src\\games\\airhockey\\index.ts",
+        "Hash":  "D63FDC586A9EDDAAEDF2430675544312EDAB9142117D739C98D91F9933154073"
+    },
+    {
+        "Path":  "src\\games\\airhockey\\physics.ts",
+        "Hash":  "10A71C9455276E22FEFF50DAF022374CB30868D0F3C39D9E6A35F9600F03B769"
+    },
+    {
+        "Path":  "src\\games\\blocks\\index.ts",
+        "Hash":  "78C79DB1970EDA1CCEFBFDF551F6780E50159A79E6B698ED035C9B58B73FCF6B"
+    },
+    {
+        "Path":  "src\\games\\blocks\\logic.ts",
+        "Hash":  "2F9F2100E859A10FA4155A1A4CF77FC0333E27035AB340D25494B133E0FE4A5E"
+    },
+    {
+        "Path":  "src\\games\\connect4\\ai.ts",
+        "Hash":  "28A7DF13D308673E36E3F2436D2B4348049857B97893450D2451AE3CAD0EBABD"
+    },
+    {
+        "Path":  "src\\games\\connect4\\index.ts",
+        "Hash":  "CCC7C081DF39C6DF876A74F5FB1D1EDCECE0B96BF10BAFC7C1C30313ED9DB5E5"
+    },
+    {
+        "Path":  "src\\games\\connect4\\logic.ts",
+        "Hash":  "A5751801EF4F9937BEE8A0DC4DAA94F7A253A0D0DBADFB5BB84AD7FE482E5A7C"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\index.ts",
+        "Hash":  "72493ADDBDE8BB8D6A9A85E5A9E3F392A179FFA7A691D36BFA42B7B044B5E9F9"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\storage.ts",
+        "Hash":  "F407BAC093FDEEAE53718E442ED358849390C7E474331685AB8B3CB35AE1B5FA"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\levels\\levels.ts",
+        "Hash":  "1B0C1249C33785BDE131D7D71EC26ED3AF95B257C66E29F5ED4281E9FF071CFF"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\levels\\solver.ts",
+        "Hash":  "9B5350950D36C7A12073EA432523D7D7BF96F30478D1B296BAC12C08E0551CFC"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\physics\\sim.ts",
+        "Hash":  "07186396C4CCACB024515C9CDB5A11A2EBB3244E28E0C779AB7621490CF233C9"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\physics\\types.ts",
+        "Hash":  "D2DBB12AD4BAF0D5E26E07CC591D79D38E31BA3DABE63016B9DC93FFF4F172D7"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\render\\courses.ts",
+        "Hash":  "5C19EFBC5C0758F4A5B9C724ED3F225CC839077A7716F1701ABA8DC1CBFB111E"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\render\\putters.ts",
+        "Hash":  "C90AF45940460F0A44EEE0FE8DA30CBAA71DD4AF57EE0280980901A25E196592"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\render\\renderer.ts",
+        "Hash":  "139F8E52854F00839B29532D3BBD43B4FBDD6096443FFC1E63E3B020BF707B9F"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\rules\\rules.ts",
+        "Hash":  "D2113B643FF971ACAD81DBBB8DD700F3952100619EC190184FF2AAE1843065D6"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\ui\\app.ts",
+        "Hash":  "16AB4DA4A9BE29450419A69F20FA4308D865E013B48A27C7632A85962C7CE370"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\ui\\sfx.ts",
+        "Hash":  "5807EE7472E9EC0B2C38F4C77946518AFE611AE09FBBC26C0CD1A0D43BB1F892"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\ui\\style.css",
+        "Hash":  "AE00579F7E78F80B71653580880693C23FFC0A1B965CA5367CAC5BD34ECCB465"
+    },
+    {
+        "Path":  "src\\games\\minigolf\\ui\\template.html",
+        "Hash":  "63D5B2BE4064096DA5BCEE03500FAF67F035EB8966B8342B87540755085AC4DB"
+    },
+    {
+        "Path":  "src\\games\\pong\\ai.ts",
+        "Hash":  "EC6F91DF1BFA7C688BDB95BF1C2B78E5446CC1F41B8C38CDE2DC8D85D6CE41FB"
+    },
+    {
+        "Path":  "src\\games\\pong\\index.ts",
+        "Hash":  "86787A9D5AF6A07F221A343C63DE740E4B8E40B0A2A279DC49AB240F1C16252E"
+    },
+    {
+        "Path":  "src\\games\\pong\\physics.ts",
+        "Hash":  "310FA968BBCEE57E6DDB74FF869F5CB6979AB84CAA13E324BA1D14832E7EEEF1"
+    },
+    {
+        "Path":  "src\\games\\pool\\index.ts",
+        "Hash":  "CCDE303AD7B1E5904E9ABF3E84CFA81879A7316ED436D5F077E1D870A938E354"
+    },
+    {
+        "Path":  "src\\games\\pool\\style.css",
+        "Hash":  "6FC73697081D5C7AADFDB2E5182678351DC6812778E731881B9F5B938796A61A"
+    },
+    {
+        "Path":  "src\\games\\pool\\template.html",
+        "Hash":  "878E5B8D394823E90193EC9B53BF087E3931949B78F96011CD98764DA055FD9C"
+    },
+    {
+        "Path":  "src\\games\\pool\\ai\\ai.ts",
+        "Hash":  "A1815429D16B6B8FACC51ACDACE514BCDCC68BD1A2A6626160F1958F290362B4"
+    },
+    {
+        "Path":  "src\\games\\pool\\game\\ballSprite.ts",
+        "Hash":  "661C2785AE49E5637F2F38E0E2486DC624C0BF34FFD11A8E1D3BF6E835038D33"
+    },
+    {
+        "Path":  "src\\games\\pool\\game\\controller.ts",
+        "Hash":  "AD7AF003ED509ED088F19DC68A4C98EAAFA3EDF69D9DB577848545BFE1DB1846"
+    },
+    {
+        "Path":  "src\\games\\pool\\game\\cues.ts",
+        "Hash":  "7F27C488718F8166F9F6E532CF24DA11E192281A22AB31F7F242471B6A4C4942"
+    },
+    {
+        "Path":  "src\\games\\pool\\game\\pocketFx.ts",
+        "Hash":  "9A574F856089B85EBBCA1ACF7F47BCC3C61EB5E840675CD4F3C94B46D13F456A"
+    },
+    {
+        "Path":  "src\\games\\pool\\game\\renderer.ts",
+        "Hash":  "A6BA148EFFC3A939A2E87803ECF1C8C46B7C8D4B4C812531DA2E3CFEC51B9F63"
+    },
+    {
+        "Path":  "src\\games\\pool\\game\\sound.ts",
+        "Hash":  "E1D8714F137BA6DB46C38F58D8CB79E62F40525D1DC24928C51C31484799C4F2"
+    },
+    {
+        "Path":  "src\\games\\pool\\game\\tables.ts",
+        "Hash":  "ADF4C399B195DAA7A221A7DC281A28F8F5A542529F5839E1D60813F7109D1B74"
+    },
+    {
+        "Path":  "src\\games\\pool\\physics\\rack.ts",
+        "Hash":  "465B6F02796CE290C0497A5D6BBB42ECD7B93C834F7986E7516FF6DB3CB19AA7"
+    },
+    {
+        "Path":  "src\\games\\pool\\physics\\raycast.ts",
+        "Hash":  "FEA9E2576EE5D31B09CAC0C1A24559A63BC9EB20AC4F5BACD85CB7874FCDE1F5"
+    },
+    {
+        "Path":  "src\\games\\pool\\physics\\table.ts",
+        "Hash":  "D9C9FF06D612FEAC0915E5F2A7AC5AE07D92462955F3D9E89293B8BBF406DF6C"
+    },
+    {
+        "Path":  "src\\games\\pool\\physics\\vec.ts",
+        "Hash":  "ECF69288DCC5EF7B1F81D6612B878F512F0179DAC602CE8EBF2DB118B426CDFA"
+    },
+    {
+        "Path":  "src\\games\\pool\\physics\\world.ts",
+        "Hash":  "662A4A91F73C4E5342FC46CB0AE283D3F2CCDDB1E4018902BB90594C709D46BE"
+    },
+    {
+        "Path":  "src\\games\\pool\\rules\\rules.ts",
+        "Hash":  "CD2CD3C9D5695197038354ECAEAEDBF3B740206FAD1870A6B54E5F70642F35F9"
+    },
+    {
+        "Path":  "src\\games\\pool\\storage\\storage.ts",
+        "Hash":  "EA2A36990982376049BD96BB9388775AC189CE2342493F22F447B3288CADCBCA"
+    },
+    {
+        "Path":  "src\\games\\pool\\ui\\app.ts",
+        "Hash":  "C8164EC39B93E3F9EF8C47F5A16BC41E4D36F6C46542A86DFC933627E6F1C7F4"
+    },
+    {
+        "Path":  "src\\games\\shared\\flags.ts",
+        "Hash":  "7DDAE8FC45655772C4E0623A40E51C75EBDE891C2CDAA1BF69B47E732807EB14"
+    },
+    {
+        "Path":  "src\\games\\shared\\fx.ts",
+        "Hash":  "C79FD7476F694B8863CFEA45D3D1AA811D4B1F055AD15E59E10F88041FD3D785"
+    },
+    {
+        "Path":  "src\\games\\shared\\music.ts",
+        "Hash":  "547DF39F54B16612CF1FFA5246D8F9F6813662819336E406C2C64E9903602D42"
+    },
+    {
+        "Path":  "src\\games\\shared\\musicControl.ts",
+        "Hash":  "C767285C74D204968022DE180FA9EFF90E7DCAF29C8CAAFA24453F2C2043CD3F"
+    },
+    {
+        "Path":  "src\\games\\shared\\players.ts",
+        "Hash":  "FD88E190A839E7067BE74FC244EE5E8CB3FF46555A25999202671D62E26A66CB"
+    },
+    {
+        "Path":  "src\\games\\shared\\powerGauge.ts",
+        "Hash":  "4D46FC18679C534C1EEEFE95D936D2C9AC216337D8A3964C2644FEB86C4F34B5"
+    },
+    {
+        "Path":  "src\\games\\shared\\sfx.ts",
+        "Hash":  "B8D2D8CB5F08C4F816B68779448DB2F58D576E1D2810F17ADA9626FFEC4C9C87"
+    },
+    {
+        "Path":  "src\\games\\shared\\shell.ts",
+        "Hash":  "C58E5E09B6DE5960C6973FB4FBC663FC8AE401DB747B892BE4866749B7C47969"
+    },
+    {
+        "Path":  "src\\games\\shared\\shopUi.ts",
+        "Hash":  "ACE9C7864364FD3D7B3E19046C081F32262D39AEEF1112AEF735F241C2F602E4"
+    },
+    {
+        "Path":  "src\\games\\shared\\types.ts",
+        "Hash":  "EF047F255EBB1BD6949B75EFF6FB57C032AF8FBCDA8B83EF529419E33A9C3668"
+    },
+    {
+        "Path":  "src\\games\\stack\\ai.ts",
+        "Hash":  "A095414AFD5088F7A8674A07B1173C92169FB44F5BE5CB1159DA79C3A20D9120"
+    },
+    {
+        "Path":  "src\\games\\stack\\index.ts",
+        "Hash":  "3FF5C6601B3CF46371611237E2A93A9316D4211864D9ABF1136B92047DE187A6"
+    },
+    {
+        "Path":  "src\\games\\stack\\logic.ts",
+        "Hash":  "E3A81885FB9BD307EB98E37B638EC71235D377BFCC05325E1F3DC62452AE8B38"
+    },
+    {
+        "Path":  "src\\games\\stack\\pieces.ts",
+        "Hash":  "66735A210AA916F184FD380AD76DA58E3D287FA82FB8C4300AB0FDA85FDCA4CA"
+    },
+    {
+        "Path":  "src\\games\\sumo\\ai.ts",
+        "Hash":  "C8C615491C184721884FAD5EF7BC944F02E8B9AD37E8F40CFBA8726753F9D301"
+    },
+    {
+        "Path":  "src\\games\\sumo\\index.ts",
+        "Hash":  "1ABC3ED4CE39202E374558555E02B0947D530DE92C89DBE9026899BC47B1E3F3"
+    },
+    {
+        "Path":  "src\\games\\sumo\\logic.ts",
+        "Hash":  "E9BD99A5A524713B3E267346E8BDFF02CEA41053F83A42AD61D156A8CBC6DC46"
+    },
+    {
+        "Path":  "src\\games\\trails\\ai.ts",
+        "Hash":  "90C1C6FD15C65B2AC2A556148B1811D20EAE253D0C67864766918717C2737199"
+    },
+    {
+        "Path":  "src\\games\\trails\\index.ts",
+        "Hash":  "95F100F006894179C04C899A991BADBB87770994ED017E11F8022665923668D0"
+    },
+    {
+        "Path":  "src\\games\\trails\\logic.ts",
+        "Hash":  "F9AF83EEC34ADD756620D1C44DBD2E73DB8F38E2E8F623654A379BA006644F5F"
+    },
+    {
+        "Path":  "src\\games\\tug\\ai.ts",
+        "Hash":  "4E417E4245CD47A3036A3699CB56B44AFA0BC6A26B72D94C01AF02B589D621B8"
+    },
+    {
+        "Path":  "src\\games\\tug\\index.ts",
+        "Hash":  "32C2F2E51F76D55F8FD0D76A8311611DF6500B65D4ED3F3D956412870FCEE5D2"
+    },
+    {
+        "Path":  "src\\games\\tug\\logic.ts",
+        "Hash":  "6288E7A394663D61A0591926EA5AA263DE307714D034A079767B3C3641D0C8E7"
+    },
+    {
+        "Path":  "src\\i18n\\domTranslate.ts",
+        "Hash":  "8401AFBE45023AB180F4CFA9110337CA8CB4C7338E09CCD24501AAF2D3791994"
+    },
+    {
+        "Path":  "src\\i18n\\index.ts",
+        "Hash":  "88F2941230915A1EB62941E9DFF62701198DCA5F1D3B760DC55EE56004B5D771"
+    },
+    {
+        "Path":  "src\\i18n\\lang.ts",
+        "Hash":  "BF993BEC142AFF17D75868D10019C239947E355BF45B651E5950AB01E224D6A2"
+    },
+    {
+        "Path":  "src\\i18n\\poolGolfEn.ts",
+        "Hash":  "6014611280C0EDD72E3E4F99F29FE147D381B434CCADDD21DBB0DE65A38EB494"
+    },
+    {
+        "Path":  "src\\pages\\GamePage\\GamePage.tsx",
+        "Hash":  "581C2ADC95AB5AEA3666CE2BA5BDD2DD91F6FB8D855365C1BFEDF93BEC464895"
+    },
+    {
+        "Path":  "src\\pages\\Home\\Home.tsx",
+        "Hash":  "45DA4053CFFB8E0339792BD8130938738F01384DEE4CFA4B12F92F35305F9EE3"
+    },
+    {
+        "Path":  "src\\services\\catalog.ts",
+        "Hash":  "78E54876B729518165BFD1B09EAF90CAE4593DF3E2A543A553F35EE80015C7A5"
+    },
+    {
+        "Path":  "src\\services\\economy.ts",
+        "Hash":  "61A64E2953C5352856050E8EBCC528527BE1D6622C4F8AD42CE75B85E6E81189"
+    },
+    {
+        "Path":  "src\\services\\match.ts",
+        "Hash":  "D1EF3B1E60163E771FDB93F2BC7363A828086FAF5FB89259FF7EE6EC64F5B58C"
+    },
+    {
+        "Path":  "src\\services\\session.ts",
+        "Hash":  "28EE43C4B561071E8BD56F6314AB3474679AA1401E260F459C69589CC442EFD7"
+    },
+    {
+        "Path":  "src\\services\\storage.ts",
+        "Hash":  "8CC86F4DDB1F4D4C524B452E34D3A98EDBF32F93551F984B79A7D3C82EA88E2A"
+    },
+    {
+        "Path":  "src\\services\\tournament.ts",
+        "Hash":  "F19B0169A86DDE67EAF7EC250C75FECA029FE9250FD918139E3FAE5DE9D40852"
+    },
+    {
+        "Path":  "src\\styles\\portal.css",
+        "Hash":  "7137656F5C66B7E0AE8DD05EE60A66432EE259702E3FA0E674A9F1E99260D708"
+    },
+    {
+        "Path":  "tests\\airhockey\\airhockey.test.ts",
+        "Hash":  "4D7EE05E064333F98BDD83AB083250A0EFA39B6ACF32F04C97083A57F75A67A3"
+    },
+    {
+        "Path":  "tests\\bench\\blocks.ts",
+        "Hash":  "D626B9F8954F3BB4624B7ABB036EF0032357CEB7B7C553AB136BB47553BBF88E"
+    },
+    {
+        "Path":  "tests\\bench\\connect4.ts",
+        "Hash":  "1B5129E0A16C762DE1CE241D05804F6AABA35D5D9B7B5F63A49CC061E936053B"
+    },
+    {
+        "Path":  "tests\\bench\\hockey.ts",
+        "Hash":  "D66655E5ED0B443548B8FFE7354E6C566F2BCB5649382C9807127710E6A15FD3"
+    },
+    {
+        "Path":  "tests\\bench\\pong.ts",
+        "Hash":  "14105C9CC306E8EEF3C99C470D792137FE8F0E5F593B3E61B28915A4DCAAED37"
+    },
+    {
+        "Path":  "tests\\bench\\pool.ts",
+        "Hash":  "EB7CC93536B3408832056A86D165788A4FBF7A7DD3CDBC22BDC1EEFE20787F48"
+    },
+    {
+        "Path":  "tests\\bench\\stack.ts",
+        "Hash":  "1F606678A420BF74C3F4CD81B7A7587985E4E996A26BB5B117D6173B852963C3"
+    },
+    {
+        "Path":  "tests\\bench\\sumo.ts",
+        "Hash":  "CC536FE5301B6C062F3C2BC27C0D3E2ADEC7BFFD8701504FE14E92F46349C2A7"
+    },
+    {
+        "Path":  "tests\\bench\\trails.ts",
+        "Hash":  "1CF5A68487209EF5E0B33CE16D32873CFD7377B49909298EA63DDB82EC0C3DA2"
+    },
+    {
+        "Path":  "tests\\bench\\tug.ts",
+        "Hash":  "CD4F7C0CB2B72D562B72D0D8DDA9CCBD6CD9158D257DBEF4E77D5D1167E46AF6"
+    },
+    {
+        "Path":  "tests\\blocks\\blocks.test.ts",
+        "Hash":  "E2BABEBB4CB5395915DBA528119FA8FF61246D770FB1ADCCB7BD02EB8207FD1D"
+    },
+    {
+        "Path":  "tests\\connect4\\connect4.test.ts",
+        "Hash":  "8A31074C88320743924F4DDEECB70E0EF7679800E707B6226702B0569418B440"
+    },
+    {
+        "Path":  "tests\\economy\\economy.test.ts",
+        "Hash":  "35AE7293BDAB12B9DE9FD4CB896679D10AE265C26DB6C523F4E2DE6194F7FF39"
+    },
+    {
+        "Path":  "tests\\minigolf\\customize.test.ts",
+        "Hash":  "9ABA3F1764D0ED9C9AE42BF26FD1C57DA7343EDA5929177FF3C52F3039239C9A"
+    },
+    {
+        "Path":  "tests\\minigolf\\hole-in-one.test.ts",
+        "Hash":  "225B9C5F83837C849C291D596322A8A9B0D19DCF0CAA26F61EFC733DC92F9949"
+    },
+    {
+        "Path":  "tests\\minigolf\\levels.test.ts",
+        "Hash":  "A621D32CCB13D3DDB8EE8B22FF0B59507E3C146B7BB1B0D6E0CDEBCC663FDAF7"
+    },
+    {
+        "Path":  "tests\\minigolf\\physics.test.ts",
+        "Hash":  "72C83B6E58E0DFE4344C5A14865602A0E4437297C72D7A0DB69D50CF51259592"
+    },
+    {
+        "Path":  "tests\\minigolf\\rules.test.ts",
+        "Hash":  "98127E5D5469925C84EAB120D3F916D2ABD8619BB6FD027325D4E61876DE3083"
+    },
+    {
+        "Path":  "tests\\pong\\pong.test.ts",
+        "Hash":  "6AAC136E9EF2838366BEE3F4FF5738045FE706C7C8F997DC58539C3CE8A3CE32"
+    },
+    {
+        "Path":  "tests\\pool\\ai-levels.test.ts",
+        "Hash":  "036AC3766978E08B104A48B7C4FA49C1E821896E90C84269D78E2E5B828EEFFE"
+    },
+    {
+        "Path":  "tests\\pool\\ai.test.ts",
+        "Hash":  "18D5ACE874BE8CC857121E1DFEF2656EF6A17E9E6F3F3331A9D873762248D870"
+    },
+    {
+        "Path":  "tests\\pool\\physics.test.ts",
+        "Hash":  "95624177BC7AC598C0043488FB24C317FF8904F6DEDD8F070F4A3C86C4496179"
+    },
+    {
+        "Path":  "tests\\pool\\pocketfx.test.ts",
+        "Hash":  "5307BB62B4121D2CA1C84AEF195CEB99C5AB0BAF802D4F24CED414B43D7A97D5"
+    },
+    {
+        "Path":  "tests\\pool\\rules.test.ts",
+        "Hash":  "B1E168DCC9BD64EFF1BF8945643B800B95025CFBF2204D604D5672622585AD7D"
+    },
+    {
+        "Path":  "tests\\shared\\fx.test.ts",
+        "Hash":  "5328F6A32D9A99601612827B912A6CBCF04FC4FE67591662A1626E252136E08B"
+    },
+    {
+        "Path":  "tests\\stack\\stack.test.ts",
+        "Hash":  "B2ABE2DCA0AF2F88D3DA1AB1C4E663275898AD018C82A33A8C0CE3A4F9C3DFA0"
+    },
+    {
+        "Path":  "tests\\sumo\\sumo.test.ts",
+        "Hash":  "230D4A604164A1E16773AFFFA88E665F0CD5F4D9ECB5450A99F4FA95C0CF2384"
+    },
+    {
+        "Path":  "tests\\tournament\\tournament.test.ts",
+        "Hash":  "2359D97142C0DD250EF08A2B931EE22A0D9AEB3D789C6B0C7F66347F8B5EC8E5"
+    },
+    {
+        "Path":  "tests\\trails\\trails.test.ts",
+        "Hash":  "01A38673971A83110425B3C71621B1B015BEC1102DBFC3B3F2B4ABFBE657B8B0"
+    },
+    {
+        "Path":  "tests\\tug\\tug.test.ts",
+        "Hash":  "CEF63785B2DFFF34B3AB1D82F976397C1AA95EB128551AD3D89E1FFCFAFD332F"
+    }
+]

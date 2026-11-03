@@ -1,0 +1,278 @@
+{
+  "results": [
+    {
+      "route": "#%",
+      "status": "passed"
+    },
+    {
+      "route": "#unknown",
+      "status": "passed"
+    },
+    {
+      "route": "home",
+      "status": "passed"
+    },
+    {
+      "scenario": "filter Contra IA",
+      "status": "passed"
+    },
+    {
+      "scenario": "filter Solo",
+      "status": "passed"
+    },
+    {
+      "scenario": "filter 2P no aparelho",
+      "status": "passed"
+    },
+    {
+      "scenario": "filter Todos",
+      "status": "passed"
+    },
+    {
+      "route": "air-hockey",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "air-hockey",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "air-hockey",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "air-hockey",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "duelo-rastros",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "duelo-rastros",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "duelo-rastros",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "duelo-rastros",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "empilha",
+      "mode": "solo",
+      "difficulty": null,
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "empilha",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "empilha",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "empilha",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "empilha",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "lig-4",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "lig-4",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "lig-4",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "lig-4",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "pong",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "pong",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "pong",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "pong",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "blocos",
+      "mode": "solo",
+      "difficulty": null,
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "blocos",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "sumo-neon",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "sumo-neon",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "sumo-neon",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "sumo-neon",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "cabo-de-guerra",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "cabo-de-guerra",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "cabo-de-guerra",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "cabo-de-guerra",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "sinuca",
+      "mode": "#btn-play-local",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "sinuca",
+      "mode": "#btn-play-ai",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "minigolfe",
+      "mode": "#mg-play-duo",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "route": "minigolfe",
+      "mode": "#mg-play-solo",
+      "status": "passed",
+      "confirmationSimulationFrozen": true
+    },
+    {
+      "scenario": "partial mount rollback",
+      "status": "passed"
+    }
+  ],
+  "errors": []
+}

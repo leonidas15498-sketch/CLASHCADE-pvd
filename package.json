@@ -1,0 +1,39 @@
+{
+  "name": "jogaco-plataforma",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "build:single": "vite build --mode single",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src tests"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.14",
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^10.14.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^5.4.21",
+    "vite-plugin-singlefile": "^2.3.4",
+    "vitest": "^2.1.9"
+  },
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0",
+    "planck": "^1.4.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

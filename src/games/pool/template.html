@@ -1,0 +1,225 @@
+<div id="app">
+  <header id="hud">
+    <button class="icon-btn" id="btn-home" aria-label="Voltar ao menu" title="Menu">
+      <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" /></svg>
+    </button>
+    <div class="pcard" id="p0">
+      <div class="avatar-wrap"><div class="avatar"></div><span class="pturn">VEZ</span><span class="ptime"></span></div>
+      <div class="pinfo"><div class="pname"><b class="nm"></b> <span class="pgroup"></span></div><div class="ptray"></div></div>
+    </div>
+    <div class="hcenter">
+      <div id="status" aria-live="polite"></div>
+      <div id="sub"></div>
+    </div>
+    <div class="pcard right" id="p1">
+      <div class="pinfo"><div class="pname"><b class="nm"></b> <span class="pgroup"></span></div><div class="ptray"></div></div>
+      <div class="avatar-wrap"><div class="avatar"></div><span class="pturn">VEZ</span><span class="ptime"></span></div>
+    </div>
+    <div id="music-slot"></div>
+  <button class="icon-btn" id="btn-sound" aria-label="Efeitos sonoros" title="Efeitos sonoros (liga/desliga)"></button>
+  </header>
+
+  <main id="stage">
+    <aside id="left">
+      <div class="plabel">Força <b id="pval">35%</b></div>
+      <div id="pbar" role="slider" tabindex="0" aria-label="Taco: puxe para baixo e solte para tacar" aria-valuemin="0" aria-valuemax="100">
+        <div id="pfill"></div>
+        <div id="pticks" aria-hidden="true"></div>
+        <div id="pcue" aria-hidden="true"><canvas id="pcue-cv"></canvas></div>
+      </div>
+      <div class="phint" id="phint">Puxe e solte</div>
+    </aside>
+
+    <div id="table-wrap">
+      <div id="table-box"><canvas id="cv" aria-label="Mesa de sinuca"></canvas></div>
+      <div id="msgbar"><span id="toast" role="status"></span></div>
+    </div>
+
+    <aside id="right">
+      <button class="icon-btn" id="btn-spin" aria-label="Efeito na branca" title="Efeito (onde o taco bate na branca)">
+        <span class="spin-mini"><span class="spin-dot" id="spin-mini-dot"></span></span>
+      </button>
+      <button class="icon-btn" id="btn-rot-l" aria-label="Girar mira (anti-horário, ajuste fino)" title="Ajuste fino da mira">
+        <svg viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 1-6.6 4.7l1.9.6A5 5 0 1 0 12 7v3L7.5 6 12 2z" /></svg>
+      </button>
+      <button class="icon-btn" id="btn-rot-r" aria-label="Girar mira (horário, ajuste fino)" title="Ajuste fino da mira">
+        <svg viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 0 6.6 4.7l-1.9.6A5 5 0 1 1 12 7v3l4.5-4L12 2z" /></svg>
+      </button>
+      <button class="icon-btn" id="btn-help" aria-label="Como jogar" title="Como jogar">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 16h-2v-2h2zm2.1-7.7-.9.9c-.8.8-1.2 1.4-1.2 2.8h-2v-.5c0-1.1.4-2.1 1.2-2.8l1.2-1.3A1.9 1.9 0 0 0 12 6.2 2 2 0 0 0 10 8H8a4 4 0 1 1 7.1 2.3z" /></svg>
+      </button>
+      <button class="icon-btn" id="btn-pause" aria-label="Pausar" title="Pausar">
+        <svg viewBox="0 0 24 24"><path d="M7 4h4v16H7zm6 0h4v16h-4z" /></svg>
+      </button>
+    </aside>
+  </main>
+
+  <!-- Menu inicial -->
+  <section class="overlay show" id="menu">
+    <div class="menu-box">
+      <div class="menu-top"><button id="btn-back-catalog" class="back-link">← Jogos</button></div>
+    <h1>Sinuca <span>8 Bolas</span></h1>
+      <div class="modes">
+        <div class="mode-card">
+          <h2>1 jogador vs IA</h2>
+          <label>Seu nome <input id="in-name" maxlength="14" placeholder="Você" /></label>
+          <div class="seg" id="diff" role="radiogroup" aria-label="Dificuldade">
+            <button data-d="easy" role="radio">Fácil</button>
+            <button data-d="medium" role="radio">Médio</button>
+            <button data-d="hard" role="radio">Difícil</button>
+          </div>
+          <button class="primary" id="btn-play-ai">Jogar contra a IA</button>
+        </div>
+        <div class="mode-card">
+          <h2>2 jogadores locais</h2>
+          <label>Jogador 1 <input id="in-p1" maxlength="14" placeholder="Jogador 1" /></label>
+          <label>Jogador 2 <input id="in-p2" maxlength="14" placeholder="Jogador 2" /></label>
+          <div class="cue-picks"><button id="btn-cue-p1" class="cue-pick" style="--pc:#ff6b4a"></button><button id="btn-cue-p2" class="cue-pick" style="--pc:#3d8bff"></button></div>
+          <button class="primary" id="btn-play-local">Jogar no mesmo aparelho</button>
+        </div>
+      </div>
+      <div class="menu-links">
+        <button id="btn-menu-help">Como jogar</button>
+        <button id="btn-menu-cues">Tacos e mesa</button>
+        <button id="btn-menu-settings">Configurações</button>
+      </div>
+      <div id="menu-stats"></div>
+    </div>
+  </section>
+
+  <section class="overlay" id="pause">
+    <div class="dialog">
+      <h2>Pausado</h2>
+      <p id="pause-mode"></p>
+      <button class="primary" id="btn-resume">Continuar</button>
+      <button id="btn-restart">Reiniciar partida</button>
+      <button id="btn-pause-help">Como jogar</button>
+      <button id="btn-pause-cues">Tacos e mesa</button>
+      <button id="btn-pause-settings">Configurações</button>
+      <button id="btn-to-menu">Voltar ao menu</button>
+    </div>
+  </section>
+
+  <section class="overlay" id="over">
+    <div class="dialog">
+      <h2 id="over-title"></h2>
+      <p id="over-reason"></p>
+      <button class="primary" id="btn-rematch">Revanche</button>
+      <button id="btn-over-new">Nova partida</button><button id="btn-over-menu">Voltar aos jogos</button>
+    </div>
+  </section>
+
+  <section class="overlay" id="help">
+    <div class="dialog wide">
+      <h2>Como jogar</h2>
+      <div class="help-body">
+        <h3>Controles</h3>
+        <ul>
+          <li><b>Mirar pelo taco:</b> toque atrás da branca e arraste para girar o taco em volta dela. Se pegar no próprio taco, puxe para trás para dar força e solte para tacar (voltar até a branca cancela).</li>
+          <li><b>Mirar pela frente:</b> tocar à frente da branca aponta direto para aquele ponto. Os botões ↺ ↻ fazem ajuste fino.</li>
+          <li><b>Tacar pela lateral:</b> puxe o taco da lateral para baixo — quanto mais puxar, mais forte — e solte para dar a tacada. Para desistir, volte o taco até o topo antes de soltar.</li>
+          <li><b>Efeito:</b> o botão da bola branca (à direita) escolhe onde o taco bate: em cima a branca segue a bola atingida, embaixo ela volta, nos lados ela muda o ângulo ao bater na tabela. O efeito volta ao centro depois de cada tacada.</li>
+          <li><b>Bola na mão:</b> arraste a branca (círculo tracejado). Vermelho = posição inválida.</li>
+          <li><b>Bola 8:</b> quando estiver na 8, toque na caçapa desejada para cantá-la antes de tacar.</li>
+          <li><b>Teclado:</b> ← → mira (Shift = fino), ↓ ↑ puxa/solta o taco, Espaço taca com a força marcada, P pausar.</li>
+          <li>A linha mostra só o trajeto reto da branca até o primeiro contato. Se a linha ficar vermelha e aparecer um X na bola, acertá-la primeiro seria falta.</li>
+          <li><b>Placar:</b> ao lado do seu nome ficam as bolas que você ainda precisa derrubar (as apagadas já caíram). À direita da mesa, as bolas encaçapadas descem pela canaleta na ordem em que caíram.</li>
+          <li><b>Tempo:</b> o anel em volta da foto mostra de quem é a vez e quanto tempo resta para tacar (padrão 45 s, muda em Configurações). Estourar o tempo é falta.</li>
+        </ul>
+        <h3>Regras (variante baseada na WPA, simplificada)</h3>
+        <ul>
+          <li>Abertura atrás da linha de cabeceira. Abertura legal: encaçapar uma bola ou levar 4+ bolas à tabela; caso contrário é falta.</li>
+          <li>A mesa fica aberta após a abertura. A primeira bola encaçapada de forma legal define o grupo (lisas 1–7 ou listradas 9–15).</li>
+          <li>Tacada legal: tocar primeiro uma bola do seu grupo e, depois, encaçapar alguma bola ou fazer qualquer bola tocar a tabela.</li>
+          <li>Falta (branca encaçapada, primeira bola errada, nenhuma bola tocada ou nenhuma tabela) = <b>bola na mão em qualquer lugar</b> para o adversário.</li>
+          <li>Você continua jogando enquanto encaçapar bolas do seu grupo.</li>
+          <li>Vence quem encaçapar a 8 na caçapa cantada após terminar o grupo. Perde quem encaçapa a 8 antes da hora, com falta ou na caçapa errada.</li>
+        </ul>
+        <h3>Simplificações desta versão</h3>
+        <ul>
+          <li>Só a bola 8 precisa ser cantada; as demais valem em qualquer caçapa.</li>
+          <li>Abertura ilegal vira falta comum (sem opção de rearrumar). 8 na abertura volta ao ponto do pé.</li>
+          <li>Efeito simplificado: sem massé (curva) e sem desvio da branca ao bater fora do centro. A IA sempre bate no centro.</li>
+        </ul>
+      </div>
+      <button class="primary" id="btn-help-close">Fechar</button>
+    </div>
+  </section>
+
+  <section class="overlay" id="settings">
+    <div class="dialog">
+      <h2>Configurações</h2>
+      <label class="row"><input type="checkbox" id="opt-sound" /> Som (liga/desliga tudo)</label>
+      <label class="row"><input type="checkbox" id="opt-music" /> Música de fundo</label>
+      <label class="row" for="opt-music-vol">Volume da música
+        <input type="range" id="opt-music-vol" min="0" max="100" step="5" />
+      </label>
+      <label class="row" for="opt-time">Tempo por tacada
+        <select id="opt-time">
+          <option value="30">30 s</option>
+          <option value="45">45 s</option>
+          <option value="60">60 s</option>
+          <option value="0">Sem limite</option>
+        </select>
+      </label>
+      <button id="btn-reset-stats">Apagar estatísticas locais</button>
+      <button class="primary" id="btn-settings-close">Fechar</button>
+    </div>
+  </section>
+
+  <section class="overlay" id="confirm">
+    <div class="dialog">
+      <p id="confirm-msg"></p>
+      <div class="row-btns">
+        <button id="btn-confirm-no">Cancelar</button>
+        <button class="primary" id="btn-confirm-yes">Confirmar</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="overlay" id="spin">
+    <div class="dialog spin-dialog">
+      <h2>Efeito</h2>
+      <p>Toque ou arraste onde o taco vai bater na branca.</p>
+      <div id="spin-ball" role="slider" aria-label="Ponto de batida na branca" tabindex="0">
+        <span class="spin-cross"></span>
+        <span class="spin-dot" id="spin-dot"></span>
+      </div>
+      <p id="spin-desc" class="spin-desc"></p>
+      <div class="row-btns">
+        <button id="btn-spin-center">Centro</button>
+        <button class="primary" id="btn-spin-ok">Pronto</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="overlay" id="cues">
+    <div class="dialog wide">
+      <h2>Personalizar</h2>
+      <div class="sec-tabs" role="tablist"><button id="sec-cues" class="on" role="tab">Tacos</button><button id="sec-table" role="tab">Mesa</button><button id="sec-trail" role="tab">Rastro</button></div>
+      <div id="pane-cues">
+        <p>Cada jogador tem o seu taco. Todos jogam igual; muda só o visual.</p>
+        <div id="cue-tabs" class="cue-tabs"></div>
+        <div id="cue-list"></div>
+      </div>
+      <div id="pane-table" hidden>
+        <p>A mesa muda só o visual: regras e física são as mesmas. Mesas premium têm efeito próprio quando a bola cai.</p>
+        <div id="table-list"></div>
+      </div>
+      <div id="pane-trail" hidden>
+        <div id="fx-toggle-host" class="fx-toggle-box"></div>
+        <p>O rastro sai da bola branca enquanto ela anda. Muda só o visual.</p>
+        <div id="trail-list"></div>
+      </div>
+      <button class="primary" id="btn-cues-close">Fechar</button>
+    </div>
+  </section>
+
+  <section class="overlay" id="rotate">
+    <div class="dialog">
+      <h2>Gire o aparelho</h2>
+      <p>A mesa fica bem maior na horizontal.</p>
+      <button id="btn-rotate-ok">Jogar assim mesmo</button>
+    </div>
+  </section>
+</div>

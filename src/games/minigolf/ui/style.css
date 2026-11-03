@@ -1,0 +1,178 @@
+/* Minigolfe — madeira, gramado e pôr do sol. Tudo escopado em .mg-root. */
+.mg-root {
+  --mg-wood: #8a4b22;
+  --mg-wood-hi: #c07a42;
+  --mg-panel: rgba(22, 30, 40, 0.86);
+  --mg-line: rgba(255, 255, 255, 0.16);
+  --mg-text: #fffaf0;
+  --mg-muted: #d6e2ea;
+  --mg-go: #2fbf71;
+  --mg-sun: #ffc93c;
+  --mg-coral: #ff6b4a;
+  --mg-hud-h: clamp(46px, 13vh, 70px);
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  color: var(--mg-text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(180deg, #ff9a5a 0%, #ff7661 30%, #3c6e9a 100%);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  color-scheme: dark;
+  --turn: transparent;
+}
+/* fundo na cor de quem joga (padrão da plataforma) */
+.mg-root::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-color: var(--turn);
+  opacity: 0.38;
+  transition: background-color 0.45s ease;
+  z-index: 0;
+}
+.mg-hud, .mg-stage { position: relative; z-index: 1; }
+.mg-hud { z-index: 3; }
+#mg-cv { box-shadow: 0 0 0 4px var(--turn), 0 10px 24px rgba(0, 0, 0, 0.35); transition: box-shadow 0.45s ease; }
+.mg-root button { font: inherit; color: var(--mg-text); cursor: pointer; }
+.mg-root button:disabled { opacity: 0.45; cursor: not-allowed; }
+.mg-root :focus-visible { outline: 3px solid var(--mg-sun); outline-offset: 2px; }
+.mg-hud { height: var(--mg-hud-h); flex-shrink: 0; display: flex; align-items: center; gap: clamp(4px, 1vw, 10px); padding: 4px clamp(6px, 1.2vw, 14px); }
+.mg-icon, .mg-root .icon-btn {
+  width: min(52px, calc(var(--mg-hud-h) - 8px));
+  height: min(52px, calc(var(--mg-hud-h) - 8px));
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(#2c3a48, #151d26);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  flex-shrink: 0;
+}
+.mg-icon svg, .mg-root .icon-btn svg { width: 52%; height: 52%; fill: #fff; }
+.mg-title { flex: 1 1 auto; min-width: 0; height: 100%; padding: 2px 14px; border-radius: 16px; background: var(--mg-panel); border: 1px solid var(--mg-line); display: flex; flex-direction: column; justify-content: center; }
+.mg-t1 { display: flex; align-items: center; gap: 6px; font-size: clamp(13px, 3.4vh, 18px); }
+.mg-flag { width: 10px; height: 12px; background: linear-gradient(90deg, #fff 2px, #e8343a 2px); clip-path: polygon(0 0, 100% 30%, 20% 60%, 20% 100%, 0 100%); }
+.mg-t2 { font-size: clamp(10px, 2.7vh, 13px); color: var(--mg-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mg-players { display: flex; gap: 6px; }
+.mg-pl { display: flex; align-items: center; gap: 6px; height: calc(var(--mg-hud-h) - 12px); padding: 0 10px; border-radius: 999px; background: var(--mg-panel); border: 2px solid transparent; font-size: clamp(11px, 2.8vh, 14px); opacity: 0.55; white-space: nowrap; }
+.mg-pl.on { opacity: 1; border-color: var(--c); box-shadow: 0 0 14px var(--c); }
+.mg-pl i { background: var(--c) !important; }
+.mg-pl i { width: 12px; height: 12px; border-radius: 50%; border: 3px solid var(--c); background: #fff; }
+.mg-pl em { font-style: normal; color: var(--mg-muted); font-variant-numeric: tabular-nums; }
+.mg-chip { height: calc(var(--mg-hud-h) - 12px); min-width: 56px; padding: 0 12px; border-radius: 999px; background: var(--mg-panel); border: 1px solid var(--mg-line); display: flex; align-items: center; gap: 6px; font-size: clamp(11px, 2.8vh, 14px); }
+.mg-chip b { font-size: clamp(15px, 4vh, 20px); font-variant-numeric: tabular-nums; }
+.mg-stage { flex: 1; min-height: 0; display: flex; gap: clamp(4px, 1vw, 12px); padding: 2px clamp(6px, 1vw, 14px) 8px; }
+.mg-left, .mg-right { width: clamp(64px, 11vw, 120px); flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+.mg-right { justify-content: center; }
+.mg-canvas-wrap { position: relative; flex: 1; min-width: 0; display: grid; place-items: center; }
+#mg-cv { display: block; border-radius: 14px; touch-action: none; }
+.mg-power-label { text-align: center; padding: 4px 10px; border-radius: 12px; background: var(--mg-panel); border: 1px solid var(--mg-line); font-size: clamp(11px, 2.8vh, 14px); line-height: 1.2; }
+.mg-power-label b { display: block; font-size: clamp(15px, 4vh, 21px); font-variant-numeric: tabular-nums; }
+.mg-power { --heat: #2b3946; position: relative; flex: 1; max-height: 62vh; min-height: 110px; width: clamp(36px, 5vw, 48px); border-radius: 14px; background: linear-gradient(90deg, #0b1016, #18212b 50%, #0b1016); border: 3px solid #2b3946; box-shadow: inset 0 0 10px #000; overflow: hidden; cursor: grab; touch-action: none; transition: border-color 0.12s, box-shadow 0.12s; }
+.mg-power.pulling { cursor: grabbing; border-color: var(--heat); box-shadow: 0 0 14px var(--heat), inset 0 0 10px #000; }
+.mg-power.hot { animation: mg-hot 0.35s ease-in-out infinite alternate; }
+@keyframes mg-hot { to { box-shadow: 0 0 26px var(--heat), inset 0 0 10px #000; } }
+.mg-power.locked { opacity: 0.45; cursor: not-allowed; }
+.mg-power.fire::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 50% 4%, rgba(255, 255, 255, 0.9), transparent 55%); animation: mg-fire 0.35s ease-out forwards; }
+@keyframes mg-fire { from { opacity: 1; } to { opacity: 0; } }
+.mg-power-fill { position: absolute; left: 3px; width: 5px; top: 0; height: 0; border-radius: 0 0 4px 4px; background: linear-gradient(to bottom, #1fbf5b 0%, #b7e04a 40%, #ffd23a 65%, #ff6b3a 85%, #e8343a 100%); background-size: 100% var(--full, 200px); background-position: top; }
+.mg-ticks { position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, transparent 0 calc(10% - 1px), rgba(255, 255, 255, 0.12) calc(10% - 1px) 10%); }
+.mg-pcue { --pull: 0px; position: absolute; left: 50%; top: 2px; width: 30px; height: 100%; transform: translate(-50%, var(--pull)); pointer-events: none; filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.6)); }
+.mg-pcue.snap { transition: transform 0.09s cubic-bezier(0.6, 0, 1, 0.5); }
+.mg-pcue canvas { width: 100%; height: 100%; display: block; }
+.mg-phint { font-size: clamp(10px, 2.5vh, 12px); color: var(--mg-muted); text-align: center; }
+@media (prefers-reduced-motion: reduce) { .mg-power.hot { animation: none; } .mg-power.fire::after { animation: none; opacity: 0; } }
+.mg-fine { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 6px; border-radius: 16px; background: var(--mg-panel); border: 1px solid var(--mg-line); font-size: 11px; color: var(--mg-muted); text-align: center; }
+.mg-shoot { width: 100%; min-height: 54px; border-radius: 16px; border: 0; background: linear-gradient(#45d987, #1f9c55); font-weight: 900; font-size: clamp(14px, 3.6vh, 19px); letter-spacing: 0.04em; box-shadow: 0 5px 0 #146b3a; text-transform: uppercase; }
+.mg-shoot:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 #146b3a; }
+.mg-toast { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); max-width: 92%; padding: 6px 14px; border-radius: 12px; background: rgba(10, 16, 22, 0.88); color: #fff; font-size: clamp(11px, 2.8vh, 14px); text-align: center; pointer-events: none; opacity: 0; transition: opacity 0.25s; }
+.mg-toast.show { opacity: 1; }
+.mg-toast.bad { color: #ffd0c8; }
+
+.mg-overlay { position: fixed; inset: 0; z-index: 30; display: none; place-items: center; padding: 12px; overflow: auto; background: rgba(10, 14, 20, 0.62); backdrop-filter: blur(3px); }
+.mg-overlay.show { display: grid; }
+#mg-confirm { z-index: 40; }
+#mg-helpbox, #mg-levels { z-index: 35; }
+.mg-box { width: min(380px, 94vw); max-height: 94vh; overflow: auto; display: flex; flex-direction: column; gap: 10px; padding: clamp(12px, 3vh, 22px); border-radius: 20px; background: linear-gradient(#22303d, #141c25); border: 1px solid var(--mg-line); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55); }
+.mg-wide { width: min(760px, 96vw); }
+.mg-box h2 { margin: 0; font-size: clamp(17px, 4.2vh, 22px); }
+.mg-box p { margin: 0; color: var(--mg-muted); }
+.mg-box button { min-height: 42px; border-radius: 12px; border: 1px solid var(--mg-line); background: #2b3946; padding: 8px 14px; }
+.mg-box .mg-primary { background: linear-gradient(#45d987, #1f9c55); border-color: transparent; font-weight: 800; }
+.mg-row-btns { display: flex; gap: 10px; }
+.mg-row-btns button { flex: 1; }
+.mg-menu-box { width: min(760px, 96vw); }
+.mg-menu-top { display: flex; }
+.mg-link { min-height: 32px !important; background: transparent !important; border: 0 !important; color: var(--mg-muted) !important; padding: 2px 6px !important; }
+.mg-menu-box h1 { margin: 0; text-align: center; font-size: clamp(22px, 7vh, 38px); }
+.mg-menu-box h1 span { display: block; font-size: 0.45em; color: var(--mg-sun); letter-spacing: 0.08em; text-transform: uppercase; }
+.mg-modes { display: flex; flex-wrap: wrap; gap: 12px; }
+.mg-card { flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: rgba(0, 0, 0, 0.22); border: 1px solid var(--mg-line); }
+.mg-card h2 { font-size: 18px; }
+.mg-card label { display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: var(--mg-muted); }
+.mg-card input { font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--mg-line); background: #0d141b; color: var(--mg-text); user-select: text; -webkit-user-select: text; }
+.mg-best, .mg-note { font-size: 12px; }
+.mg-level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: 8px; }
+.mg-level-grid button { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; min-height: 64px; }
+.mg-level-grid small { color: var(--mg-muted); }
+.mg-table-wrap { overflow-x: auto; }
+.mg-table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 13px; }
+.mg-table th, .mg-table td { padding: 5px 6px; text-align: center; border-bottom: 1px solid var(--mg-line); white-space: nowrap; }
+.mg-table th:first-child, .mg-table td:first-child { text-align: left; }
+.mg-table .cur { background: rgba(255, 201, 60, 0.16); }
+.mg-table .tot { font-weight: 800; }
+.mg-table .under { color: #8dffb5; }
+.mg-table .over { color: #ffb4a6; }
+.mg-help { margin: 0; padding-left: 18px; line-height: 1.5; font-size: 14px; color: #e6edf2; }
+@media (max-height: 420px) { .mg-box { gap: 6px; padding: 10px 14px; } .mg-box button { min-height: 36px; padding: 5px 10px; } .mg-card { padding: 8px 10px; gap: 5px; } }
+@media (max-width: 700px) { .mg-chip span { display: none; } .mg-pl em { display: none; } }
+@media (prefers-reduced-motion: reduce) { .mg-toast { transition: none; } }
+.mg-putter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 10px; }
+.mg-putter { display: flex; flex-direction: column; gap: 6px; padding: 10px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--mg-line); }
+.mg-putter.sel { border-color: var(--mg-sun); box-shadow: 0 0 0 2px rgba(255, 201, 60, 0.35); }
+.mg-putter canvas { width: 100%; height: 56px; border-radius: 8px; background: #3fae49; }
+.mg-putter-head { display: flex; align-items: center; gap: 8px; }
+.mg-tier { font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 999px; }
+.mg-tier.free { background: #1f9c55; }
+.mg-tier.premium { background: linear-gradient(90deg, #8a6d12, #ffc93c); color: #1a1208; }
+.mg-putter small { color: var(--mg-muted); }
+#mg-putters { z-index: 36; }
+
+/* Tacos por jogador + personalização */
+.mg-putter-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 10px; }
+.mg-ptab { flex: 1 1 180px; min-height: 42px; border-radius: 12px; border: 1px solid var(--mg-line); background: rgba(0, 0, 0, 0.3); color: var(--mg-text, #fff); font-weight: 700; display: flex; align-items: center; gap: 8px; padding: 6px 12px; }
+.mg-ptab span { width: 12px; height: 12px; border-radius: 50%; background: var(--pc); flex: none; }
+.mg-ptab.on { border-color: var(--pc); box-shadow: 0 0 0 2px color-mix(in srgb, var(--pc) 45%, transparent); background: color-mix(in srgb, var(--pc) 18%, rgba(0, 0, 0, 0.3)); }
+.mg-putter-custom { border: 1px solid var(--mg-line); border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; background: rgba(0, 0, 0, 0.22); display: grid; gap: 8px; }
+.mg-putter-custom h3 { margin: 0; font-size: 15px; }
+.mg-crow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.mg-crow > span { width: 58px; font-size: 13px; color: var(--mg-muted); }
+.mg-crow > div { display: flex; gap: 6px; flex-wrap: wrap; }
+#mg-putter-custom .mg-sw { width: 30px; height: 30px; min-height: 0; padding: 0; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.35); background: var(--c) !important; }
+#mg-putter-custom .mg-sw.on { border-color: #fff; box-shadow: 0 0 0 3px var(--mg-sun); }
+.mg-chipbtn { min-height: 30px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--mg-line); background: rgba(0, 0, 0, 0.3); color: inherit; font-weight: 700; }
+.mg-chipbtn.on { border-color: var(--mg-sun); background: rgba(255, 201, 60, 0.2); }
+.mg-putter.premium { background: linear-gradient(160deg, rgba(120, 70, 160, 0.25), rgba(0, 0, 0, 0.3)); }
+
+.mg-sec-tabs { display: flex; gap: 6px; padding: 4px; border-radius: 14px; background: rgba(0, 0, 0, 0.35); margin: 4px 0 8px; }
+.mg-sec-tabs button { flex: 1; min-height: 40px; border-radius: 10px; border: 0; background: none; color: var(--mg-muted); font-weight: 800; }
+.mg-sec-tabs button.on { background: linear-gradient(180deg, #ffd66b, #e8a92c); color: #2a1a05; }
+.mg-course canvas { aspect-ratio: 2 / 1; height: auto !important; }
+
+/* escolha do taco de cada jogador direto no cartão de 2 jogadores */
+.mg-cue-picks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.mg-cue-pick { font-size: 12px; padding: 6px 8px; border-radius: 10px; border: 1px solid var(--pc); background: rgba(0, 0, 0, 0.25); color: inherit; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mg-cue-pick b { color: var(--pc); }
+
+.fx-toggle-box { margin: 4px 0 8px; padding: 8px 10px; border-radius: 10px; background: rgba(0, 0, 0, 0.25); }
+.fx-toggle { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.fx-toggle input { width: 20px; height: 20px; accent-color: #ff6b4a; }
+.fx-toggle-note { display: block; opacity: 0.75; margin-top: 2px; }

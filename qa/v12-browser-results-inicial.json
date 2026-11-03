@@ -1,0 +1,3368 @@
+{
+  "results": [
+    {
+      "route": "#%",
+      "status": "passed"
+    },
+    {
+      "route": "#unknown",
+      "status": "passed"
+    },
+    {
+      "route": "home",
+      "status": "passed"
+    },
+    {
+      "route": "air-hockey",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed"
+    },
+    {
+      "route": "air-hockey",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed"
+    },
+    {
+      "route": "air-hockey",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed"
+    },
+    {
+      "route": "air-hockey",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed"
+    },
+    {
+      "route": "duelo-rastros",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed"
+    },
+    {
+      "route": "duelo-rastros",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed"
+    },
+    {
+      "route": "duelo-rastros",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed"
+    },
+    {
+      "route": "duelo-rastros",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed"
+    },
+    {
+      "route": "empilha",
+      "mode": "solo",
+      "difficulty": null,
+      "status": "passed"
+    },
+    {
+      "route": "empilha",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed"
+    },
+    {
+      "route": "empilha",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed"
+    },
+    {
+      "route": "empilha",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed"
+    },
+    {
+      "route": "empilha",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed"
+    },
+    {
+      "route": "lig-4",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed"
+    },
+    {
+      "route": "lig-4",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed"
+    },
+    {
+      "route": "lig-4",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed"
+    },
+    {
+      "route": "lig-4",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed"
+    },
+    {
+      "route": "pong",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed"
+    },
+    {
+      "route": "pong",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed"
+    },
+    {
+      "route": "pong",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed"
+    },
+    {
+      "route": "pong",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed"
+    },
+    {
+      "route": "blocos",
+      "mode": "solo",
+      "difficulty": null,
+      "status": "passed"
+    },
+    {
+      "route": "blocos",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed"
+    },
+    {
+      "route": "sumo-neon",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed"
+    },
+    {
+      "route": "sumo-neon",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed"
+    },
+    {
+      "route": "sumo-neon",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed"
+    },
+    {
+      "route": "sumo-neon",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed"
+    },
+    {
+      "route": "cabo-de-guerra",
+      "mode": "ai",
+      "difficulty": "easy",
+      "status": "passed"
+    },
+    {
+      "route": "cabo-de-guerra",
+      "mode": "ai",
+      "difficulty": "medium",
+      "status": "passed"
+    },
+    {
+      "route": "cabo-de-guerra",
+      "mode": "ai",
+      "difficulty": "hard",
+      "status": "passed"
+    },
+    {
+      "route": "cabo-de-guerra",
+      "mode": "local",
+      "difficulty": null,
+      "status": "passed"
+    },
+    {
+      "route": "sinuca",
+      "mode": "local",
+      "status": "mounted and started"
+    },
+    {
+      "route": "minigolfe",
+      "mode": "local",
+      "status": "mounted and started"
+    }
+  ],
+  "errors": [
+    {
+      "timestamp": 1793648977498.625,
+      "exceptionDetails": {
+        "exceptionId": 1,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "8",
+              "url": "http://127.0.0.1:4182/assets/index-Dw7Q_AX8.js",
+              "lineNumber": 14,
+              "columnNumber": 1369
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "8",
+              "url": "http://127.0.0.1:4182/assets/index-Dw7Q_AX8.js",
+              "lineNumber": 14,
+              "columnNumber": 8049
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.1",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648977500.31,
+      "exceptionDetails": {
+        "exceptionId": 2,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "8",
+              "url": "http://127.0.0.1:4182/assets/index-Dw7Q_AX8.js",
+              "lineNumber": 14,
+              "columnNumber": 1369
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "8",
+              "url": "http://127.0.0.1:4182/assets/index-Dw7Q_AX8.js",
+              "lineNumber": 14,
+              "columnNumber": 8049
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.2",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648977500.924,
+      "exceptionDetails": {
+        "exceptionId": 3,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "8",
+              "url": "http://127.0.0.1:4182/assets/index-Dw7Q_AX8.js",
+              "lineNumber": 14,
+              "columnNumber": 1369
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "8",
+              "url": "http://127.0.0.1:4182/assets/index-Dw7Q_AX8.js",
+              "lineNumber": 14,
+              "columnNumber": 8049
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.3",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648979751.225,
+      "exceptionDetails": {
+        "exceptionId": 4,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "25",
+              "url": "http://127.0.0.1:4182/assets/index-CFjY8DTb.js",
+              "lineNumber": 16,
+              "columnNumber": 1576
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "25",
+              "url": "http://127.0.0.1:4182/assets/index-CFjY8DTb.js",
+              "lineNumber": 16,
+              "columnNumber": 8893
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.4",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648979752.103,
+      "exceptionDetails": {
+        "exceptionId": 5,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "25",
+              "url": "http://127.0.0.1:4182/assets/index-CFjY8DTb.js",
+              "lineNumber": 16,
+              "columnNumber": 1576
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "25",
+              "url": "http://127.0.0.1:4182/assets/index-CFjY8DTb.js",
+              "lineNumber": 16,
+              "columnNumber": 8893
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.5",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648979752.743,
+      "exceptionDetails": {
+        "exceptionId": 6,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "25",
+              "url": "http://127.0.0.1:4182/assets/index-CFjY8DTb.js",
+              "lineNumber": 16,
+              "columnNumber": 1576
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "25",
+              "url": "http://127.0.0.1:4182/assets/index-CFjY8DTb.js",
+              "lineNumber": 16,
+              "columnNumber": 8893
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.6",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648982918.474,
+      "exceptionDetails": {
+        "exceptionId": 7,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "28",
+              "url": "http://127.0.0.1:4182/assets/index-DGeW43lC.js",
+              "lineNumber": 51,
+              "columnNumber": 3527
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "28",
+              "url": "http://127.0.0.1:4182/assets/index-DGeW43lC.js",
+              "lineNumber": 51,
+              "columnNumber": 16673
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.7",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648982919.144,
+      "exceptionDetails": {
+        "exceptionId": 8,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "28",
+              "url": "http://127.0.0.1:4182/assets/index-DGeW43lC.js",
+              "lineNumber": 51,
+              "columnNumber": 3527
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "28",
+              "url": "http://127.0.0.1:4182/assets/index-DGeW43lC.js",
+              "lineNumber": 51,
+              "columnNumber": 16673
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.8",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648982919.725,
+      "exceptionDetails": {
+        "exceptionId": 9,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "28",
+              "url": "http://127.0.0.1:4182/assets/index-DGeW43lC.js",
+              "lineNumber": 51,
+              "columnNumber": 3527
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "28",
+              "url": "http://127.0.0.1:4182/assets/index-DGeW43lC.js",
+              "lineNumber": 51,
+              "columnNumber": 16673
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.9",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648982920.357,
+      "exceptionDetails": {
+        "exceptionId": 10,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "28",
+              "url": "http://127.0.0.1:4182/assets/index-DGeW43lC.js",
+              "lineNumber": 51,
+              "columnNumber": 3527
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "28",
+              "url": "http://127.0.0.1:4182/assets/index-DGeW43lC.js",
+              "lineNumber": 51,
+              "columnNumber": 16673
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.10",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648984820.636,
+      "exceptionDetails": {
+        "exceptionId": 11,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "30",
+              "url": "http://127.0.0.1:4182/assets/index-DtvFvBGO.js",
+              "lineNumber": 12,
+              "columnNumber": 1444
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "30",
+              "url": "http://127.0.0.1:4182/assets/index-DtvFvBGO.js",
+              "lineNumber": 12,
+              "columnNumber": 8130
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.11",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648984821.153,
+      "exceptionDetails": {
+        "exceptionId": 12,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "30",
+              "url": "http://127.0.0.1:4182/assets/index-DtvFvBGO.js",
+              "lineNumber": 12,
+              "columnNumber": 1444
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "30",
+              "url": "http://127.0.0.1:4182/assets/index-DtvFvBGO.js",
+              "lineNumber": 12,
+              "columnNumber": 8130
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.12",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648984821.558,
+      "exceptionDetails": {
+        "exceptionId": 13,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "30",
+              "url": "http://127.0.0.1:4182/assets/index-DtvFvBGO.js",
+              "lineNumber": 12,
+              "columnNumber": 1444
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "30",
+              "url": "http://127.0.0.1:4182/assets/index-DtvFvBGO.js",
+              "lineNumber": 12,
+              "columnNumber": 8130
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.13",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648986731.092,
+      "exceptionDetails": {
+        "exceptionId": 14,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "31",
+              "url": "http://127.0.0.1:4182/assets/index-Dk4df7oj.js",
+              "lineNumber": 14,
+              "columnNumber": 1405
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "31",
+              "url": "http://127.0.0.1:4182/assets/index-Dk4df7oj.js",
+              "lineNumber": 14,
+              "columnNumber": 7436
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.14",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648986732.026,
+      "exceptionDetails": {
+        "exceptionId": 15,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "31",
+              "url": "http://127.0.0.1:4182/assets/index-Dk4df7oj.js",
+              "lineNumber": 14,
+              "columnNumber": 1405
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "31",
+              "url": "http://127.0.0.1:4182/assets/index-Dk4df7oj.js",
+              "lineNumber": 14,
+              "columnNumber": 7436
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.15",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648986732.801,
+      "exceptionDetails": {
+        "exceptionId": 16,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "31",
+              "url": "http://127.0.0.1:4182/assets/index-Dk4df7oj.js",
+              "lineNumber": 14,
+              "columnNumber": 1405
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "31",
+              "url": "http://127.0.0.1:4182/assets/index-Dk4df7oj.js",
+              "lineNumber": 14,
+              "columnNumber": 7436
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.16",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648988321.544,
+      "exceptionDetails": {
+        "exceptionId": 17,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "32",
+              "url": "http://127.0.0.1:4182/assets/index-BV6HceK3.js",
+              "lineNumber": 24,
+              "columnNumber": 2498
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "32",
+              "url": "http://127.0.0.1:4182/assets/index-BV6HceK3.js",
+              "lineNumber": 24,
+              "columnNumber": 14915
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.17",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648990937.882,
+      "exceptionDetails": {
+        "exceptionId": 18,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "33",
+              "url": "http://127.0.0.1:4182/assets/index-aCipDY5a.js",
+              "lineNumber": 14,
+              "columnNumber": 1461
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "33",
+              "url": "http://127.0.0.1:4182/assets/index-aCipDY5a.js",
+              "lineNumber": 14,
+              "columnNumber": 11537
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.18",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648990938.633,
+      "exceptionDetails": {
+        "exceptionId": 19,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "33",
+              "url": "http://127.0.0.1:4182/assets/index-aCipDY5a.js",
+              "lineNumber": 14,
+              "columnNumber": 1461
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "33",
+              "url": "http://127.0.0.1:4182/assets/index-aCipDY5a.js",
+              "lineNumber": 14,
+              "columnNumber": 11537
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.19",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648990939.33,
+      "exceptionDetails": {
+        "exceptionId": 20,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "33",
+              "url": "http://127.0.0.1:4182/assets/index-aCipDY5a.js",
+              "lineNumber": 14,
+              "columnNumber": 1461
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "33",
+              "url": "http://127.0.0.1:4182/assets/index-aCipDY5a.js",
+              "lineNumber": 14,
+              "columnNumber": 11537
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.20",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648992653.025,
+      "exceptionDetails": {
+        "exceptionId": 21,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "34",
+              "url": "http://127.0.0.1:4182/assets/index-DiAL83Hz.js",
+              "lineNumber": 16,
+              "columnNumber": 1561
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "34",
+              "url": "http://127.0.0.1:4182/assets/index-DiAL83Hz.js",
+              "lineNumber": 16,
+              "columnNumber": 9661
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.21",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648992654.186,
+      "exceptionDetails": {
+        "exceptionId": 22,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "34",
+              "url": "http://127.0.0.1:4182/assets/index-DiAL83Hz.js",
+              "lineNumber": 16,
+              "columnNumber": 1561
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "34",
+              "url": "http://127.0.0.1:4182/assets/index-DiAL83Hz.js",
+              "lineNumber": 16,
+              "columnNumber": 9661
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.22",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "timestamp": 1793648992654.802,
+      "exceptionDetails": {
+        "exceptionId": 23,
+        "text": "Uncaught (in promise)",
+        "lineNumber": 0,
+        "columnNumber": 670,
+        "scriptId": "10",
+        "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 0,
+              "columnNumber": 670
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "10",
+              "url": "http://127.0.0.1:4182/assets/shell-BWH6_GIB.js",
+              "lineNumber": 106,
+              "columnNumber": 2804
+            },
+            {
+              "functionName": "dispose",
+              "scriptId": "34",
+              "url": "http://127.0.0.1:4182/assets/index-DiAL83Hz.js",
+              "lineNumber": 16,
+              "columnNumber": 1561
+            },
+            {
+              "functionName": "destroy",
+              "scriptId": "34",
+              "url": "http://127.0.0.1:4182/assets/index-DiAL83Hz.js",
+              "lineNumber": 16,
+              "columnNumber": 9661
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 63930
+            },
+            {
+              "functionName": "Zo",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 22313
+            },
+            {
+              "functionName": "Dn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 24007
+            },
+            {
+              "functionName": "tn",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 41386
+            },
+            {
+              "functionName": "gp",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40946
+            },
+            {
+              "functionName": "jt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 40007
+            },
+            {
+              "functionName": "ya",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 36683
+            },
+            {
+              "functionName": "yt",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 38,
+              "columnNumber": 3257
+            },
+            {
+              "functionName": "",
+              "scriptId": "4",
+              "url": "http://127.0.0.1:4182/assets/index-ClUfjJb4.js",
+              "lineNumber": 40,
+              "columnNumber": 34083
+            }
+          ]
+        },
+        "exception": {
+          "type": "object",
+          "subtype": "error",
+          "className": "DOMException",
+          "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+          "objectId": "5358252062948941504.3.23",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "InvalidStateError: AudioContext closed before a pending resume() could complete.",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "code",
+                "type": "number",
+                "value": "11"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "value": "InvalidStateError"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "AudioContext closed before a pending resume() could complete."
+              }
+            ]
+          }
+        },
+        "executionContextId": 3
+      }
+    },
+    {
+      "harness": "Browser exceptions: 23"
+    }
+  ]
+}

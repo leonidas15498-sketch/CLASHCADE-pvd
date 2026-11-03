@@ -1,0 +1,12 @@
+node_modules/
+dist/
+dist-single/
+.npm-cache/
+.vite/
+.v13-browser-profile/
+.v12-browser-profile/
+.env
+.env.local
+.env.*.local
+supabase/.temp/
+*.log

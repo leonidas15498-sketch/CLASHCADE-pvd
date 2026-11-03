@@ -1,0 +1,159 @@
+<div class="mg-root" id="mg-root">
+  <header class="mg-hud">
+    <button class="mg-icon" id="mg-home" aria-label="Voltar ao menu do minigolfe" title="Menu">
+      <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" /></svg>
+    </button>
+    <div class="mg-title">
+      <div class="mg-t1"><span class="mg-flag" aria-hidden="true"></span><b>Minigolfe</b></div>
+      <div class="mg-t2" id="mg-hole-label"></div>
+    </div>
+    <div class="mg-players" id="mg-players"></div>
+    <div class="mg-chip"><span>Par</span><b id="mg-par">3</b></div>
+    <div class="mg-chip"><span>Tacadas</span><b id="mg-strokes">0</b></div>
+    <div id="mg-music-slot"></div>
+    <button class="mg-icon" id="mg-sound" aria-label="Efeitos sonoros" title="Efeitos sonoros"></button>
+    <button class="mg-icon" id="mg-pause" aria-label="Pausar" title="Pausar">
+      <svg viewBox="0 0 24 24"><path d="M7 4h4v16H7zm6 0h4v16h-4z" /></svg>
+    </button>
+  </header>
+
+  <main class="mg-stage">
+    <aside class="mg-left">
+      <div class="mg-power-label">Força <b id="mg-pct">0%</b></div>
+      <div id="mg-power" class="mg-power" role="slider" tabindex="0" aria-label="Taco: puxe para baixo e solte para tacar" aria-valuemin="0" aria-valuemax="100">
+        <div id="mg-power-fill" class="mg-power-fill"></div>
+        <div class="mg-ticks" aria-hidden="true"></div>
+        <div id="mg-pcue" class="mg-pcue" aria-hidden="true"><canvas id="mg-pcue-cv"></canvas></div>
+      </div>
+      <div class="mg-phint">Puxe e solte</div>
+    </aside>
+    <div class="mg-canvas-wrap" id="mg-canvas-wrap">
+      <canvas id="mg-cv" aria-label="Buraco de minigolfe"></canvas>
+      <div class="mg-toast" id="mg-toast" role="status"></div>
+    </div>
+    <aside class="mg-right">
+      <div class="mg-fine">
+        <button class="mg-icon" id="mg-rot-l" aria-label="Mira fina para a esquerda">
+          <svg viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 1-6.6 4.7l1.9.6A5 5 0 1 0 12 7v3L7.5 6 12 2z" /></svg>
+        </button>
+        <span>Mira fina</span>
+        <button class="mg-icon" id="mg-rot-r" aria-label="Mira fina para a direita">
+          <svg viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 0 6.6 4.7l-1.9.6A5 5 0 1 1 12 7v3l4.5-4L12 2z" /></svg>
+        </button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Menu -->
+  <section class="mg-overlay show" id="mg-menu">
+    <div class="mg-box mg-menu-box">
+      <div class="mg-menu-top"><button class="mg-link" id="mg-back-catalog">← Jogos</button></div>
+      <h1>Minigolfe <span>Ilha do Pôr do Sol</span></h1>
+      <div class="mg-modes">
+        <div class="mg-card">
+          <h2>1 Jogador</h2>
+          <label>Apelido <input id="mg-name1" maxlength="14" placeholder="Você" /></label>
+          <button class="mg-primary" id="mg-play-solo">Jogar 9 buracos</button>
+          <button id="mg-pick">Escolher buraco (treino)</button>
+          <p class="mg-best" id="mg-best"></p>
+        </div>
+        <div class="mg-card">
+          <h2>2 Jogadores Local</h2>
+          <label>Jogador 1 <input id="mg-p1" maxlength="14" placeholder="Jogador 1" /></label>
+          <label>Jogador 2 <input id="mg-p2" maxlength="14" placeholder="Jogador 2" /></label>
+          <div class="mg-cue-picks"><button id="mg-putter-p1" class="mg-cue-pick" style="--pc:#ff6b4a"></button><button id="mg-putter-p2" class="mg-cue-pick" style="--pc:#3d8bff"></button></div>
+          <button class="mg-primary" id="mg-play-duo">Jogar 9 buracos</button>
+          <p class="mg-note">Vez alternada no mesmo aparelho. Menor total vence.</p>
+        </div>
+      </div>
+      <div class="mg-row-btns">
+        <button id="mg-menu-putters">Tacos e campo</button>
+        <button id="mg-menu-help">Como jogar</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="mg-overlay" id="mg-levels">
+    <div class="mg-box mg-wide">
+      <h2>Escolha um buraco</h2>
+      <div class="mg-level-grid" id="mg-level-grid"></div>
+      <button id="mg-levels-close">Voltar</button>
+    </div>
+  </section>
+
+  <section class="mg-overlay" id="mg-card">
+    <div class="mg-box mg-wide">
+      <h2 id="mg-card-title">Placar</h2>
+      <div class="mg-table-wrap"><table class="mg-table" id="mg-table"></table></div>
+      <p id="mg-card-msg" class="mg-note"></p>
+      <div class="mg-row-btns">
+        <button id="mg-card-menu">Menu</button><button id="mg-card-new" hidden>Nova partida</button><button id="mg-card-exit" hidden>Voltar aos jogos</button>
+        <button class="mg-primary" id="mg-card-next">Próximo buraco</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="mg-overlay" id="mg-pausebox">
+    <div class="mg-box">
+      <h2>Pausado</h2>
+      <button class="mg-primary" id="mg-resume">Continuar</button>
+      <button id="mg-restart">Reiniciar buraco</button>
+      <button id="mg-show-card">Ver placar</button>
+      <button id="mg-pause-putters">Tacos e campo</button>
+      <button id="mg-help">Como jogar</button>
+      <button id="mg-to-menu">Voltar ao menu</button>
+    </div>
+  </section>
+
+  <section class="mg-overlay" id="mg-helpbox">
+    <div class="mg-box mg-wide">
+      <h2>Como jogar</h2>
+      <ul class="mg-help">
+        <li><b>Mirar pelo taco:</b> toque atrás da bola e arraste para girar o taco em volta dela. Se pegar no próprio taco, puxe para trás para dar força e solte para tacar (voltar até a bola cancela).</li>
+        <li><b>Mirar pela frente:</b> tocar à frente da bola aponta direto para aquele ponto. <b>Mira fina</b> faz ajustes pequenos.</li>
+        <li><b>Tacar pela lateral:</b> puxe o taco da barra da esquerda para baixo (quanto mais, mais forte) e solte. Força 50% leva a bola mais ou menos à metade da distância de 100%.</li>
+        <li>Só dá para tacar com a bola parada.</li>
+        <li>A linha pontilhada vai só até a primeira parede ou obstáculo; o caminho depois do rebote fica por sua conta.</li>
+        <li><b>Buraco:</b> bola muito rápida passa por cima do copo.</li>
+        <li><b>Fora de campo / água:</b> a bola volta ao último ponto onde parou, com +1 tacada de penalidade.</li>
+        <li><b>Limite:</b> 10 tacadas por buraco; ao chegar nele, o buraco fecha com 10.</li>
+        <li><b>2 jogadores:</b> tacadas alternadas; cada um tem sua bola (anel laranja = Jogador 1, azul = Jogador 2). Quem terminar o buraco espera o outro. Menor total nos 9 buracos vence; empate é decidido pelos 3 últimos buracos e, se continuar igual, fica empate.</li>
+        <li><b>Rampas</b> empurram a bola no sentido das setas; <b>areia</b> freia muito; <b>moinho</b> e <b>portão</b> se movem o tempo todo.</li>
+      </ul>
+      <button class="mg-primary" id="mg-help-close">Fechar</button>
+    </div>
+  </section>
+
+  <section class="mg-overlay" id="mg-putters">
+    <div class="mg-box mg-wide">
+      <h2>Personalizar</h2>
+      <div class="mg-sec-tabs" role="tablist"><button id="mg-sec-putters" class="on" role="tab">Tacos</button><button id="mg-sec-course" role="tab">Campo</button><button id="mg-sec-trail" role="tab">Rastro</button></div>
+      <div id="mg-pane-putters">
+        <p>Cada jogador tem o seu taco. Todos jogam igual; muda só o visual.</p>
+        <div class="mg-putter-tabs" id="mg-putter-tabs"></div>
+        <div class="mg-putter-custom" id="mg-putter-custom"></div>
+        <div class="mg-putter-grid" id="mg-putter-grid"></div>
+      </div>
+      <div id="mg-pane-course" hidden>
+        <p>O visual do campo muda só a aparência: buracos e física são os mesmos.</p>
+        <div class="mg-putter-grid" id="mg-course-grid"></div>
+      </div>
+      <div id="mg-pane-trail" hidden>
+        <div id="mg-fx-toggle-host" class="fx-toggle-box"></div>
+        <p>O rastro sai da bola enquanto ela anda. Muda só o visual.</p>
+        <div class="mg-putter-grid" id="mg-trail-grid"></div>
+      </div>
+      <button class="mg-primary" id="mg-putters-close">Fechar</button>
+    </div>
+  </section>
+
+  <section class="mg-overlay" id="mg-confirm">
+    <div class="mg-box">
+      <p id="mg-confirm-msg"></p>
+      <div class="mg-row-btns">
+        <button id="mg-confirm-no">Cancelar</button>
+        <button class="mg-primary" id="mg-confirm-yes">Confirmar</button>
+      </div>
+    </div>
+  </section>
+</div>

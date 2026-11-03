@@ -1,0 +1,232 @@
+import type { GameEntry } from '../games/registry';
+
+/** Capas desenhadas em SVG (sem imagens externas), uma por jogo. */
+export function Cover({ kind }: { kind: GameEntry['cover'] }) {
+  switch (kind) {
+    case 'pool':
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label="Mesa de sinuca com bolas arrumadas">
+          <defs>
+            <radialGradient id="pf" cx="50%" cy="50%" r="65%">
+              <stop offset="0" stopColor="#23a35a" />
+              <stop offset="1" stopColor="#0d5730" />
+            </radialGradient>
+            <linearGradient id="pw" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#9a5427" />
+              <stop offset="1" stopColor="#4e240c" />
+            </linearGradient>
+          </defs>
+          <rect width="320" height="180" fill="#2a160b" />
+          <rect x="18" y="20" width="284" height="140" rx="16" fill="url(#pw)" />
+          <rect x="34" y="36" width="252" height="108" rx="4" fill="url(#pf)" />
+          {[
+            [34, 36],
+            [160, 32],
+            [286, 36],
+            [34, 144],
+            [160, 148],
+            [286, 144],
+          ].map(([x, y], i) => (
+            <circle key={i} cx={x} cy={y} r="8" fill="#050505" />
+          ))}
+          {(
+            [
+              [200, 90, '#f2b705'],
+              [212, 83, '#1d4fb8'],
+              [212, 97, '#d42a2a'],
+              [224, 76, '#6b2d93'],
+              [224, 90, '#141414'],
+              [224, 104, '#f07400'],
+              [236, 69, '#14824a'],
+              [236, 83, '#7d1f22'],
+              [236, 97, '#f2b705'],
+              [236, 111, '#1d4fb8'],
+            ] as const
+          ).map(([x, y, c], i) => (
+            <g key={i}>
+              <circle cx={x} cy={y} r="7" fill={c} />
+              <circle cx={x - 2} cy={y - 2.5} r="2.2" fill="#fff" opacity=".5" />
+            </g>
+          ))}
+          <circle cx="104" cy="90" r="7" fill="#f6f1e3" />
+          <rect x="-40" y="88" width="134" height="4" rx="2" fill="#e2c48c" transform="rotate(0 104 90)" />
+          <line x1="111" y1="90" x2="192" y2="90" stroke="#fff" strokeWidth="1.5" strokeDasharray="4 4" opacity=".8" />
+        </svg>
+      );
+    case 'minigolf':
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label="Buraco de minigolfe numa ilha ao pôr do sol">
+          <defs>
+            <linearGradient id="ms" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#ff9a5a" />
+              <stop offset=".55" stopColor="#ff6f61" />
+              <stop offset="1" stopColor="#2b5f8f" />
+            </linearGradient>
+          </defs>
+          <rect width="320" height="180" fill="url(#ms)" />
+          <circle cx="250" cy="70" r="22" fill="#ffd36e" opacity=".9" />
+          <ellipse cx="160" cy="150" rx="170" ry="48" fill="#e9c98a" />
+          <path d="M40 140 Q60 96 120 104 L230 96 Q290 98 282 132 Q270 160 200 156 L90 160 Q36 162 40 140Z" fill="#8a4b22" />
+          <path d="M50 138 Q66 104 120 111 L228 103 Q278 106 272 131 Q262 152 200 149 L92 153 Q46 154 50 138Z" fill="#3fae49" />
+          <path d="M60 136 Q74 112 120 117 L226 110" stroke="#56c45d" strokeWidth="6" fill="none" opacity=".6" />
+          <ellipse cx="236" cy="124" rx="7" ry="3.5" fill="#123" />
+          <line x1="236" y1="124" x2="236" y2="84" stroke="#f4f4f4" strokeWidth="2" />
+          <path d="M236 84 L258 90 L236 97Z" fill="#e8343a" />
+          <circle cx="96" cy="136" r="5.5" fill="#fff" />
+          <g stroke="#fff" strokeWidth="2" strokeDasharray="3 5" opacity=".85">
+            <line x1="103" y1="134" x2="170" y2="126" />
+          </g>
+          <g fill="#2f7d32">
+            <path d="M24 120 q10 -40 4 -70 q-14 10 -12 40z" />
+            <path d="M28 52 q-26 -6 -34 10 q20 -2 34 -10z M28 52 q20 -16 36 -6 q-20 4 -36 6z" />
+          </g>
+        </svg>
+      );
+    case 'hockey':
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label="Mesa de air hockey">
+          <rect width="320" height="180" fill="#11233f" />
+          <rect x="24" y="22" width="272" height="136" rx="40" fill="#dfe9f5" />
+          <line x1="160" y1="22" x2="160" y2="158" stroke="#e8343a" strokeWidth="3" />
+          <circle cx="160" cy="90" r="26" fill="none" stroke="#2f6fd6" strokeWidth="3" />
+          <circle cx="92" cy="90" r="16" fill="#e8343a" />
+          <circle cx="232" cy="90" r="16" fill="#2f6fd6" />
+          <circle cx="170" cy="70" r="8" fill="#222" />
+        </svg>
+      );
+    case 'trails':
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label="Rastros coloridos num grid">
+          <rect width="320" height="180" fill="#0d1022" />
+          <path d="M20 150 H120 V60 H220 V120" stroke="#ff6b4a" strokeWidth="6" fill="none" />
+          <path d="M300 30 H200 V90 H140 V150 H60" stroke="#3d8bff" strokeWidth="6" fill="none" />
+        </svg>
+      );
+    case 'pong':
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label="Quadra de Pong com raquetes coral e azul">
+          <rect width="320" height="180" fill="#0c1a2e" />
+          <rect x="14" y="14" width="292" height="152" fill="none" stroke="#ffffff" strokeOpacity="0.5" strokeWidth="2" />
+          <line x1="160" y1="16" x2="160" y2="164" stroke="#ffffff" strokeOpacity="0.35" strokeWidth="3" strokeDasharray="8 7" />
+          <rect x="30" y="58" width="8" height="40" rx="4" fill="#ff6b4a" />
+          <rect x="282" y="88" width="8" height="40" rx="4" fill="#3d8bff" />
+          <circle cx="196" cy="70" r="6" fill="#ffffff" />
+          <circle cx="182" cy="76" r="4" fill="#ffffff" opacity="0.3" />
+          <circle cx="170" cy="81" r="3" fill="#ffffff" opacity="0.15" />
+        </svg>
+      );
+    case 'connect4':
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label="Grade de Lig-4 com peças coral e azuis">
+          <rect width="320" height="180" fill="#1a1640" />
+          <rect x="68" y="18" width="184" height="152" rx="14" fill="#4a3f99" />
+          {Array.from({ length: 42 }, (_, i) => {
+            const c = i % 7;
+            const r = Math.floor(i / 7);
+            const filled: Record<string, string> = { '5-3': '#ff6b4a', '5-2': '#3d8bff', '4-3': '#ff6b4a', '5-4': '#3d8bff', '3-3': '#ff6b4a', '4-2': '#3d8bff', '5-1': '#ff6b4a', '2-3': '#ff6b4a' };
+            return <circle key={i} cx={88 + c * 24} cy={38 + r * 24} r="9.5" fill={filled[`${r}-${c}`] ?? '#1a1640'} />;
+          })}
+        </svg>
+      );
+    case 'blocks':
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label="Grade de blocos coloridos com uma peça sendo encaixada">
+          <rect width="320" height="180" fill="#151a45" />
+          <rect x="96" y="14" width="152" height="152" rx="12" fill="#0d1030" />
+          {Array.from({ length: 64 }, (_, i) => {
+            const c = i % 8;
+            const r = Math.floor(i / 8);
+            const pal = ['#ff5d73', '#ff9f43', '#ffd84d', '#4fe08a', '#35d0e0', '#5a8dff', '#b57cff'];
+            const filled = r >= 5 ? c !== 6 : r === 4 ? c < 3 : false;
+            return <rect key={i} x={101 + c * 18} y={19 + r * 18} width="16" height="16" rx="3.5" fill={filled ? pal[(r * 3 + c) % 7] : '#ffffff'} opacity={filled ? 1 : 0.06} />;
+          })}
+          <rect x="263" y="40" width="16" height="16" rx="3.5" fill="#ffd84d" />
+          <rect x="263" y="58" width="16" height="16" rx="3.5" fill="#ffd84d" />
+          <rect x="263" y="76" width="16" height="16" rx="3.5" fill="#ffd84d" />
+          <rect x="20" y="110" width="16" height="16" rx="3.5" fill="#b57cff" />
+          <rect x="38" y="110" width="16" height="16" rx="3.5" fill="#b57cff" />
+          <rect x="38" y="92" width="16" height="16" rx="3.5" fill="#b57cff" />
+        </svg>
+      );
+    case 'sumo':
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label="Ringue neon com dois lutadores, coral e azul">
+          <defs>
+            <radialGradient id="sf" cx="50%" cy="50%" r="60%">
+              <stop offset="0" stopColor="#1c2a5e" />
+              <stop offset="1" stopColor="#070e26" />
+            </radialGradient>
+            <radialGradient id="sr" cx="35%" cy="35%" r="70%">
+              <stop offset="0" stopColor="#fff" />
+              <stop offset=".3" stopColor="#ff6b4a" />
+              <stop offset="1" stopColor="#8c2a17" />
+            </radialGradient>
+            <radialGradient id="sb" cx="35%" cy="35%" r="70%">
+              <stop offset="0" stopColor="#fff" />
+              <stop offset=".3" stopColor="#3d8bff" />
+              <stop offset="1" stopColor="#173f8c" />
+            </radialGradient>
+          </defs>
+          <rect width="320" height="180" fill="url(#sf)" />
+          <circle cx="160" cy="90" r="74" fill="#13204d" />
+          <circle cx="160" cy="90" r="74" fill="none" stroke="#00e0ff" strokeWidth="10" opacity=".2" />
+          <circle cx="160" cy="90" r="74" fill="none" stroke="#00e0ff" strokeWidth="3" />
+          <path d="M100 80 l18 6" stroke="#ff6b4a" strokeWidth="3" strokeLinecap="round" opacity=".7" />
+          <circle cx="135" cy="92" r="20" fill="url(#sr)" />
+          <circle cx="190" cy="86" r="20" fill="url(#sb)" />
+          <circle cx="143" cy="86" r="3.5" fill="#fff" />
+          <circle cx="143" cy="97" r="3.5" fill="#fff" />
+          <circle cx="182" cy="81" r="3.5" fill="#fff" />
+          <circle cx="182" cy="92" r="3.5" fill="#fff" />
+          <path d="M162 60 l-6 14 h8 l-6 14" stroke="#ffc24a" strokeWidth="3" fill="none" strokeLinejoin="round" />
+        </svg>
+      );
+    case 'tug':
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label="Corda esticada entre um time coral e um azul, com a fita no meio">
+          <defs>
+            <linearGradient id="tg" x1="0" x2="1">
+              <stop offset="0" stopColor="#3a1a2c" />
+              <stop offset=".5" stopColor="#0a1433" />
+              <stop offset="1" stopColor="#13234d" />
+            </linearGradient>
+          </defs>
+          <rect width="320" height="180" fill="url(#tg)" />
+          <line x1="110" y1="50" x2="110" y2="130" stroke="#ff6b4a" strokeWidth="4" />
+          <line x1="210" y1="50" x2="210" y2="130" stroke="#3d8bff" strokeWidth="4" />
+          <line x1="160" y1="55" x2="160" y2="125" stroke="#fff" strokeWidth="2" strokeDasharray="6 6" opacity=".4" />
+          <line x1="20" y1="90" x2="300" y2="90" stroke="#c9a26b" strokeWidth="8" strokeLinecap="round" />
+          <rect x="146" y="76" width="12" height="28" rx="4" fill="#ffc24a" />
+          <circle cx="45" cy="90" r="15" fill="#ff6b4a" />
+          <circle cx="75" cy="90" r="15" fill="#ff6b4a" />
+          <circle cx="245" cy="90" r="15" fill="#3d8bff" />
+          <circle cx="275" cy="90" r="15" fill="#3d8bff" />
+          <circle cx="160" cy="150" r="14" fill="none" stroke="#fff" strokeWidth="2" opacity=".7" />
+          <circle cx="160" cy="150" r="8" fill="#ffc24a" />
+          <path d="M120 30 q8 -10 16 0 M184 30 q8 -10 16 0" stroke="#ffc24a" strokeWidth="3" fill="none" />
+        </svg>
+      );
+    case 'stack':
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label="Pilha de bichinhos e objetos sobre uma mesa">
+          <rect width="320" height="180" fill="#8fd3ff" />
+          <ellipse cx="70" cy="40" rx="34" ry="11" fill="#fff" opacity="0.7" />
+          <rect x="95" y="150" width="130" height="14" rx="4" fill="#b87a47" />
+          <rect x="108" y="164" width="10" height="16" fill="#7a4a2a" />
+          <rect x="202" y="164" width="10" height="16" fill="#7a4a2a" />
+          <rect x="118" y="118" width="84" height="32" rx="10" fill="#f6a443" />
+          <circle cx="178" cy="130" r="4" fill="#1b1426" />
+          <circle cx="192" cy="130" r="4" fill="#1b1426" />
+          <rect x="138" y="80" width="46" height="38" rx="3" fill="#7c6cff" />
+          <rect x="157" y="80" width="8" height="38" fill="#ffd34d" />
+          <path d="M126 80 L196 80 L182 52 L140 52 Z" fill="#62cf63" />
+          <circle cx="150" cy="56" r="4" fill="#1b1426" />
+          <circle cx="172" cy="56" r="4" fill="#1b1426" />
+          <g transform="rotate(14 230 40)">
+            <rect x="214" y="22" width="40" height="34" rx="12" fill="#ffb1c8" />
+          </g>
+          <line x1="236" y1="0" x2="234" y2="22" stroke="#ff6b4a" strokeWidth="3" />
+        </svg>
+      );
+  }
+}

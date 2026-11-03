@@ -1,0 +1,12 @@
+# Padrão para jogo novo (Jogaço)
+- Pasta `src/games/<id>/`: `logic.ts` (regras puras, sem DOM), `ai.ts` (se houver IA), `index.ts` (Shell + canvas).
+- `index.ts` usa `Shell` (src/games/shared/shell.ts): menu 1P×IA / 2P local, pausa, ajuda, resultado, música.
+- Cores: J1 coral, J2/IA azul (`PLAYER_COLORS`); `shell.setTurn(p)` pinta o fundo na cor de quem joga/pontuou.
+- Efeitos: `ParticleSystem` de shared/fx.ts (respeita o interruptor global e "reduzir animações").
+- Expor `window.__<id>` com `debug()` para o QA; remover no `destroy`.
+- Registrar em src/games/registry.ts (`load: () => import('./<id>')`) e capa em src/components/Cover.tsx.
+- Testes: tests/<id>/ (regras) + medição de IA em tests/bench/<id>.ts com Fácil < Médio < Difícil com folga.
+- QA no navegador: qa/<id>.cjs (imprime números; capturas só se o visual for o ponto).
+- Música: `musicUrl: null` até o Leon gerar no Gemini; depois `./music/<arquivo>.mp3` em public/music.
+- Se tiver 2P local e partida curta (< 2 min): incluir a rota em TOURNAMENT_GAMES (src/services/tournament.ts).
+- Efeitos de impacto: tremor de tela 2–4 px por 80 ms só em batida forte, desligado com "reduzir animações" (ver Torre e Sumô).
