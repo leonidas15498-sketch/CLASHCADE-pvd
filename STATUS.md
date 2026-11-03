@@ -14,6 +14,16 @@
   2. Minigolfe e Torre (mesmo modelo). 3. Pong como piloto de tempo real (medir atraso antes de Air Hockey/Rastros/Sumô/Cabo).
   4. Blocos: desafio assíncrono (mesma semente). Conferir limites do plano grátis do Supabase Realtime antes do tempo real.
 
+## PRÓXIMO (pedido do Leon, 03/11 20h49) — fazer em conversa nova
+1. **Loja dentro de cada jogo:** cada jogo com a SUA loja (só os itens dele: tacos, mesas, rastros...), aberta por um botão
+   no menu do próprio jogo, como menu à parte. Hoje a loja é geral no portal (src/services/catalog.ts, shopUi.ts).
+   Manter Fichas/Premium e a economia como estão (catálogo único; só muda onde e como aparece).
+2. **Menus mais intuitivos** de forma geral (portal e menus dos jogos). Levantar o fluxo atual com capturas antes de mudar.
+3. Mesa da sinuca "esticada" na horizontal: NÃO feito de propósito. Esticar só na largura deixa as bolas ovais e muda a
+   física; o limite é a altura do celular. Já feito: layout compacto (+23%) e tela cheia. Leon ainda vai avaliar a versão
+   de 20h48. Se quiser mais: diminuir a madeira da mesa no modo compacto (~+6% de feltro).
+4. Telas dos outros jogos no celular (pedido de 02/11), usando o mesmo método de medição (Playwright 732×276 e 762×343).
+
 ## Sinuca: online quase simultâneo + linha guia (03/11, 20h) — testado localmente; FALTA testar em 2 celulares
 - Pedido do Leon: o outro celular só via a tacada depois que as bolas paravam no aparelho de quem tacou (~6 s parado).
   Agora quem taca calcula o fim da tacada numa cópia, na hora (GameController.predictOutcome, poucos ms), e envia já
