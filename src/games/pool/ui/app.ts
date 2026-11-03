@@ -1,3 +1,4 @@
+import { enterGameFullscreen, exitGameFullscreen } from '../../shared/fullscreen';
 import { onMountRollback } from '../../shared/lifecycle';
 import { isEn, T } from '../../../i18n/lang';
 import { newMatchId, reportMatch } from '../../../services/match';
@@ -111,8 +112,9 @@ export class App {
 
   constructor(opts: { onExit?: () => void } = {}) {
     onMountRollback(() => this.dispose());
-    window.addEventListener('blur', () => this.pause(), { signal: this.ac.signal });
-    document.addEventListener('visibilitychange', () => { if (document.hidden) this.pause(); }, { signal: this.ac.signal });
+    // Online não pausa sozinho: o outro jogador continua, e no Android copiar o código (aviso do sistema) tirava o foco.
+    window.addEventListener('blur', () => { if (!this.net?.active) this.pause(); }, { signal: this.ac.signal });
+    document.addEventListener('visibilitychange', () => { if (document.hidden && !this.net?.active) this.pause(); }, { signal: this.ac.signal });
     this.onExit = opts.onExit ?? null;
     this.renderer = new Renderer(this.canvas, TABLE);
     const tt = tableById(this.prefs.table);
@@ -148,12 +150,13 @@ export class App {
     this.layout();
     this.renderMenuStats();
     this.raf = requestAnimationFrame((t) => this.frame(t));
-    $('btn-play-online').addEventListener('click', () => this.net?.open(), { signal: this.ac.signal });
+    $('btn-play-online').addEventListener('click', () => { enterGameFullscreen(); this.net?.open(); }, { signal: this.ac.signal });
     void this.setupOnline();
   }
 
   /** Encerra o jogo: para o laço, a música, os sons, timers e remove listeners globais. */
   dispose(): void {
+    exitGameFullscreen();
     if (this.disposed) return;
     this.disposed = true;
     cancelAnimationFrame(this.raf);
@@ -191,12 +194,14 @@ export class App {
     );
     paintSeg();
     $('btn-play-ai').addEventListener('click', () => {
+      enterGameFullscreen();
       const n = $<HTMLInputElement>('in-name').value.trim() || T('Você', 'You');
       this.prefs.playerName = n;
       savePrefs(this.prefs);
       this.start('ai', [n, `${T('IA', 'AI')} (${DIFF_LABEL[this.prefs.difficulty]})`]);
     });
     $('btn-play-local').addEventListener('click', () => {
+      enterGameFullscreen();
       const a = $<HTMLInputElement>('in-p1').value.trim() || 'Jogador 1';
       const b = $<HTMLInputElement>('in-p2').value.trim() || 'Jogador 2';
       this.prefs.names = [a, b];
@@ -743,6 +748,7 @@ export class App {
   private syncSettings() {
     $<HTMLInputElement>('opt-sound').checked = this.sound.enabled;
     $<HTMLInputElement>('opt-guide').checked = this.prefs.guide;
+    $('build-ver').textContent = typeof __BUILD_TIME__ === 'string' ? __BUILD_TIME__ : 'dev';
     $<HTMLSelectElement>('opt-time').value = String(this.prefs.shotTime);
   }
 

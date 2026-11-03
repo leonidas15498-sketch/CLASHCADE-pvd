@@ -16,6 +16,8 @@ export const BALL_COLORS: Record<number, string> = {
 
 /** Espessura visual das tabelas de madeira (m) além da linha das bocas. */
 const RAIL = 0.135;
+/** Linha guia da bola atingida: quantidade fixa de traços (≈ 17 cm de mesa). */
+const GUIDE_DASHES = 4;
 /** Canaleta de bolas encaçapadas, à direita da mesa. */
 const TRAY_GAP = 0.035;
 const TRAY_W = 0.09;
@@ -360,19 +362,19 @@ export class Renderer {
       }
       const op = st.objectPath;
       if (op && st.aimLegal && op.hit.t > R) {
-        // linha guia: saída da bola atingida até o primeiro contato dela (tracejada para não confundir com a mira)
+        // linha guia (pedido do Leon, 03/11): só uma indicação curta, de comprimento FIXO (4 traços), para não
+        // facilitar demais; para antes se houver bola/tabela mais perto. Sem círculo no fim.
+        const dash = R * 0.9;
+        const gap = R * 0.6;
+        const len = Math.min(GUIDE_DASHES * dash + (GUIDE_DASHES - 1) * gap, op.hit.t - R);
         ctx.strokeStyle = 'rgba(255,224,130,0.9)';
         ctx.lineWidth = Math.max(px * 1.6, 0.0035);
-        ctx.setLineDash([R * 0.9, R * 0.6]);
+        ctx.setLineDash([dash, gap]);
         ctx.beginPath();
         ctx.moveTo(op.from.x + op.dir.x * R, op.from.y + op.dir.y * R);
-        ctx.lineTo(op.hit.ghost.x, op.hit.ghost.y);
+        ctx.lineTo(op.from.x + op.dir.x * (R + len), op.from.y + op.dir.y * (R + len));
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.lineWidth = Math.max(px * 1.2, 0.0025);
-        ctx.beginPath();
-        ctx.arc(op.hit.ghost.x, op.hit.ghost.y, R, 0, Math.PI * 2);
-        ctx.stroke();
       }
     }
 

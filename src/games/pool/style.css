@@ -443,3 +443,38 @@ button.primary { background: linear-gradient(#3fbf6f, #1d7e44); border-color: rg
 #msgbar > .online-bar span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
 #msgbar > .online-bar button { min-height: 26px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); padding: 2px 8px; font-size: 12px; white-space: nowrap; }
 #msgbar:has(> .online-bar:not([hidden])) #toast { flex: 1 1 auto; min-width: 0; }
+
+/* versão do site (para conferir atualização) */
+.build-ver { font-size: 11px; color: var(--muted); text-align: center; margin: 0; }
+
+/* ---------- Celular deitado (pedido do Leon, 03/11): mesa maior ----------
+ * Altura curta: cabeçalho mais baixo, laterais mais estreitas e a faixa de mensagens passa a flutuar
+ * sobre a madeira de baixo da mesa (não rouba altura do feltro). */
+@media (orientation: landscape) and (max-height: 480px) {
+  :root { --hud-h: clamp(40px, 13vh, 46px); --side-w: clamp(44px, 7vw, 64px); }
+  .pinfo { gap: 0; line-height: 1.1; }
+  .pname, #status { font-size: 12px; }
+  .pgroup, #sub { font-size: 10px; }
+  .hcenter { padding-top: 0; padding-bottom: 0; }
+  #hud { padding: 2px clamp(4px, 1vw, 10px); gap: 6px; }
+  .icon-btn { min-width: 32px; min-height: 32px; border-radius: 10px; }
+  #stage { padding: 0 clamp(2px, 0.6vw, 8px) 2px; gap: clamp(2px, 0.6vw, 8px); }
+  #left, #right { gap: 4px; }
+  #right .icon-btn { width: calc(var(--side-w) - 8px); height: auto; aspect-ratio: 1; max-height: calc((100vh - var(--hud-h) - 24px) / 5); }
+  .plabel { padding: 2px 4px; border-radius: 8px; }
+  #pbar { min-height: 80px; max-height: none; }
+  #table-wrap { gap: 0; }
+  #msgbar {
+    position: absolute; left: 50%; bottom: 2px; transform: translateX(-50%);
+    width: auto; max-width: 78%; min-height: 0; padding: 0 10px; z-index: 2;
+    background: rgba(18, 12, 9, 0.78); pointer-events: none;
+    opacity: 0; transition: opacity 0.25s;
+  }
+  /* só aparece com mensagem nova (ou com a barra online); assim não cobre a caçapa do meio o tempo todo */
+  #msgbar:has(#toast.show), #msgbar:has(> .online-bar:not([hidden])) { opacity: 1; }
+  #toast { font-size: 11px; line-height: 1.5; }
+  /* online: a barra fica sempre visível, então vai para a metade esquerda (entre a caçapa do canto e a do meio) */
+  #msgbar:has(> .online-bar:not([hidden])) { left: 7%; transform: none; max-width: 41%; }
+  #msgbar > .online-bar { pointer-events: auto; }
+  #msgbar > .online-bar button { min-height: 22px; padding: 1px 6px; }
+}

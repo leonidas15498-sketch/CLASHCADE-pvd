@@ -59,8 +59,9 @@
 2. Física em `src/games/pool/physics/` sem nenhuma dependência de DOM/Canvas. Unidades SI (m, s). Passo fixo 1/120 s.
 3. A guia de mira usa a MESMA geometria do motor (círculos de raio 2R e cápsulas de raio R) e mostra apenas o
    trecho reto da branca até o primeiro contato. Exceção (pedido do Leon, 03/11): **linha guia opcional**
-   (Configurações → "Linha guia", padrão ligada, salva por aparelho) mostra a saída da bola atingida até o primeiro
-   contato dela (objectBallPath). É exata porque o contato bola-bola é sem atrito e a normal é calculada no instante
+   (Configurações → "Linha guia", padrão ligada, salva por aparelho) mostra só o INÍCIO da saída da bola atingida:
+   4 traços fixos (≈17 cm, GUIDE_DASHES no renderer), sem círculo, cortada antes se houver bola/tabela mais perto
+   (objectBallPath). Leon pediu curta de propósito, para não facilitar demais. É exata porque o contato bola-bola é sem atrito e a normal é calculada no instante
    do contato (tests/pool/guide.test.ts, erro < 0,1°). Nunca desenhar a branca depois do choque nem tabelas seguintes.
 4. Tacada = um único impulso; o ponto de batida (efeito) gera giro pela física real (r × impulso / I).
    Modelo: deslizamento → rolamento, giro vertical com atrito, contato bola-bola sem atrito, efeito lateral na tabela.

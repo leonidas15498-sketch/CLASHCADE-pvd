@@ -21,10 +21,16 @@
   (antes = tempo de rolagem, 5,8–6,6 s); mesas idênticas 4/4. Na rede real soma o tempo do Supabase (estimativa 0,2–0,6 s).
   Sem SQL novo. Se a jogada seguinte chegar enquanto a minha ainda anima, é aplicada no fim dela.
 - Linha guia opcional (Configurações → "Linha guia", padrão ligada, por aparelho; vale contra IA, 2P e online):
-  saída da bola atingida até o primeiro contato dela. Para ser exata, a física passou a calcular a normal do choque
+  início da saída da bola atingida, 4 traços fixos (~17 cm), sem círculo (ajuste do Leon às 20h41: estava longa demais). Para ser exata, a física passou a calcular a normal do choque
   bola-bola no instante do contato (antes usava a posição já sobreposta: cortes saíam até 1,3° tortos).
   tests/pool/guide.test.ts mede erro < 0,1°. Bench da IA depois da mudança: encaçapa 25% / 47% / 80%, falta 35% / 17% / 5%
   (antes 22/43/77 e 35/15/8); ordem dos níveis mantida.
+- Celular deitado (pedido do Leon): cabeçalho compacto, laterais estreitas, faixa de mensagem flutuando sobre a madeira
+  (some 3 s depois da mensagem). Medido em 732×276 (Chrome com barra): mesa 363×190 → 447×234 px (+23%); em 762×343
+  (sem barra): 491×257 → 566×296. Partida no celular entra em tela cheia (src/games/shared/fullscreen.ts; não no iPhone/app).
+  Versão do site aparece no fim de Configurações (para conferir se o celular atualizou).
+- Botão "Copiar código" (bug do Leon): no Android o aviso de cópia tirava o foco e pausava; online não pausa mais sozinho.
+  Cópia com 3 tentativas (Clipboard API → seleção+copiar → compartilhar); se tudo falhar, mostra o código na barra.
 - Limitação: no online cada jogador escolhe a linha no próprio aparelho (não é regra da sala).
 
 ## Sinuca online (02/11, 23h) — implementado e testado localmente; FALTA aplicar o SQL e testar em 2 aparelhos

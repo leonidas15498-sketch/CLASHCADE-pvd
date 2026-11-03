@@ -51,8 +51,9 @@ export class RoomLobby {
     bind('back', () => { this.overlay.classList.remove('show'); });
     bind('leave', async () => { await this.leave(); end(); });
     bind('copy', async () => { if (this.room) {
-      if (!navigator.clipboard) { this.error(T('Copie o código exibido na barra da sala.', 'Copy the code displayed in the room bar.')); return; }
-      await navigator.clipboard.writeText(this.room.code); this.errorText = T('Código copiado.', 'Code copied.'); this.render();
+      const ok = await copyText(this.room.code);
+      this.errorText = ok ? T('Código copiado.', 'Code copied.') : `${T('Não deu para copiar. Código:', 'Could not copy. Code:')} ${this.room.code}`;
+      this.render();
     } });
   }
   private el<E extends HTMLElement = HTMLElement>(key: string): E {
@@ -117,4 +118,30 @@ export class RoomLobby {
     this.el('summary').textContent = `${r.code}${role} · ${status}${this.errorText ? ' · ' + this.errorText : ''}`;
   }
   dispose() { this.disposed = true; this.ac.abort(); this.network.dispose(); this.overlay.remove(); this.bar.remove(); }
+}
+
+/**
+ * Copia o código da sala. Alguns celulares recusam a área de transferência moderna (bug relatado pelo Leon, 03/11),
+ * então tenta 3 caminhos: Clipboard API → seleção + copiar (método antigo) → menu de compartilhar do celular.
+ */
+async function copyText(text: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; }
+  } catch { /* tenta o próximo */ }
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;left:0;top:0;opacity:0;user-select:text;-webkit-user-select:text';
+    document.body.append(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    const ok = document.execCommand('copy');
+    ta.remove();
+    if (ok) return true;
+  } catch { /* tenta o próximo */ }
+  try {
+    if (navigator.share) { await navigator.share({ text }); return true; }
+  } catch { /* cancelado */ }
+  return false;
 }

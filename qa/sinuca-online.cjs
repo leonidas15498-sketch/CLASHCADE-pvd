@@ -96,6 +96,10 @@ window.__clashcadeTestRooms = (game) => {
   await A.waitForFunction(() => window.__sinuca.net?.room);
   const code = await A.evaluate(() => window.__sinuca.net.room.code);
   console.log('Sala criada, código:', code, '| barra:', (await st(A)).bar);
+  // botão Copiar (bug do Leon 03/11: pausava e não copiava). Sem permissão de área de transferência aqui → testa o plano B.
+  await A.click('#msgbar [data-net="copy"]');
+  await W(300);
+  console.log('Copiar código:', await A.textContent('#msgbar [data-net="summary"]'), '| pausou:', await A.evaluate(() => window.__sinuca.paused));
   await B.click('#btn-play-online');
   await B.fill('[data-net="name"]', 'Bia');
   await B.fill('[data-net="code"]', code);
