@@ -31,8 +31,11 @@
 - **Não testado:** Supabase hospedado (Realtime/Auth), 2 celulares reais, iPhone × Android (Math.sin/cos podem
   diferir no último dígito: a animação pode divergir; o estado final é sempre o de quem tacou — encaixa no fim).
   O adversário não vê a mira ao vivo, só a tacada.
-- Pedidos do Leon na fila (22:45–22:54): Sumô sem música; tecla de boost perto do WASD no PC; jogos maiores no celular
-  (em pé a mesa/campo fica minúsculo).
+- Pedidos do Leon (22:45–22:54): (1) FEITO: avanço do Sumô também em Q/E/F/Shift esq. (J1) e Shift dir./0 (J2), testado.
+  (2) Sumô "sem música": no código a música toca (QA: buffer de 113 s iniciado, arquivo servido). Cabo de Guerra é que
+  não tem música (musicUrl null). Confirmar com o Leon qual jogo e se não era chamada telefônica/cache antigo.
+  (3) PRÓXIMO: jogos maiores no celular — em pé a mesa da sinuca/campo do golfe fica minúsculo (mesa deitada numa tela alta);
+  plano: girar mesa/campo 90° em pé (render + toque) e enxugar o HUD da sinuca em pé (textos sobrepostos).
 
 ## V13 (02/11) — recebida do Leon; conferida aqui
 - V12/V13 feitas fora desta sessão: ver RELATORIO_IMPLEMENTACAO_CLASHCADE_V12.md e RELATORIO_IMPLEMENTACAO_V13.md.
