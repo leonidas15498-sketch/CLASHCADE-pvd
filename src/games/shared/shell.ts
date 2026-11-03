@@ -439,7 +439,8 @@ export class Shell {
     this.inMatch = false;
     this.k('r-title').textContent = title;
     this.k('r-msg').textContent = msg;
-    const againBtn = this.k('r-again');
+    const againBtn = this.k<HTMLButtonElement>('r-again');
+    againBtn.disabled = false;
     const next = this.k('r-next');
     const menu = this.k('r-menu');
     this.k('r-new').style.display = this.tour ? 'none' : '';

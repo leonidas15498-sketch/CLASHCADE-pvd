@@ -29,6 +29,8 @@ interface Falling {
   c: number;
   r: number;
   p: 0 | 1;
+  /** Jogada online já aceita pelo servidor: só anima, não aplica regras. */
+  remote?: boolean;
   y: number;
   v: number;
   bounced: boolean;
@@ -59,6 +61,9 @@ class Connect4Game {
   private resultShown = false;
   private online: Connect4Online | null = null;
   private remoteResult = '';
+  private remoteKey = '';
+  private remoteVersion = -1;
+  private afterRemoteLand: (() => void) | null = null;
 
   constructor(container: HTMLElement, onExit: () => void) {
     onMountRollback(() => this.dispose());
@@ -88,7 +93,7 @@ class Connect4Game {
           const online = this.online; this.online = null;
           void online.leave().catch(() => this.shell.toast(T('Não foi possível confirmar a saída no servidor.', 'Could not confirm leaving on the server.'))).finally(() => online.dispose());
           this.shell.setExternalMatch(false);
-          this.remoteResult = '';
+          this.remoteResult = ''; this.remoteKey = ''; this.remoteVersion = -1;
           void this.setupOnline();
         }
         clearTimeout(this.aiTimer);
@@ -115,7 +120,7 @@ class Connect4Game {
     if (this.disposed) { network.dispose(); return; }
     this.online?.dispose();
     this.online = new Connect4Online(this.shell.root, network, room => this.remoteState(room), () => {
-      this.online?.dispose(); this.online = null; this.remoteResult = '';
+      this.online?.dispose(); this.online = null; this.remoteResult = ''; this.remoteKey = ''; this.remoteVersion = -1;
       this.shell.setExternalMatch(false); this.shell.toMenu(); void this.setupOnline();
     });
     const card = document.createElement('div'); card.className = 'gs-card'; card.dataset.onlineCard = '';
@@ -129,25 +134,69 @@ class Connect4Game {
   private remoteState(room: Connect4Room) {
     if (this.disposed) return;
     this.shell.setExternalMatch(true);
+    const key = `${room.id}:${room.round}`;
+    // Mesma versão = mesmo tabuleiro (só presença mudou): não interrompe a peça caindo.
+    if (key === this.remoteKey && room.version === this.remoteVersion) return;
     this.cfg = { mode: 'online', names: [room.host_name, room.guest_name || T('Aguardando J2', 'Waiting for P2')], difficulty: 'medium' };
-    this.s = roomBoard(room); this.wins = [...room.scores]; this.falling = null; this.thinking = false;
-    clearTimeout(this.aiTimer); this.paintHud();
+    const prev = key === this.remoteKey ? this.s : null;
+    const next = roomBoard(room);
+    let anim: Falling | null = null;
+    if (prev) {
+      const diff: [number, number][] = [];
+      for (let c = 0; c < 7; c++) for (let r = 0; r < 6; r++) if (prev.cells[c][r] !== next.cells[c][r]) diff.push([c, r]);
+      if (diff.length === 1 && prev.cells[diff[0][0]][diff[0][1]] === 0) {
+        const [c, r] = diff[0];
+        anim = { c, r, p: (next.cells[c][r] - 1) as 0 | 1, y: -1, v: 0, bounced: false, remote: true };
+        next.cells[c][r] = 0; // aparece quando a peça pousar
+      }
+    }
+    this.remoteKey = key; this.remoteVersion = room.version;
+    this.s = next; this.wins = [...room.scores]; this.falling = anim; this.thinking = false;
+    clearTimeout(this.aiTimer);
+    if (anim) {
+      this.shell.sfx.tone(520, 0.05, 0.1, 'triangle', 0.8);
+      this.afterRemoteLand = () => this.remoteStatus(room);
+      return;
+    }
+    this.afterRemoteLand = null;
+    this.remoteStatus(room);
+  }
+
+  /** Placar, vez e tela de resultado/revanche de uma sala online (depois da animação da peça). */
+  private remoteStatus(room: Connect4Room) {
+    if (this.disposed) return;
+    this.paintHud();
     if (room.status === 'waiting') this.shell.setSubtitle(T('Aguardando segundo jogador', 'Waiting for second player'));
     if (room.status === 'playing') {
       if (this.remoteResult) this.shell.hide('result');
       this.shell.inMatch = true; this.shell.setTurn(room.turn); this.remoteResult = ''; return;
     }
     this.shell.setTurn(null);
-    if (room.status === 'finished' || room.status === 'closed') {
-      const key = `${room.id}:${room.round}:${room.status}`;
-      if (this.remoteResult === key) return;
-      this.remoteResult = key;
-      const title = room.status === 'closed' ? T('Sala encerrada', 'Room closed') : room.winner === 'draw' ? T('Empate!', 'Draw!') : `${this.cfg.names[Number(room.winner)]} ${T('venceu!', 'wins!')}`;
-      this.shell.showResult(title, `${this.cfg.names[0]} ${room.scores[0]} × ${room.scores[1]} ${this.cfg.names[1]}`, () => {
-        if (room.status === 'closed') { this.shell.toMenu(); return; }
-        void this.online?.rematch().catch(e => this.shell.toast(e instanceof Error ? e.message : String(e)));
-      });
-    }
+    if (room.status !== 'finished' && room.status !== 'closed') return;
+    const me = this.online?.player ?? null;
+    const mine = me !== null && room.rematch[me];
+    const theirs = me !== null && room.rematch[1 - me];
+    const key = `${room.id}:${room.round}:${room.status}:${mine}:${theirs}`;
+    if (this.remoteResult === key) return;
+    this.remoteResult = key;
+    const names = this.cfg!.names;
+    const other = me === null ? '' : names[1 - me];
+    const title = room.status === 'closed' ? T('Sala encerrada', 'Room closed') : room.winner === 'draw' ? T('Empate!', 'Draw!') : `${names[Number(room.winner)]} ${T('venceu!', 'wins!')}`;
+    let msg = `${names[0]} ${room.scores[0]} × ${room.scores[1]} ${names[1]}`;
+    if (room.status === 'finished' && mine) msg += `\n${T('Revanche pedida. Aguardando', 'Rematch requested. Waiting for')} ${other}…`;
+    else if (room.status === 'finished' && theirs) msg += `\n${other} ${T('quer revanche!', 'wants a rematch!')}`;
+    this.shell.showResult(title, msg, () => {
+      if (room.status === 'closed') { this.shell.toMenu(); return; }
+      void this.online?.rematch().catch(e => this.shell.toast(e instanceof Error ? e.message : String(e)));
+    });
+    // Online: "Nova partida" e "Outro jogo" sairiam da sala; só revanche ou sair.
+    this.shell.k('r-msg').style.whiteSpace = 'pre-line';
+    this.shell.k('r-new').style.display = 'none';
+    this.shell.k('r-next').style.display = 'none';
+    this.shell.k('r-menu').textContent = T('Sair da sala', 'Leave room');
+    const again = this.shell.k<HTMLButtonElement>('r-again');
+    again.textContent = room.status === 'closed' ? 'Menu' : mine ? T('Aguardando…', 'Waiting…') : theirs ? T('Aceitar revanche', 'Accept rematch') : T('Pedir revanche', 'Request rematch');
+    again.disabled = room.status === 'finished' && mine;
   }
 
   dispose() {
@@ -203,6 +252,16 @@ class Connect4Game {
   /** A peça terminou de cair: aplica a jogada nas regras. */
   private land(f: Falling) {
     const s = this.s!;
+    if (f.remote) {
+      s.cells[f.c][f.r] = f.p + 1;
+      this.falling = null;
+      this.shell.sfx.noise(1200, 0.06, 0.35, 3);
+      this.shell.sfx.tone(180, 0.08, 0.2, 'sine', 0.7);
+      const after = this.afterRemoteLand;
+      this.afterRemoteLand = null;
+      after?.();
+      return;
+    }
     play(s, f.c);
     this.falling = null;
     this.shell.sfx.noise(1200, 0.06, 0.35, 3);
