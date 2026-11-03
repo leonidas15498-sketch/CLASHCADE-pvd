@@ -5,7 +5,14 @@
   CLASHCADE- vira backup (copiar só nos marcos). wrangler.jsonc roda `npm run build` e publica só dist/ (sem código-fonte).
 - Deploy da V13 na Cloudflare: Success (confirmado pelo Leon).
 - Supabase (projeto tgybollzkrnnndvzqjoi): migração já aplicada; conferido no SQL Editor: protocolo 1, função do jogo,
-  RLS e Realtime OK. Falta confirmar login anônimo ligado e testar partida online em 2 aparelhos.
+  RLS e Realtime OK. Login anônimo ligado.
+- **Quatro em Linha online TESTADO pelo Leon em 2 aparelhos (02/11 22h30): funcionou.** Depois disso: peça cai animada
+  no online e revanche com "Pedir/Aceitar revanche" (commit 3bcc640; revanche nova ainda não testada no aparelho).
+- **Próximo (decisão do Leon: levar outros jogos ao online).** Ordem recomendada:
+  1. Sinuca online (por turnos; quem taca simula e envia posições finais; servidor valida vez/versão; mesmo padrão de sala
+     do Quatro em Linha, generalizado para vários jogos).
+  2. Minigolfe e Torre (mesmo modelo). 3. Pong como piloto de tempo real (medir atraso antes de Air Hockey/Rastros/Sumô/Cabo).
+  4. Blocos: desafio assíncrono (mesma semente). Conferir limites do plano grátis do Supabase Realtime antes do tempo real.
 
 ## V13 (02/11) — recebida do Leon; conferida aqui
 - V12/V13 feitas fora desta sessão: ver RELATORIO_IMPLEMENTACAO_CLASHCADE_V12.md e RELATORIO_IMPLEMENTACAO_V13.md.
