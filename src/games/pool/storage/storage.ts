@@ -7,6 +7,8 @@ export interface Prefs {
   difficulty: Difficulty;
   names: [string, string];
   playerName: string;
+  /** Linha guia da bola atingida (pedido do Leon, 03/11). Vale contra IA, 2P local e online (só neste aparelho). */
+  guide: boolean;
   /** Segundos por tacada (0 = sem limite). */
   shotTime: number;
   /** Taco escolhido (id do catálogo). */
@@ -31,7 +33,7 @@ export interface Stats {
 const PREFS_KEY = 'sinuca8.prefs.v1';
 const STATS_KEY = 'sinuca8.stats.v1';
 
-const defaultPrefs = (): Prefs => ({ sound: true, power: 0.35, difficulty: 'medium', names: ['Jogador 1', 'Jogador 2'], playerName: 'Você', shotTime: 45, cue: 'classico', music: true, musicVolume: 0.4 });
+const defaultPrefs = (): Prefs => ({ sound: true, power: 0.35, difficulty: 'medium', names: ['Jogador 1', 'Jogador 2'], playerName: 'Você', shotTime: 45, guide: true, cue: 'classico', music: true, musicVolume: 0.4 });
 const defaultStats = (): Stats => ({ ai: { easy: { w: 0, l: 0 }, medium: { w: 0, l: 0 }, hard: { w: 0, l: 0 } }, local: [] });
 
 function read(key: string): Record<string, unknown> {
@@ -61,6 +63,7 @@ export function loadPrefs(): Prefs {
     music: typeof p.music === 'boolean' ? p.music : d.music,
     difficulty: p.difficulty === 'easy' || p.difficulty === 'medium' || p.difficulty === 'hard' ? p.difficulty : d.difficulty,
     names: pair(p.names, d.names), playerName: text(p.playerName, d.playerName),
+    guide: typeof p.guide === 'boolean' ? p.guide : d.guide,
     shotTime: [0,30,45,60].includes(p.shotTime as number) ? p.shotTime as number : d.shotTime,
     cue: text(p.cue, d.cue), cues: Array.isArray(p.cues) ? pair(p.cues, [text(p.cue, d.cue), 'ebano']) : undefined,
     table: typeof p.table === 'string' ? p.table : undefined, trail: typeof p.trail === 'string' ? p.trail : undefined };

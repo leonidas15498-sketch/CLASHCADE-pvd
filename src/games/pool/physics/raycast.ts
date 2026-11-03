@@ -64,13 +64,16 @@ function rayCapsule(o: Vec, d: Vec, a: Vec, b: Vec, r: number): number {
  */
 export function aimRaycast(w: World, angle: number): RayHit {
   const cue = w.balls.find((b) => b.id === 0)!;
+  return castBall(w, { x: cue.x, y: cue.y }, { x: Math.cos(angle), y: Math.sin(angle) }, 0);
+}
+
+/** Trajeto reto de uma bola de raio R saindo de `o` na direção unitária `d` até o primeiro contato. */
+function castBall(w: World, o: Vec, d: Vec, self: number): RayHit {
   const R = w.params.ballRadius;
-  const o = { x: cue.x, y: cue.y };
-  const d = { x: Math.cos(angle), y: Math.sin(angle) };
   let best: RayHit = { t: Infinity, kind: 'none', ghost: o, contact: o };
 
   for (const b of w.balls) {
-    if (b.id === 0 || b.pocketed) continue;
+    if (b.id === 0 || b.id === self || b.pocketed) continue;
     const t = rayCircle(o, d, b, 2 * R);
     if (t < best.t) {
       const g = { x: o.x + d.x * t, y: o.y + d.y * t };
@@ -98,6 +101,34 @@ export function aimRaycast(w: World, angle: number): RayHit {
     }
   }
   return best;
+}
+
+export interface ObjectPath {
+  /** Centro da bola atingida (início da linha). */
+  from: Vec;
+  /** Direção de saída (unitária). */
+  dir: Vec;
+  /** Até onde ela vai em linha reta: primeira tabela, bola ou caçapa. */
+  hit: RayHit;
+}
+
+/**
+ * Linha guia opcional (pedido do Leon, 03/11): direção em que a bola atingida sai.
+ * Contato bola-bola sem atrito no motor ⇒ a bola atingida sai exatamente na linha
+ * (centro da bola fantasma → centro da bola atingida), qualquer que seja o efeito da branca.
+ * Mostra só o trecho reto até o primeiro contato dela; não prevê tabelas nem a branca depois.
+ */
+export function objectBallPath(w: World, aim: RayHit): ObjectPath | null {
+  if (aim.kind !== 'ball' || aim.ballId === undefined) return null;
+  const b = w.balls.find((o) => o.id === aim.ballId);
+  if (!b) return null;
+  const dx = b.x - aim.ghost.x;
+  const dy = b.y - aim.ghost.y;
+  const L = Math.hypot(dx, dy);
+  if (L === 0) return null;
+  const from = { x: b.x, y: b.y };
+  const dir = { x: dx / L, y: dy / L };
+  return { from, dir, hit: castBall(w, from, dir, b.id) };
 }
 
 /** Verifica se o corredor de largura 2·r entre p e q está livre de bolas (exceto ignoradas). */

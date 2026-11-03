@@ -14,6 +14,19 @@
   2. Minigolfe e Torre (mesmo modelo). 3. Pong como piloto de tempo real (medir atraso antes de Air Hockey/Rastros/Sumô/Cabo).
   4. Blocos: desafio assíncrono (mesma semente). Conferir limites do plano grátis do Supabase Realtime antes do tempo real.
 
+## Sinuca: online quase simultâneo + linha guia (03/11, 20h) — testado localmente; FALTA testar em 2 celulares
+- Pedido do Leon: o outro celular só via a tacada depois que as bolas paravam no aparelho de quem tacou (~6 s parado).
+  Agora quem taca calcula o fim da tacada numa cópia, na hora (GameController.predictOutcome, poucos ms), e envia já
+  no impulso; o outro começa a animar logo. QA com 2 navegadores (qa/sinuca-online.cjs): atraso 27–168 ms sem internet
+  (antes = tempo de rolagem, 5,8–6,6 s); mesas idênticas 4/4. Na rede real soma o tempo do Supabase (estimativa 0,2–0,6 s).
+  Sem SQL novo. Se a jogada seguinte chegar enquanto a minha ainda anima, é aplicada no fim dela.
+- Linha guia opcional (Configurações → "Linha guia", padrão ligada, por aparelho; vale contra IA, 2P e online):
+  saída da bola atingida até o primeiro contato dela. Para ser exata, a física passou a calcular a normal do choque
+  bola-bola no instante do contato (antes usava a posição já sobreposta: cortes saíam até 1,3° tortos).
+  tests/pool/guide.test.ts mede erro < 0,1°. Bench da IA depois da mudança: encaçapa 25% / 47% / 80%, falta 35% / 17% / 5%
+  (antes 22/43/77 e 35/15/8); ordem dos níveis mantida.
+- Limitação: no online cada jogador escolhe a linha no próprio aparelho (não é regra da sala).
+
 ## Sinuca online (02/11, 23h) — implementado e testado localmente; FALTA aplicar o SQL e testar em 2 aparelhos
 - Salas generalizadas para vários jogos: migração NOVA `supabase/migrations/20261103010000_clashcade_rooms_multigame.sql`
   (colunas `game`, `state`, `turn_started`; função com `p_game`/`p_payload`; protocolo 1 → 2). Ordem: SQL antes, depois deploy.

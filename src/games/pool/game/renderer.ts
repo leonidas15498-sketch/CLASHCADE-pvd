@@ -1,5 +1,5 @@
 import { shadeHex, TABLE_THEMES, TableTheme } from './tables';
-import type { RayHit } from '../physics/raycast';
+import type { ObjectPath, RayHit } from '../physics/raycast';
 import type { Segment, TableGeometry } from '../physics/table';
 import type { Vec } from '../physics/vec';
 import type { World } from '../physics/world';
@@ -32,6 +32,8 @@ export interface RenderState {
   showAim: boolean;
   aimHit: RayHit | null;
   aimLegal: boolean;
+  /** Linha guia opcional: para onde vai a bola atingida (até o primeiro contato dela). */
+  objectPath?: ObjectPath | null;
   /** 0..1: recuo do taco (anima o golpe). */
   cuePull: number;
   showCue: boolean;
@@ -355,6 +357,22 @@ export class Renderer {
         ctx.beginPath();
         ctx.arc(h.contact.x, h.contact.y, Math.max(px * 2.2, 0.004), 0, Math.PI * 2);
         ctx.fill();
+      }
+      const op = st.objectPath;
+      if (op && st.aimLegal && op.hit.t > R) {
+        // linha guia: saída da bola atingida até o primeiro contato dela (tracejada para não confundir com a mira)
+        ctx.strokeStyle = 'rgba(255,224,130,0.9)';
+        ctx.lineWidth = Math.max(px * 1.6, 0.0035);
+        ctx.setLineDash([R * 0.9, R * 0.6]);
+        ctx.beginPath();
+        ctx.moveTo(op.from.x + op.dir.x * R, op.from.y + op.dir.y * R);
+        ctx.lineTo(op.hit.ghost.x, op.hit.ghost.y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.lineWidth = Math.max(px * 1.2, 0.0025);
+        ctx.beginPath();
+        ctx.arc(op.hit.ghost.x, op.hit.ghost.y, R, 0, Math.PI * 2);
+        ctx.stroke();
       }
     }
 

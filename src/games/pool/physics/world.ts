@@ -260,13 +260,30 @@ function substep(w: World, h: number): void {
         a.y -= ny * pen;
         b.x += nx * pen;
         b.y += ny * pen;
-        const rv = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+        // Normal do choque no INSTANTE do contato (volta no tempo até a distância 2R), não na posição já
+        // sobreposta do subpasso: sem isso, cortes saíam até ~1,3° tortos (medido em tests/pool/guide.test.ts).
+        let cnx = nx;
+        let cny = ny;
+        const rvx = b.vx - a.vx;
+        const rvy = b.vy - a.vy;
+        const A = rvx * rvx + rvy * rvy;
+        const k = dx * rvx + dy * rvy;
+        if (A > 0 && k < 0) {
+          const back = (k + Math.sqrt(k * k - A * (d2 - minD * minD))) / A;
+          if (back > 0 && back <= h * 1.5) {
+            const cx = dx - rvx * back;
+            const cy = dy - rvy * back;
+            const cl = Math.hypot(cx, cy);
+            if (cl > 0) { cnx = cx / cl; cny = cy / cl; }
+          }
+        }
+        const rv = rvx * cnx + rvy * cny;
         if (rv < 0) {
           const jImp = (-(1 + p.ballRestitution) * rv) / 2;
-          a.vx -= jImp * nx;
-          a.vy -= jImp * ny;
-          b.vx += jImp * nx;
-          b.vy += jImp * ny;
+          a.vx -= jImp * cnx;
+          a.vy -= jImp * cny;
+          b.vx += jImp * cnx;
+          b.vy += jImp * cny;
           if (jImp > 1e-4) w.events.push({ type: 'ball', a: a.id, b: b.id, impulse: jImp, x: a.x, y: a.y });
         }
       }

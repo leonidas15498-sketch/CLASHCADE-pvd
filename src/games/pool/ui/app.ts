@@ -15,7 +15,7 @@ import { mountMusicControl } from '../../shared/musicControl';
 import { PLAYER_COLORS, setTurnColor } from '../../shared/players';
 import { drawTrail, isTrailAvailable, mountBurstToggle, ParticleSystem, TrailBuffer, TRAILS, usableTrail } from '../../shared/fx';
 import { Sound } from '../game/sound';
-import { aimRaycast, RayHit } from '../physics/raycast';
+import { aimRaycast, objectBallPath, RayHit } from '../physics/raycast';
 import { TABLE } from '../physics/table';
 import { clampSpin, getBall, Spin } from '../physics/world';
 import { Difficulty, groupBalls, legalTargets, Mode } from '../rules/rules';
@@ -100,6 +100,8 @@ export class App {
   private netReplay: PoolNetState | null = null;
   /** Minha tacada rolando: ao parar, envio o resultado. */
   private netMine = false;
+  /** Resultado da minha tacada já enviado (calculado no instante do impulso). */
+  private netPredicted: PoolNetState | null = null;
   /** Relógio local de quando vi a vez mudar (não depende do horário do servidor). */
   private netTurnSeen = 0;
   private netClaimed = -1;
@@ -215,6 +217,10 @@ export class App {
       this.updateTimerRing();
     });
     $<HTMLInputElement>('opt-sound').addEventListener('change', (e) => this.setSound((e.target as HTMLInputElement).checked));
+    $<HTMLInputElement>('opt-guide').addEventListener('change', (e) => {
+      this.prefs.guide = (e.target as HTMLInputElement).checked;
+      savePrefs(this.prefs);
+    });
 
     $('btn-reset-stats').addEventListener('click', () =>
       this.confirm('Apagar as estatísticas salvas neste aparelho?', () => {
@@ -736,6 +742,7 @@ export class App {
 
   private syncSettings() {
     $<HTMLInputElement>('opt-sound').checked = this.sound.enabled;
+    $<HTMLInputElement>('opt-guide').checked = this.prefs.guide;
     $<HTMLSelectElement>('opt-time').value = String(this.prefs.shotTime);
   }
 
@@ -805,7 +812,13 @@ export class App {
     this.strikeAnim = null;
     const g = this.game!;
     if (g.shoot(s.angle, s.power, s.spin)) {
-      if (this.net?.active) this.netMine = true;
+      if (this.net?.active) {
+        // online: calcula o fim da tacada agora e já envia; o outro aparelho começa a animar quase junto
+        this.netMine = true;
+        const done = g.predictOutcome();
+        this.netPredicted = done ? encodeState(done, g.lastShot) : null;
+        if (done) this.netSend('shot', done);
+      }
       this.setSpin({ side: 0, top: 0 });
       this.snapCue(true);
       this.sound.cue(s.power);
@@ -834,13 +847,19 @@ export class App {
     }
     if (this.netMine) {
       this.netMine = false;
-      const res = g.lastResult!;
+      const sent = this.netPredicted;
+      this.netPredicted = null;
+      // a animação local deve bater com o que foi enviado; se não bater, vale o enviado
+      if (sent) applyState(g, sent, this.netNames());
+      else this.netSend('shot');
       this.railOrder = [...g.pocketOrder];
-      if (res.foul) this.sound.foul();
-      this.toast(res.state.lastMessage, !!res.foul);
-      this.netSend('shot');
+      if (g.match.lastFoul) this.sound.foul();
+      this.toast(g.match.lastMessage, !!g.match.lastFoul);
       if (g.match.winner === null) this.prepareTurn();
       else this.updateHUD();
+      this.netTurnSeen = performance.now();
+      // se a jogada seguinte do outro chegou enquanto minha animação rodava, ela é aplicada agora
+      if (sent && this.net?.room) this.remoteState(this.net.room);
       return;
     }
     // a canaleta segue a ordem oficial (a 8 recolocada na abertura sai dela)
@@ -931,6 +950,7 @@ export class App {
       this.netMoves = -1;
       this.netReplay = null;
       this.netMine = false;
+      this.netPredicted = null;
       this.netOverKey = '';
       this.paused = false;
     }
@@ -938,7 +958,7 @@ export class App {
     g.match = { ...g.match, players: [{ ...g.match.players[0], name: names[0] }, { ...g.match.players[1], name: names[1] }] };
     if (room.moves > this.netMoves) {
       if (this.netMine) {
-        // minha tacada ainda rolando: o envio dela vai falhar por versão e ressincronizar
+        // minha tacada ainda rolando: o que chegou é aplicado quando ela terminar (onShotResolved)
       } else {
         if (this.netReplay && g.phase === 'rolling') {
           // chegou a próxima jogada antes de terminar a animação: encaixa a anterior
@@ -967,16 +987,17 @@ export class App {
   }
 
   /** Envia o estado depois da minha tacada (ou do meu tempo esgotado / do tempo do outro). */
-  private netSend(kind: 'shot' | 'timeout') {
+  private netSend(kind: 'shot' | 'timeout', result?: GameController) {
     const g = this.game;
     const net = this.net;
     if (!g || !net?.active) return;
+    const src = result ?? g;
     this.netMoves++;
     const payload = {
       kind,
-      next_turn: g.match.current,
-      winner: g.match.winner === null ? null : (String(g.match.winner) as '0' | '1'),
-      state: encodeState(g, kind === 'shot' ? g.lastShot : null) as unknown as Record<string, unknown>,
+      next_turn: src.match.current,
+      winner: src.match.winner === null ? null : (String(src.match.winner) as '0' | '1'),
+      state: encodeState(src, kind === 'shot' ? g.lastShot : null) as unknown as Record<string, unknown>,
     };
     void net.submit(payload).then(
       (room) => { this.netTurnSeen = performance.now(); this.netStatus(room); },
@@ -992,6 +1013,7 @@ export class App {
     const room = this.net?.room;
     this.netKey = '';
     this.netMine = false;
+    this.netPredicted = null;
     this.netReplay = null;
     if (room) this.remoteState(room);
   }
@@ -1063,6 +1085,7 @@ export class App {
     this.netMoves = -1;
     this.netReplay = null;
     this.netMine = false;
+    this.netPredicted = null;
     this.netOverKey = '';
     $('btn-over-new').hidden = false;
     $('btn-restart').hidden = false;
@@ -1403,6 +1426,7 @@ export class App {
         showAim: aiming && !this.strikeAnim,
         aimHit: this.aimHit,
         aimLegal: legal,
+        objectPath: this.prefs.guide && this.aimHit ? objectBallPath(g.world, this.aimHit) : null,
         cuePull: pull,
         showCue: aiming,
         ballInHand: aiming ? g.match.ballInHand : 'none',

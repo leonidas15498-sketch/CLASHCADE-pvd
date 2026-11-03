@@ -145,6 +145,28 @@ export class GameController {
   }
 
   /**
+   * Online: resolve a tacada em andamento numa CÓPIA, de uma vez (sem animar), e devolve a cópia já parada.
+   * Mesmo motor, mesmo passo fixo e mesmos números ⇒ chega exatamente ao resultado que a animação vai mostrar.
+   * Assim o resultado vai para o outro aparelho no instante da tacada, sem esperar as bolas pararem.
+   */
+  predictOutcome(): GameController | null {
+    if (this.phase !== 'rolling') return null;
+    const copy = Object.create(GameController.prototype) as GameController;
+    Object.assign(copy, {
+      opts: this.opts,
+      world: structuredClone(this.world),
+      match: structuredClone(this.match),
+      phase: this.phase,
+      lastResult: null,
+      onTableBefore: [...this.onTableBefore],
+      pocketOrder: [...this.pocketOrder],
+      lastShot: this.lastShot,
+    });
+    for (let guard = 0; copy.phase === 'rolling' && guard < 120 * 600; guard++) copy.tick();
+    return copy.phase === 'rolling' ? null : copy;
+  }
+
+  /**
    * Online: repete a tacada de outro aparelho a partir da mesa `from` e das velocidades da branca.
    * As regras locais rodam no fim, mas quem chamou deve trocar o resultado pelo estado recebido.
    */

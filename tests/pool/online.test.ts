@@ -45,9 +45,33 @@ describe('Sinuca online: estado e repetição da tacada', () => {
       const pack = shootAndPack(a, ang, 0.6);
       replay(b, pack);
       applyState(b, pack, names);
-      expect(JSON.stringify(encodeState(b, null).balls)).toBe(JSON.stringify(pack.balls));
+      const pos = (bs: PoolNetState['balls']) => bs.map(({ id, x, y, p, pk }) => [id, x, y, p, pk]);
+      expect(pos(encodeState(b, null).balls)).toEqual(pos(pack.balls)); // q (giro desenhado) é só visual
       expect(b.match.current).toBe(pack.match.current);
       expect(b.match.players.map((p) => p.group)).toEqual(pack.match.groups);
+    }
+  });
+
+  it('o resultado calculado no instante da tacada é igual ao da animação e ao da repetição no outro aparelho', () => {
+    const a = new GameController({ mode: 'local', names });
+    const b = new GameController({ mode: 'local', names });
+    const angles = [0.03, 2.1, -0.9, 1.4, -2.6];
+    for (const ang of angles) {
+      if (a.match.winner !== null) break;
+      if (a.match.ballInHand !== 'none') a.placeCue(a.cue.x, a.cue.y);
+      if (a.needsCall()) a.callPocket(0);
+      expect(a.shoot(ang, 0.8, { side: -0.3, top: 0.4 })).toBe(true);
+      const done = a.predictOutcome()!;
+      expect(done).not.toBeNull();
+      expect(a.phase).toBe('rolling'); // a mesa de verdade continua animando
+      const sent: PoolNetState = JSON.parse(JSON.stringify(encodeState(done, a.lastShot)));
+      let guard = 0;
+      while (a.phase === 'rolling' && guard++ < 120 * 60) a.tick();
+      expect(JSON.stringify(encodeState(a, a.lastShot))).toBe(JSON.stringify(sent));
+      replay(b, sent);
+      const pos = (bs: PoolNetState['balls']) => bs.map(({ id, x, y, p, pk }) => [id, x, y, p, pk]);
+      expect(pos(encodeState(b, sent.shot).balls)).toEqual(pos(sent.balls)); // q (giro desenhado) é só visual
+      applyState(b, sent, names);
     }
   });
 

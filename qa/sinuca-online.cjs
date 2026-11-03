@@ -109,13 +109,17 @@ window.__clashcadeTestRooms = (game) => {
 
   // 2) Tacadas alternadas: quem está na vez taca; o outro repete; mesas têm de ficar idênticas
   const shooter = async () => ((await st(A)).canAim ? A : (await st(B)).canAim ? B : null);
-  let drifts = [], equal = 0, shots = 0;
+  let drifts = [], equal = 0, shots = 0, delays = [];
   const angles = [0.0, 2.3, -0.9, 1.4];
   for (const ang of angles) {
     let p = null;
     for (let k = 0; k < 40 && !p; k++) { p = await shooter(); if (!p) await W(150); }
     if (!p) { console.log('ninguém pode tacar (fim?)'); break; }
     const before = (await st(A)).moves;
+    const watcher = p === A ? B : A;
+    // mede quanto o outro aparelho demora para COMEÇAR a animar (antes: só depois de as bolas pararem aqui)
+    await watcher.evaluate(() => { window.__tReplay = new Promise((r) => { const f = () => (window.__sinuca.netReplay ? r(Date.now()) : requestAnimationFrame(f)); f(); }); });
+    await p.evaluate(() => { window.__tRoll = new Promise((r) => { let t0 = 0; const f = () => { const ph = window.__sinuca.game.phase; if (!t0 && ph === 'rolling') t0 = Date.now(); if (t0 && ph !== 'rolling') r([t0, Date.now()]); else requestAnimationFrame(f); }; f(); }); });
     await p.evaluate((ang) => {
       const app = window.__sinuca; const g = app.game;
       if (g.needsCall()) g.callPocket(0);
@@ -123,6 +127,9 @@ window.__clashcadeTestRooms = (game) => {
     }, ang);
     await A.waitForFunction((m) => { const a = window.__sinuca; return a.netMoves > m && a.game.phase !== 'rolling' && !a.netReplay; }, before, { timeout: 60000 });
     await B.waitForFunction((m) => { const a = window.__sinuca; return a.netMoves > m && a.game.phase !== 'rolling' && !a.netReplay; }, before, { timeout: 60000 });
+    const [t0, t1] = await p.evaluate(() => window.__tRoll);
+    const tr = await watcher.evaluate(() => window.__tReplay);
+    delays.push(`${tr - t0} ms (bolas rolaram ${t1 - t0} ms)`);
     await W(200);
     a = await st(A); bb = await st(B); shots++;
     const other = p === A ? bb : a;
@@ -131,6 +138,7 @@ window.__clashcadeTestRooms = (game) => {
     if (a.winner !== null && a.winner !== undefined) break;
   }
   console.log(`Tacadas: ${shots} | mesas idênticas nos 2 aparelhos depois de cada tacada: ${equal}/${shots}`);
+  console.log('Atraso até o outro aparelho começar a animar (sem a internet; o real soma ~0,2–0,6 s):', delays.join(' | '));
   console.log('Maior diferença da repetição (m) por tacada:', drifts.map((d) => (d === Infinity ? 'bola caiu diferente' : d.toExponential(1))).join(' '));
   await B.screenshot({ path: `${out}/sinuca-online-B.png` });
 

@@ -192,6 +192,7 @@ export const POOL_EN: Record<string, string> = {
     'Simplified spin: no massé (curve) and no cue ball squirt off-center. The AI always strikes the center.',
   'Som (liga/desliga tudo)': 'Sound (all on/off)',
   'Música de fundo': 'Background music',
+  'Linha guia (para onde vai a bola atingida)': 'Guide line (where the hit ball goes)',
   'Volume da música': 'Music volume',
   'Tempo por tacada': 'Time per shot',
   'Sem limite': 'No limit',
