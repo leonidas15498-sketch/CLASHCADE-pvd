@@ -22,6 +22,7 @@ import {
   summarizeShot,
   timeoutFoul,
 } from '../rules/rules';
+import { applyBalls, encodeBalls, NetShot } from '../online';
 
 export type Phase = 'aiming' | 'rolling' | 'over';
 
@@ -45,6 +46,8 @@ export class GameController {
   /** Bolas encaçapadas na partida, em ordem (sem a branca e sem a 8 recolocada). */
   pocketOrder: number[] = [];
   private opts: GameOptions;
+  /** Online: mesa antes do impulso e velocidades da branca depois (para o outro aparelho repetir a tacada). */
+  lastShot: NetShot | null = null;
 
   constructor(opts: GameOptions) {
     this.opts = opts;
@@ -133,9 +136,26 @@ export class GameController {
   shoot(angle: number, power: number, spin: Spin = NO_SPIN): boolean {
     if (!this.canShoot()) return false;
     this.onTableBefore = this.onTable();
+    const from = encodeBalls(this);
     if (!strike(this.world, angle, power, spin)) return false;
+    const c = this.cue;
+    this.lastShot = { from, cue: [c.vx, c.vy, c.wx, c.wy, c.wz] };
     this.phase = 'rolling';
     return true;
+  }
+
+  /**
+   * Online: repete a tacada de outro aparelho a partir da mesa `from` e das velocidades da branca.
+   * As regras locais rodam no fim, mas quem chamou deve trocar o resultado pelo estado recebido.
+   */
+  replayShot(shot: NetShot): void {
+    applyBalls(this, shot.from);
+    this.onTableBefore = this.onTable();
+    const c = this.cue;
+    [c.vx, c.vy, c.wx, c.wy, c.wz] = shot.cue;
+    this.world.events = [];
+    this.lastShot = shot;
+    this.phase = 'rolling';
   }
 
   /** Avança um passo fixo de física. Retorna o resultado quando a tacada termina. */

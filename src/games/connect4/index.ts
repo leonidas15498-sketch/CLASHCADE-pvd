@@ -115,7 +115,7 @@ class Connect4Game {
 
   private async setupOnline() {
     this.shell.root.querySelector('[data-online-card]')?.remove();
-    const network = await availableRooms();
+    const network = await availableRooms('connect4');
     if (!network) return;
     if (this.disposed) { network.dispose(); return; }
     this.online?.dispose();

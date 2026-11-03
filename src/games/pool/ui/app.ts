@@ -20,6 +20,14 @@ import { TABLE } from '../physics/table';
 import { clampSpin, getBall, Spin } from '../physics/world';
 import { Difficulty, groupBalls, legalTargets, Mode } from '../rules/rules';
 import { loadPrefs, loadStats, Prefs, resetStats, savePrefs, saveStats } from '../storage/storage';
+import { availableRooms } from '../../../services/online/supabaseRooms';
+import { RoomLobby } from '../../../services/online/roomLobby';
+import type { Room } from '../../../services/online/types';
+import { applyState, encodeState, parsePoolState, PoolNetState } from '../online';
+
+/** Online: tempo fixo da tacada (o servidor aceita o "tempo esgotado" de quem joga após 35 s e do outro após 55 s). */
+const NET_SHOT_TIME = 45;
+const NET_CLAIM_AFTER = 62;
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 /** Quanto puxar o taco na mesa (m) para chegar a 100% de força. */
@@ -82,6 +90,23 @@ export class App {
   private onExit: (() => void) | null = null;
   private gauge = new PowerGauge($('pbar'));
 
+  // online (sala privada)
+  private net: RoomLobby | null = null;
+  /** sala:rodada da partida carregada. */
+  private netKey = '';
+  /** Quantas jogadas da sala já estão na mesa (room.moves). */
+  private netMoves = -1;
+  /** Tacada do outro aparelho sendo repetida; no fim a mesa vira exatamente este estado. */
+  private netReplay: PoolNetState | null = null;
+  /** Minha tacada rolando: ao parar, envio o resultado. */
+  private netMine = false;
+  /** Relógio local de quando vi a vez mudar (não depende do horário do servidor). */
+  private netTurnSeen = 0;
+  private netClaimed = -1;
+  private netOverKey = '';
+  /** QA: maior diferença (m) entre a repetição local e o estado enviado na última tacada recebida. */
+  netLastDrift = 0;
+
   constructor(opts: { onExit?: () => void } = {}) {
     onMountRollback(() => this.dispose());
     window.addEventListener('blur', () => this.pause(), { signal: this.ac.signal });
@@ -121,6 +146,8 @@ export class App {
     this.layout();
     this.renderMenuStats();
     this.raf = requestAnimationFrame((t) => this.frame(t));
+    $('btn-play-online').addEventListener('click', () => this.net?.open(), { signal: this.ac.signal });
+    void this.setupOnline();
   }
 
   /** Encerra o jogo: para o laço, a música, os sons, timers e remove listeners globais. */
@@ -132,6 +159,8 @@ export class App {
     for (const cancel of this.inputCleanups) cancel();
     this.cancelAI();
     clearTimeout(this.toastTimer);
+    this.net?.dispose();
+    this.net = null;
     this.music?.dispose();
     this.musicCtl?.destroy();
     this.sound.dispose();
@@ -281,6 +310,11 @@ export class App {
       this.confirm('Voltar ao menu? A partida atual será perdida.', () => this.toMenu()),
     );
     $('btn-rematch').addEventListener('click', () => {
+      if (this.net?.active) {
+        if (this.net.room?.status === 'closed') return this.netLeave();
+        void this.net.rematch().catch((e) => this.toast(e instanceof Error ? e.message : String(e), true));
+        return;
+      }
       this.cancelAI();
       this.game!.rematch();
       this.matchTime = 0;
@@ -292,7 +326,7 @@ export class App {
       this.toast(`Revanche! ${g.match.players[g.match.current].name} abre.`);
     });
     $('btn-over-new').addEventListener('click', () => this.toMenu());
-    $('btn-over-menu').addEventListener('click', () => this.onExit?.());
+    $('btn-over-menu').addEventListener('click', () => (this.net?.active ? this.netLeave() : this.onExit?.()));
 
     // ajuste fino com repetição ao segurar
     const hold = (id: string, dir: number) => {
@@ -715,7 +749,9 @@ export class App {
   // ---------------------------------------------------------- turns
   private humanCanAim(): boolean {
     const g = this.game;
-    return !!g && !this.paused && g.phase === 'aiming' && !g.currentIsAI() && !this.strikeAnim && !this.aiBusy;
+    if (!g || this.paused || g.phase !== 'aiming' || g.currentIsAI() || this.strikeAnim || this.aiBusy) return false;
+    if (this.net?.active) return !this.netMine && !this.netReplay && this.net.canMove() && this.net.player === g.match.current;
+    return true;
   }
 
   /** Mira inicial razoável para o jogador da vez: na bola legal mais próxima. */
@@ -734,7 +770,7 @@ export class App {
       }
     }
     if (g.match.isBreak) this.aimAngle = Math.atan2(g.world.table.footSpot.y - cue.y, g.world.table.footSpot.x - cue.x);
-    this.turnLeft = this.prefs.shotTime || Infinity;
+    this.turnLeft = this.net?.active ? NET_SHOT_TIME : this.prefs.shotTime || Infinity;
     this.setSpin({ side: 0, top: 0 });
     this.updateHUD();
   }
@@ -769,6 +805,7 @@ export class App {
     this.strikeAnim = null;
     const g = this.game!;
     if (g.shoot(s.angle, s.power, s.spin)) {
+      if (this.net?.active) this.netMine = true;
       this.setSpin({ side: 0, top: 0 });
       this.snapCue(true);
       this.sound.cue(s.power);
@@ -779,6 +816,33 @@ export class App {
 
   private onShotResolved() {
     const g = this.game!;
+    if (this.netReplay) {
+      // tacada do outro aparelho: a verdade é o estado que ele enviou (drift = quanto a repetição local errou)
+      this.netLastDrift = Math.max(0, ...this.netReplay.balls.map((nb) => {
+        const b = g.world.balls.find((o) => o.id === nb.id)!;
+        return nb.p !== (b.pocketed ? 1 : 0) ? Infinity : nb.p ? 0 : Math.hypot(nb.x - b.x, nb.y - b.y);
+      }));
+      applyState(g, this.netReplay, this.netNames());
+      this.netReplay = null;
+      this.railOrder = [...g.pocketOrder];
+      if (g.match.lastFoul) this.sound.foul();
+      this.toast(g.match.lastMessage, !!g.match.lastFoul);
+      this.prepareTurn();
+      this.netTurnSeen = performance.now();
+      if (this.net?.room) this.netStatus(this.net.room);
+      return;
+    }
+    if (this.netMine) {
+      this.netMine = false;
+      const res = g.lastResult!;
+      this.railOrder = [...g.pocketOrder];
+      if (res.foul) this.sound.foul();
+      this.toast(res.state.lastMessage, !!res.foul);
+      this.netSend('shot');
+      if (g.match.winner === null) this.prepareTurn();
+      else this.updateHUD();
+      return;
+    }
     // a canaleta segue a ordem oficial (a 8 recolocada na abertura sai dela)
     this.railOrder = [...g.pocketOrder];
     this.pocketAnims = this.pocketAnims.filter((a) => this.fxNow - a.t0 < 6);
@@ -817,6 +881,198 @@ export class App {
     $('over-reason').textContent = m.winReason;
     this.updateHUD();
     setTimeout(() => this.show('over'), 900);
+  }
+
+
+  // ------------------------------------------------------------ online
+  private async setupOnline() {
+    const network = await availableRooms('pool');
+    if (!network) return;
+    if (this.disposed) { network.dispose(); return; }
+    this.net?.dispose();
+    const app = $('app');
+    this.net = new RoomLobby(app.parentElement ?? app, network, (room) => this.remoteState(room), () => this.netEnded(), {
+      title: T('Sinuca online', 'Online Pool'),
+      savedKey: 'clashcade.pool.room.v1',
+      overlayClass: 'overlay',
+      boxClass: 'dialog',
+      primaryClass: 'primary',
+      placeBar: (bar) => $('msgbar').append(bar),
+    });
+    $('online-card').hidden = false;
+  }
+
+  private netNames(): [string, string] {
+    const r = this.net?.room;
+    return r ? [r.host_name, r.guest_name || T('Aguardando J2', 'Waiting for P2')] : ['Jogador 1', 'Jogador 2'];
+  }
+
+  /** Estado novo da sala (resposta do servidor ou Realtime). */
+  private remoteState(room: Room) {
+    if (this.disposed) return;
+    const names = this.netNames();
+    const st = room.state === null ? null : parsePoolState(room.state);
+    if (room.state !== null && !st) {
+      this.toast(T('Estado online inválido; reconecte à sala.', 'Invalid online state; reconnect to the room.'), true);
+      return;
+    }
+    const key = `${room.id}:${room.round}`;
+    if (key !== this.netKey || !this.game) {
+      // partida nova, revanche ou reconexão
+      this.sound.unlock();
+      this.cancelAI();
+      this.hideAll();
+      this.game = new GameController({ mode: 'local', names, breaker: room.first_player });
+      this.matchId = null;
+      this.matchTime = 0;
+      this.clearFx();
+      this.railOrder = [];
+      this.netKey = key;
+      this.netMoves = -1;
+      this.netReplay = null;
+      this.netMine = false;
+      this.netOverKey = '';
+      this.paused = false;
+    }
+    const g = this.game;
+    g.match = { ...g.match, players: [{ ...g.match.players[0], name: names[0] }, { ...g.match.players[1], name: names[1] }] };
+    if (room.moves > this.netMoves) {
+      if (this.netMine) {
+        // minha tacada ainda rolando: o envio dela vai falhar por versão e ressincronizar
+      } else {
+        if (this.netReplay && g.phase === 'rolling') {
+          // chegou a próxima jogada antes de terminar a animação: encaixa a anterior
+          applyState(g, this.netReplay, names);
+          this.netReplay = null;
+        }
+        if (st?.shot && this.netMoves >= 0 && room.moves === this.netMoves + 1 && g.phase === 'aiming') {
+          this.netReplay = st;
+          g.replayShot(st.shot);
+          this.cancelAI();
+          this.eventIdx = 0;
+          this.sound.cue(Math.min(1, Math.hypot(st.shot.cue[0], st.shot.cue[1]) / 9));
+        } else {
+          const first = this.netMoves < 0;
+          if (st) applyState(g, st, names);
+          this.railOrder = [...g.pocketOrder];
+          if (st && !first) this.toast(g.match.lastMessage, !!g.match.lastFoul);
+          this.prepareTurn();
+        }
+        this.netMoves = room.moves;
+        this.netTurnSeen = performance.now();
+      }
+    }
+    this.updateHUD();
+    this.netStatus(room);
+  }
+
+  /** Envia o estado depois da minha tacada (ou do meu tempo esgotado / do tempo do outro). */
+  private netSend(kind: 'shot' | 'timeout') {
+    const g = this.game;
+    const net = this.net;
+    if (!g || !net?.active) return;
+    this.netMoves++;
+    const payload = {
+      kind,
+      next_turn: g.match.current,
+      winner: g.match.winner === null ? null : (String(g.match.winner) as '0' | '1'),
+      state: encodeState(g, kind === 'shot' ? g.lastShot : null) as unknown as Record<string, unknown>,
+    };
+    void net.submit(payload).then(
+      (room) => { this.netTurnSeen = performance.now(); this.netStatus(room); },
+      (e) => {
+        this.toast(e instanceof Error ? e.message : String(e), true);
+        this.netResync();
+      },
+    );
+  }
+
+  /** Descarta a mesa local e recarrega exatamente o que está no servidor. */
+  private netResync() {
+    const room = this.net?.room;
+    this.netKey = '';
+    this.netMine = false;
+    this.netReplay = null;
+    if (room) this.remoteState(room);
+  }
+
+  /** O outro sumiu/travou na vez dele: depois de 62 s eu aplico o tempo esgotado (o servidor confere o prazo). */
+  private netMaybeClaim() {
+    const g = this.game;
+    const net = this.net;
+    if (!g || !net?.active || net.room?.status !== 'playing' || net.pending || this.netMine || this.netReplay) return;
+    if (g.phase !== 'aiming' || net.player === null || net.player === g.match.current || !net.connected) return;
+    if (this.netClaimed === this.netMoves || performance.now() - this.netTurnSeen < NET_CLAIM_AFTER * 1000) return;
+    this.netClaimed = this.netMoves;
+    if (!g.timeout()) return;
+    this.sound.foul();
+    this.toast(g.match.lastMessage, true);
+    this.netSend('timeout');
+    this.prepareTurn();
+  }
+
+  /** Fim de partida, revanche e sala encerrada (só depois da animação da tacada). */
+  private netStatus(room: Room) {
+    const g = this.game;
+    if (!g || this.disposed) return;
+    if (room.status === 'playing' || room.status === 'waiting') {
+      if (this.netOverKey) { this.hide('over'); this.netOverKey = ''; }
+      return;
+    }
+    if (this.netReplay || this.netMine || g.phase === 'rolling') return;
+    const me = this.net?.player ?? null;
+    const mine = me !== null && room.rematch[me];
+    const theirs = me !== null && room.rematch[1 - me];
+    const key = `${room.id}:${room.round}:${room.status}:${mine}:${theirs}`;
+    if (key === this.netOverKey) return;
+    const firstTime = !this.netOverKey.startsWith(`${room.id}:${room.round}:`);
+    this.netOverKey = key;
+    const names = this.netNames();
+    const other = me === null ? '' : names[1 - me];
+    const w = room.winner === '0' || room.winner === '1' ? Number(room.winner) : null;
+    $('over-title').textContent = room.status === 'closed' ? T('Sala encerrada', 'Room closed') : w === null ? '' : w === me ? T('Vitória!', 'Victory!') : `${names[w]} ${T('venceu!', 'wins!')}`;
+    let msg = room.status === 'closed' ? '' : `${g.match.winReason}\n`;
+    msg += `${names[0]} ${room.scores[0]} × ${room.scores[1]} ${names[1]}`;
+    if (room.status === 'finished' && mine) msg += `\n${T('Revanche pedida. Aguardando', 'Rematch requested. Waiting for')} ${other}…`;
+    else if (room.status === 'finished' && theirs) msg += `\n${other} ${T('quer revanche!', 'wants a rematch!')}`;
+    const reason = $('over-reason');
+    reason.textContent = msg;
+    reason.style.whiteSpace = 'pre-line';
+    const again = $<HTMLButtonElement>('btn-rematch');
+    again.textContent = room.status === 'closed' ? T('Sair', 'Leave') : mine ? T('Aguardando…', 'Waiting…') : theirs ? T('Aceitar revanche', 'Accept rematch') : T('Pedir revanche', 'Request rematch');
+    again.disabled = room.status === 'finished' && mine;
+    $('btn-over-new').hidden = true;
+    $('btn-over-menu').textContent = T('Sair da sala', 'Leave room');
+    if (firstTime && room.status === 'finished' && w === me) this.sound.win();
+    this.updateHUD();
+    setTimeout(() => !this.disposed && this.netOverKey === key && this.show('over'), firstTime ? 900 : 0);
+  }
+
+  /** Botão "Sair da sala" (barra, pausa, resultado). */
+  private netLeave() {
+    const net = this.net;
+    this.net = null;
+    if (net) void net.leave().catch(() => this.toast(T('Não foi possível confirmar a saída no servidor.', 'Could not confirm leaving on the server.'), true)).finally(() => net.dispose());
+    this.netEnded();
+  }
+
+  private netEnded() {
+    this.net?.dispose();
+    this.net = null;
+    this.netKey = '';
+    this.netMoves = -1;
+    this.netReplay = null;
+    this.netMine = false;
+    this.netOverKey = '';
+    $('btn-over-new').hidden = false;
+    $('btn-restart').hidden = false;
+    $<HTMLButtonElement>('btn-rematch').disabled = false;
+    $('btn-rematch').textContent = T('Revanche', 'Rematch');
+    $('btn-over-menu').textContent = T('Voltar aos jogos', 'Back to games');
+    $('over-reason').style.whiteSpace = '';
+    $('online-card').hidden = true;
+    this.toMenu();
+    void this.setupOnline();
   }
 
   // ---------------------------------------------------------------- IA
@@ -916,7 +1172,8 @@ export class App {
     if (!this.game || this.game.match.winner !== null) return;
     this.paused = true;
     const m = this.game.match;
-    $('pause-mode').textContent = m.mode === 'ai' ? T(`Modo: 1 jogador vs IA (${DIFF_LABEL[m.difficulty]})`, `Mode: 1 player vs AI (${DIFF_LABEL[m.difficulty]})`) : T('Modo: 2 jogadores locais', 'Mode: 2 players, same device');
+    $('btn-restart').hidden = !!this.net?.active;
+    $('pause-mode').textContent = this.net?.active ? T('Modo: online (sala privada)', 'Mode: online (private room)') : m.mode === 'ai' ? T(`Modo: 1 jogador vs IA (${DIFF_LABEL[m.difficulty]})`, `Mode: 1 player vs AI (${DIFF_LABEL[m.difficulty]})`) : T('Modo: 2 jogadores locais', 'Mode: 2 players, same device');
     this.show('pause');
   }
   private resume() {
@@ -925,6 +1182,7 @@ export class App {
     this.hide('pause');
   }
   private toMenu() {
+    if (this.net?.active) return this.netLeave();
     this.cancelAI();
     this.game = null;
     this.paused = false;
@@ -1039,6 +1297,7 @@ export class App {
     if (!g.timeout()) return;
     this.sound.foul();
     this.toast(g.match.lastMessage, true);
+    if (this.net?.active) this.netSend('timeout');
     this.prepareTurn();
   }
 
@@ -1108,16 +1367,18 @@ export class App {
       const overlayOpen = !!document.querySelector('.overlay.show:not(#spin)');
       if (!overlayOpen && g.match.winner === null) {
         this.matchTime += dtReal;
-        if (this.prefs.shotTime > 0 && this.humanCanAim()) {
+        if ((this.prefs.shotTime > 0 || this.net?.active) && this.humanCanAim()) {
           this.turnLeft -= dtReal;
           if (this.turnLeft <= 0) this.handleTimeout();
         }
+        this.netMaybeClaim();
       }
     }
     this.updateTimerRing();
 
     if (g) {
-      const aiming = g.phase === 'aiming' && g.match.winner === null;
+      // online: na vez do outro não desenha taco/mira locais (ele mira no aparelho dele)
+      const aiming = g.phase === 'aiming' && g.match.winner === null && (!this.net?.active || this.net.player === g.match.current);
       this.aimHit = aiming ? aimRaycast(g.world, this.aimAngle) : null;
       let legal = true;
       if (this.aimHit && this.aimHit.kind === 'ball') {

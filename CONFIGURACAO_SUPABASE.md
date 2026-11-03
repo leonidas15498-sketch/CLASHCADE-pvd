@@ -102,3 +102,19 @@ A migração não instala agendamento de limpeza. Configure uma rotina administr
 - [Autenticação anônima](https://supabase.com/docs/guides/auth/auth-anonymous)
 
 As páginas Markdown retornaram limitações de acesso no navegador de pesquisa; foram usadas a página HTML de changelog e a busca de documentação do conector Supabase. Nenhum segredo foi consultado ou registrado.
+
+
+## 4. Rodada 2 — salas multijogo (Sinuca online)
+
+Aplique no SQL Editor, uma vez, `supabase/migrations/20261103010000_clashcade_rooms_multigame.sql` (depois da primeira).
+Ela adiciona `game`, `state` e `turn_started` em `public.clashcade_rooms`, troca a função de comando (mesmas
+proteções + `p_game`/`p_payload`) e muda o protocolo para 2. Conferência:
+
+```sql
+select public.clashcade_online_status();            -- esperado: 2
+select column_name from information_schema.columns
+ where table_name='clashcade_rooms' and column_name in ('game','state','turn_started');  -- 3 linhas
+select has_table_privilege('authenticated','public.clashcade_rooms','update') as can_write; -- false
+```
+
+Sinuca: o servidor confere quem joga, versão e forma do pacote, mas confia na física enviada por quem tacou.

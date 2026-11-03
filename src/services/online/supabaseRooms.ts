@@ -1,6 +1,6 @@
 import type { SupabaseClient, RealtimeChannel } from '@supabase/supabase-js';
 import { T } from '../../i18n/lang';
-import { Connect4Room, Connect4Rooms, RoomEvents, parseRoom } from './types';
+import { ONLINE_PROTOCOL, OnlineGame, Room, RoomEvents, Rooms, StatePayload, parseRoom } from './types';
 
 const messages: Record<string, () => string> = {
   ROOM_NOT_FOUND: () => T('Sala não encontrada.', 'Room not found.'),
@@ -15,18 +15,21 @@ const messages: Record<string, () => string> = {
   INVALID_CODE: () => T('Use o código de dez caracteres da sala.', 'Use the ten-character room code.'),
   INVALID_NAME: () => T('Informe um nome de até 14 caracteres.', 'Enter a name up to 14 characters.'),
   ROOM_LIMIT: () => T('Limite de salas abertas atingido. Encerre uma sala anterior.', 'Open room limit reached. Close a previous room.'),
+  WRONG_GAME: () => T('Este código é de uma sala de outro jogo.', 'This code belongs to another game\'s room.'),
+  TOO_EARLY: () => T('O tempo da jogada ainda não acabou.', 'The turn time is not over yet.'),
+  INVALID_PAYLOAD: () => T('Jogada recusada pelo servidor. Reconecte à sala.', 'Move rejected by the server. Reconnect to the room.'),
 };
 function errorMessage(error: { message?: string }): string {
   const code = Object.keys(messages).find(k => error.message?.includes(k));
   return code ? messages[code]() : T('Falha na conexão online. Verifique sua rede e tente novamente.', 'Online connection failed. Check your network and try again.');
 }
 
-export class SupabaseRooms implements Connect4Rooms {
+export class SupabaseRooms implements Rooms {
   private channel: RealtimeChannel | null = null;
   private heartbeat = 0;
   private disposed = false;
   private watchTimer = 0;
-  constructor(private client: SupabaseClient) {}
+  constructor(private client: SupabaseClient, readonly game: OnlineGame) {}
   async identity() {
     const { data, error } = await this.client.auth.getSession();
     if (error) throw new Error(errorMessage(error));
@@ -37,19 +40,22 @@ export class SupabaseRooms implements Connect4Rooms {
   }
   private async command(action: string, args: Record<string, unknown> = {}) {
     if (this.disposed) throw new Error('Connection closed');
-    const { data, error } = await this.client.rpc('clashcade_command', { p_action: action, p_command_id: crypto.randomUUID(), ...args });
+    const { data, error } = await this.client.rpc('clashcade_command', { p_action: action, p_command_id: crypto.randomUUID(), p_game: this.game, ...args });
     if (error) throw new Error(errorMessage(error));
     return parseRoom(data);
   }
   async create(name: string) { await this.identity(); return this.command('create', { p_name: name }); }
   async join(code: string, name: string) { await this.identity(); return this.command('join', { p_code: code.trim().toUpperCase(), p_name: name }); }
   async resume(roomId: string) { await this.identity(); return this.command('resume', { p_room_id: roomId }); }
-  move(room: Connect4Room, column: number, commandId = crypto.randomUUID()) {
+  move(room: Room, column: number, commandId = crypto.randomUUID()) {
     return this.command('move', { p_room_id: room.id, p_column: column, p_version: room.version, p_round: room.round, p_command_id: commandId });
   }
-  rematch(room: Connect4Room) { return this.command('rematch', { p_room_id: room.id, p_round: room.round }); }
-  async leave(room: Connect4Room) { await this.command('leave', { p_room_id: room.id }); }
-  async watch(room: Connect4Room, events: RoomEvents): Promise<void> {
+  submit(room: Room, payload: StatePayload) {
+    return this.command('move', { p_room_id: room.id, p_version: room.version, p_round: room.round, p_payload: payload });
+  }
+  rematch(room: Room) { return this.command('rematch', { p_room_id: room.id, p_round: room.round }); }
+  async leave(room: Room) { await this.command('leave', { p_room_id: room.id }); }
+  async watch(room: Room, events: RoomEvents): Promise<void> {
     if (this.channel) await this.client.removeChannel(this.channel);
     clearInterval(this.heartbeat);
     events.connection('connecting');
@@ -107,13 +113,16 @@ async function configuredClient(): Promise<SupabaseClient | null> {
   const { createClient } = await import('@supabase/supabase-js');
   return createClient(url, key, { auth: { persistSession: true, autoRefreshToken: true, storageKey: 'clashcade.online.auth.v1' } });
 }
-/** No button is exposed on builds without configuration or a matching backend. */
-export async function availableRooms(): Promise<Connect4Rooms | null> {
+/** No button is exposed on builds without configuration or a matching backend (protocol 2 = multigame). */
+export async function availableRooms(game: OnlineGame = 'connect4'): Promise<Rooms | null> {
+  // QA local (qa/sinuca-online.cjs): servidor de teste com a migração real em PGlite. Só em localhost.
+  const testRooms = (globalThis as { __clashcadeTestRooms?: (g: OnlineGame) => Rooms }).__clashcadeTestRooms;
+  if (testRooms && ['localhost', '127.0.0.1'].includes(location.hostname)) return testRooms(game);
   try {
     clientPromise ??= configuredClient();
     const client = await clientPromise;
     if (!client) return null;
     const ready = await client.rpc('clashcade_online_status').abortSignal(AbortSignal.timeout(5000));
-    return !ready.error && ready.data === 1 ? new SupabaseRooms(client) : null;
+    return !ready.error && ready.data === ONLINE_PROTOCOL ? new SupabaseRooms(client, game) : null;
   } catch { return null; }
 }

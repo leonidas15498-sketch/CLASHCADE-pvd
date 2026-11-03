@@ -14,6 +14,26 @@
   2. Minigolfe e Torre (mesmo modelo). 3. Pong como piloto de tempo real (medir atraso antes de Air Hockey/Rastros/Sumô/Cabo).
   4. Blocos: desafio assíncrono (mesma semente). Conferir limites do plano grátis do Supabase Realtime antes do tempo real.
 
+## Sinuca online (02/11, 23h) — implementado e testado localmente; FALTA aplicar o SQL e testar em 2 aparelhos
+- Salas generalizadas para vários jogos: migração NOVA `supabase/migrations/20261103010000_clashcade_rooms_multigame.sql`
+  (colunas `game`, `state`, `turn_started`; função com `p_game`/`p_payload`; protocolo 1 → 2). Ordem: SQL antes, depois deploy.
+  Enquanto o SQL não for aplicado, o site novo ESCONDE o Online (inclusive do Quatro em Linha): protocolo ≠ 2.
+- Sinuca: quem taca simula no próprio aparelho e envia mesa final + mesa antes do impulso + velocidades da branca;
+  o outro repete a física só para animar e no fim usa o estado recebido. Servidor confere vez, versão, rodada, forma e
+  tamanho (≤ 20 KB), tempo esgotado (quem joga: 35 s; o outro reivindica após 55 s; cliente usa 45 s e 62 s) e placar.
+  NÃO revalida a física (cliente adulterado pode mentir): ok para sala entre amigos, não para ranking.
+- Código: src/services/online/roomLobby.ts (janela + barra genéricas), src/games/pool/online.ts (estado),
+  GameController.replayShot, app.ts (seção "online"). Online não conta placar de sessão, fichas nem estatísticas.
+- Testado: 246 testes (inclui 7 de SQL multijogo em PGlite e 4 de repetição da tacada: diferença 0 m);
+  QA `qa/sinuca-online.cjs` (2 navegadores + SQL real em PGlite): criar/entrar, 4 tacadas com mesas idênticas,
+  só um taca, tempo esgotado reivindicado, fim, revanche (abre o outro), sair → "Sala encerrada", 2P local depois.
+  smoke-todos, i18n-faltando, lig4, rastros-tacos sem erros (só falha de rede ao Supabase, bloqueado nesta máquina).
+- **Não testado:** Supabase hospedado (Realtime/Auth), 2 celulares reais, iPhone × Android (Math.sin/cos podem
+  diferir no último dígito: a animação pode divergir; o estado final é sempre o de quem tacou — encaixa no fim).
+  O adversário não vê a mira ao vivo, só a tacada.
+- Pedidos do Leon na fila (22:45–22:54): Sumô sem música; tecla de boost perto do WASD no PC; jogos maiores no celular
+  (em pé a mesa/campo fica minúsculo).
+
 ## V13 (02/11) — recebida do Leon; conferida aqui
 - V12/V13 feitas fora desta sessão: ver RELATORIO_IMPLEMENTACAO_CLASHCADE_V12.md e RELATORIO_IMPLEMENTACAO_V13.md.
 - V13: ajustes de jogabilidade (Pong, Rastros, Torre, Golfe, Sinuca), filtros na home, Quatro em Linha ONLINE

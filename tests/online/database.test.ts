@@ -1,6 +1,7 @@
 import { PGlite } from '@electric-sql/pglite';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import migration from '../../supabase/migrations/20261102205003_clashcade_connect4_online.sql?raw';
+import multigame from '../../supabase/migrations/20261103010000_clashcade_rooms_multigame.sql?raw';
 import { Connect4Room } from '../../src/services/online/types';
 
 // Real local PostgreSQL/WASM. Supabase Auth itself is not emulated as a service:
@@ -37,6 +38,7 @@ beforeAll(async () => {
     grant usage on schema auth to authenticated,anon;
     insert into auth.users values ${ids.map(id => `('${id}')`).join(',')};`);
   await db.exec(migration);
+  await db.exec(multigame);
 }, 60000);
 beforeEach(async () => { await db.exec('reset role; truncate public.clashcade_rooms,clashcade_private.commands;'); });
 afterAll(async () => { await db?.close(); });
@@ -117,5 +119,76 @@ describe('authoritative Connect4 SQL on local PostgreSQL', () => {
     expect((await command(ids[0], 'resume', room)).moves).toBe(1);
     // PGlite queues a single connection: a multi-connection lock-contention test
     // against hosted PostgreSQL is still required, not claimed by this test.
+  });
+});
+
+// ---- Salas multijogo (migração 2): Sinuca com estado enviado por quem tacou.
+async function rpc(id: string, args: Record<string, unknown>) {
+  await actor(id);
+  const keys = ['p_action','p_command_id','p_room_id','p_code','p_name','p_column','p_version','p_round','p_game','p_payload'];
+  const vals = keys.map(k => k === 'p_command_id' ? (args[k] ?? crypto.randomUUID()) : k === 'p_payload' && args[k] !== undefined ? JSON.stringify(args[k]) : (args[k] ?? null));
+  const out = await db.query<{ room: Connect4Room & { game: string; state: unknown } }>(`select public.clashcade_command($1,$2,$3,$4,$5,$6,$7,$8,$9,$10::jsonb) as room`, vals);
+  return out.rows[0].room;
+}
+async function poolPair() {
+  const host = await rpc(ids[0], { p_action: 'create', p_name: 'Ana', p_game: 'pool' });
+  const joined = await rpc(ids[1], { p_action: 'join', p_code: host.code, p_name: 'Bia', p_game: 'pool' });
+  await rpc(ids[0], { p_action: 'ready', p_room_id: joined.id, p_game: 'pool' });
+  return rpc(ids[1], { p_action: 'ready', p_room_id: joined.id, p_game: 'pool' });
+}
+const shot = (room: Connect4Room, by: string, payload: Record<string, unknown>) =>
+  rpc(by, { p_action: 'move', p_room_id: room.id, p_version: room.version, p_round: room.round, p_game: 'pool', p_payload: payload });
+const ST = { v: 1, balls: [[0, 0.5, 0.6, 0, -1]] };
+
+describe('multigame rooms (Sinuca) on local PostgreSQL', () => {
+  it('reports protocol 2 and keeps old Connect4 calls working', async () => {
+    await actor(ids[0]); expect((await db.query<{ v: number }>('select public.clashcade_online_status() as v')).rows[0].v).toBe(2);
+    const room = await pair(); expect((room as unknown as { game: string }).game).toBe('connect4');
+  });
+  it('isolates games: a pool code cannot be joined from Connect4 and vice versa', async () => {
+    const pool = await rpc(ids[0], { p_action: 'create', p_name: 'Ana', p_game: 'pool' });
+    await expect(command(ids[1], 'join', undefined, { code: pool.code })).rejects.toThrow('WRONG_GAME');
+    const c4 = await command(ids[0], 'create');
+    await expect(rpc(ids[1], { p_action: 'join', p_code: c4.code, p_name: 'Bia', p_game: 'pool' })).rejects.toThrow('WRONG_GAME');
+    await expect(rpc(ids[0], { p_action: 'create', p_name: 'Ana', p_game: 'xadrez' })).rejects.toThrow('INVALID_GAME');
+  });
+  it('accepts a shot only from the player of the turn, stores state, passes or keeps the turn', async () => {
+    let room = await poolPair(); expect(room.status).toBe('playing'); expect(room.turn).toBe(0);
+    await expect(shot(room, ids[1], { kind: 'shot', next_turn: 0, winner: null, state: ST })).rejects.toThrow('NOT_YOUR_TURN');
+    room = await shot(room, ids[0], { kind: 'shot', next_turn: 0, winner: null, state: ST });
+    expect(room.turn).toBe(0); expect(room.moves).toBe(1); expect((room as unknown as { state: unknown }).state).toEqual(ST);
+    const before = room;
+    room = await shot(room, ids[0], { kind: 'shot', next_turn: 1, winner: null, state: ST }); expect(room.turn).toBe(1);
+    await expect(shot(before, ids[0], { kind: 'shot', next_turn: 1, winner: null, state: ST })).rejects.toThrow('STALE_VERSION');
+  });
+  it('rejects malformed or oversized payloads', async () => {
+    const room = await poolPair();
+    for (const bad of [{ kind: 'x', next_turn: 0, state: ST }, { kind: 'shot', next_turn: 2, state: ST }, { kind: 'shot', next_turn: '0', state: ST },
+      { kind: 'shot', next_turn: 0 }, { kind: 'shot', next_turn: 0, winner: 'draw', state: ST }, { kind: 'shot', next_turn: 0, state: { big: 'x'.repeat(21000) } }])
+      await expect(shot(room, ids[0], bad)).rejects.toThrow('INVALID_PAYLOAD');
+  });
+  it('enforces time-out deadlines (35 s for the shooter, 55 s for the waiting player)', async () => {
+    let room = await poolPair();
+    const to = { kind: 'timeout', next_turn: 1, winner: null, state: ST };
+    await expect(shot(room, ids[0], to)).rejects.toThrow('TOO_EARLY');
+    await db.exec('reset role'); await db.query("update public.clashcade_rooms set turn_started=now()-interval '40 seconds' where id=$1",[room.id]);
+    await expect(shot(room, ids[1], to)).rejects.toThrow('TOO_EARLY');
+    await expect(shot(room, ids[0], { ...to, next_turn: 0 })).rejects.toThrow('INVALID_PAYLOAD');
+    await db.exec('reset role'); await db.query("update public.clashcade_rooms set turn_started=now()-interval '60 seconds' where id=$1",[room.id]);
+    room = await shot(room, ids[1], to); expect(room.turn).toBe(1); expect(room.moves).toBe(1);
+  });
+  it('records the winner and score, then a rematch clears state and alternates the breaker', async () => {
+    let room = await poolPair();
+    room = await shot(room, ids[0], { kind: 'shot', next_turn: 0, winner: '0', state: ST });
+    expect(room.status).toBe('finished'); expect(room.winner).toBe('0'); expect(room.scores).toEqual([1,0]);
+    await expect(shot(room, ids[0], { kind: 'shot', next_turn: 0, winner: null, state: ST })).rejects.toThrow('NOT_PLAYING');
+    await rpc(ids[0], { p_action: 'rematch', p_room_id: room.id, p_round: room.round, p_game: 'pool' });
+    room = await rpc(ids[1], { p_action: 'rematch', p_room_id: room.id, p_round: room.round, p_game: 'pool' });
+    expect(room.status).toBe('playing'); expect(room.round).toBe(2); expect(room.turn).toBe(1);
+    expect((room as unknown as { state: unknown }).state).toBeNull(); expect(room.scores).toEqual([1,0]);
+  });
+  it('still blocks direct writes to state', async () => {
+    const room = await poolPair(); await actor(ids[0]);
+    await expect(db.query("update public.clashcade_rooms set state='{}' where id=$1",[room.id])).rejects.toThrow(/permission denied/);
   });
 });

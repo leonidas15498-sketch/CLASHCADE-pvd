@@ -429,3 +429,17 @@ button.primary { background: linear-gradient(#3fbf6f, #1d7e44); border-color: rg
 .fx-toggle { display: flex; align-items: center; gap: 8px; font-weight: 600; }
 .fx-toggle input { width: 20px; height: 20px; accent-color: #ff6b4a; }
 .fx-toggle-note { display: block; opacity: 0.75; margin-top: 2px; }
+
+/* ---------- Online privado ---------- */
+.mode-card[hidden] { display: none; }
+.online-note { margin: 0; font-size: 13px; color: var(--muted); }
+.online-lobby { z-index: 25; }
+.online-lobby label { display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: var(--muted); }
+.online-lobby input { font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: #0f0c0a; color: var(--text); user-select: text; -webkit-user-select: text; }
+.online-lobby p[role='status'] { margin: 0; min-height: 1.2em; color: var(--muted); font-size: 13px; }
+/* barra da sala dentro da faixa de mensagens: mensagem à esquerda, sala à direita */
+#msgbar > .online-bar { flex: 0 1 auto; display: flex; align-items: center; gap: 6px; margin-left: 10px; font-size: 12px; min-width: 0; }
+#msgbar > .online-bar[hidden] { display: none; }
+#msgbar > .online-bar span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+#msgbar > .online-bar button { min-height: 26px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); padding: 2px 8px; font-size: 12px; white-space: nowrap; }
+#msgbar:has(> .online-bar:not([hidden])) #toast { flex: 1 1 auto; min-width: 0; }
