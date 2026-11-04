@@ -7,6 +7,10 @@ import { Music } from './music';
 import { mountMusicControl } from './musicControl';
 import { PLAYER_COLORS, setTurnColor } from './players';
 import { Sfx } from './sfx';
+import { equip, equipped, type ShopTheme } from './arenaThemes';
+import { mountBalance, tierTag, wireLocked } from './shopUi';
+import { itemByKey } from '../../services/catalog';
+import { isUnlocked } from '../../services/economy';
 import { currentTournamentGame, getTournament, recordTournament, TOURNAMENT_WINS } from '../../services/tournament';
 
 const routeHere = () => (typeof location !== 'undefined' ? location.hash.replace('#', '') : '');
@@ -39,6 +43,19 @@ export interface ShellOptions {
   onMenu: () => void;
   /** Recorde/estatística para o rodapé do menu. */
   menuNote?: () => string;
+  /** Loja do próprio jogo (pedido do Leon, 03/11): abas com os itens só deste jogo. */
+  shop?: ShopSection[];
+}
+
+/** Uma aba da loja do jogo: itens do catálogo único + como desenhar a amostra (pelo mesmo renderizador do jogo). */
+export interface ShopSection {
+  slot: string;
+  tabPt: string;
+  tabEn: string;
+  items: ShopTheme<unknown>[];
+  preview: (ctx: CanvasRenderingContext2D, w: number, h: number, item: ShopTheme<unknown>) => void;
+  /** Chamado quando o jogador troca o item equipado. */
+  onChange: () => void;
 }
 
 interface ShellPrefs {
@@ -85,6 +102,23 @@ const CSS = `
   background:linear-gradient(#1b2337,#10172c);border:1px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,.55)}
 .gs-wide{width:min(760px,96vw)}
 .gs-box h1{margin:0;text-align:center;font-size:clamp(22px,7vh,38px)}
+.gs-top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px}
+.gs-top>.gs-back{justify-self:start}
+.gs-top h2{margin:0;text-align:center;font-size:clamp(17px,5vh,24px)}
+.gs-links{justify-self:end;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.gs-box .gs-link{min-height:38px;border-radius:999px;padding:6px 12px;font-weight:700;background:#1f2a4a}
+.gs-box .gs-shop-btn{background:linear-gradient(#2a3a66,#1f2a4a);border-color:var(--sun);color:var(--sun)}
+.gs-bal{justify-self:end;display:flex;align-items:center;gap:6px;font-size:14px}
+.gs-bal small{display:none}
+.gs-bal .shop-coin{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ffe9a8,#ffc24a 55%,#c98a12);box-shadow:inset 0 0 0 2px rgba(122,75,0,.45)}
+.gs-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.gs-item{display:flex;flex-direction:column;gap:5px;padding:8px;border-radius:12px;background:rgba(10,20,51,.6);border:1px solid var(--line)}
+.gs-item.on{border-color:#00e0ff;box-shadow:0 0 0 2px rgba(0,224,255,.35)}
+.gs-item canvas{width:100%;aspect-ratio:16/9;border-radius:8px;display:block}
+.gs-item b{font-size:14px}.gs-item .gs-tag{font-size:11.5px;color:var(--muted)}
+.gs-item .gs-tag.prem{color:#ca86ff}.gs-item .gs-tag.own{color:#28c7b7}
+.gs-box .gs-item button{min-height:34px;padding:4px 8px;font-size:13px}
+@media (max-width:560px){.gs-top{grid-template-columns:1fr;justify-items:center}.gs-top>.gs-back,.gs-links,.gs-bal{justify-self:center}}
 .gs-box h1 small{display:block;font-size:.42em;color:var(--sun);letter-spacing:.08em;text-transform:uppercase}
 .gs-box h2{margin:0;font-size:clamp(17px,4.2vh,22px)}
 .gs-box p{margin:0;color:var(--muted)}
@@ -92,6 +126,7 @@ const CSS = `
 .gs-box .gs-primary{background:linear-gradient(#ffd877,#ffb52e 55%,#e0901a);color:#2a1600;border-color:#ffe7a6;font-weight:900;box-shadow:0 3px 0 #9c5d08}
 .gs-modes{display:flex;flex-wrap:wrap;gap:12px}
 .gs-card{flex:1 1 230px;min-width:0;display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:14px;background:rgba(10,20,51,.6);border:1px solid var(--line)}
+.gs-names{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.gs-names label{min-width:0}.gs-names input{width:100%;min-width:0;box-sizing:border-box}
 .gs-card label{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--muted)}
 .gs-card input{font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:#0a1433;color:var(--text);user-select:text;-webkit-user-select:text}
 .gs-seg{display:flex;gap:4px}.gs-seg button{flex:1;min-height:38px}
@@ -162,8 +197,11 @@ export class Shell {
   <main class="gs-stage" data-k="stage"><div class="gs-toast" data-k="toast" role="status"></div></main>
 
   <section class="gs-overlay show" data-k="menu"><div class="gs-box gs-wide">
-    <button class="gs-back" data-k="back">${T('← Jogos', '← Games')}</button>
-    <h1>${o.title}<small>${o.subtitle}</small></h1>
+    <div class="gs-top">
+      <button class="gs-back" data-k="back">${T('← Jogos', '← Games')}</button>
+      <h1>${o.title}<small>${o.subtitle}</small></h1>
+      <div class="gs-links">${o.shop?.length ? `<button class="gs-link gs-shop-btn" data-k="menu-shop">🛍️ ${T('Loja', 'Shop')}</button>` : ''}<button class="gs-link" data-k="menu-help">❓ ${T('Como jogar', 'How to play')}</button></div>
+    </div>
     <div class="gs-modes">
       ${
         m.solo
@@ -182,13 +220,19 @@ export class Shell {
       ${
         m.local
           ? `<div class="gs-card"><h2>${T('2 Jogadores Local', '2 Players, same device')}</h2>
-             <label><span><span class="gs-dot" style="background:${PLAYER_COLORS[0]}"></span>${T('Jogador 1', 'Player 1')}</span><input data-k="n1" id="gs-${o.id}-p1" maxlength="14" placeholder="${T('Jogador 1', 'Player 1')}"></label>
-             <label><span><span class="gs-dot" style="background:${PLAYER_COLORS[1]}"></span>${T('Jogador 2', 'Player 2')}</span><input data-k="n2" id="gs-${o.id}-p2" maxlength="14" placeholder="${T('Jogador 2', 'Player 2')}"></label>
+             <div class="gs-names"><label><span><span class="gs-dot" style="background:${PLAYER_COLORS[0]}"></span>${T('Jogador 1', 'Player 1')}</span><input data-k="n1" id="gs-${o.id}-p1" maxlength="14" placeholder="${T('Jogador 1', 'Player 1')}"></label>
+             <label><span><span class="gs-dot" style="background:${PLAYER_COLORS[1]}"></span>${T('Jogador 2', 'Player 2')}</span><input data-k="n2" id="gs-${o.id}-p2" maxlength="14" placeholder="${T('Jogador 2', 'Player 2')}"></label></div>
              <button class="gs-primary" data-k="play-local">${T('Jogar no mesmo aparelho', 'Play on this device')}</button>${o.localNote ? `<p class="gs-note">${o.localNote}</p>` : ''}</div>`
           : ''
       }
     </div>
-    <div class="gs-row"><button data-k="menu-help">${T('Como jogar', 'How to play')}</button></div>
+  </div></section>
+
+  <section class="gs-overlay top" data-k="shopbox"><div class="gs-box gs-wide gs-shop">
+    <div class="gs-top"><button class="gs-back" data-k="shop-close">${T('← Voltar', '← Back')}</button><h2>${T('Loja', 'Shop')} · ${o.title}</h2><div class="gs-bal" data-k="shop-bal"></div></div>
+    <div class="gs-seg gs-tabs" data-k="shop-tabs" role="tablist"></div>
+    <p class="gs-note">${T('Só muda o visual: a física e as regras são iguais para todos.', 'Looks only: physics and rules are the same for everyone.')}</p>
+    <div class="gs-items" data-k="shop-items"></div>
   </div></section>
 
   <section class="gs-overlay" data-k="pausebox"><div class="gs-box">
@@ -196,6 +240,7 @@ export class Shell {
     <button class="gs-primary" data-k="resume">${T('Continuar', 'Resume')}</button>
     <button data-k="restart">${T('Reiniciar partida', 'Restart match')}</button>
     <button data-k="help">${T('Como jogar', 'How to play')}</button>
+    ${o.shop?.length ? `<button data-k="pause-shop">🛍️ ${T('Loja', 'Shop')}</button>` : ''}
     <button data-k="to-menu">${T('Voltar ao menu', 'Back to menu')}</button>
   </div></section>
 
@@ -303,6 +348,12 @@ export class Shell {
       start({ mode: 'solo', names: [a || T('Você', 'You'), ''], difficulty: this.prefs.difficulty });
     });
     k('menu-help').addEventListener('click', () => this.show('helpbox'));
+    if (this.o.shop?.length) {
+      mountBalance(k('shop-bal'), this.ac.signal);
+      k('menu-shop').addEventListener('click', () => this.openShop());
+      k('pause-shop').addEventListener('click', () => this.openShop());
+      k('shop-close').addEventListener('click', () => this.hide('shopbox'));
+    }
     k('help').addEventListener('click', () => this.show('helpbox'));
     k('help-close').addEventListener('click', () => this.hide('helpbox'));
     k('home').addEventListener('click', () => {
@@ -378,8 +429,8 @@ export class Shell {
       if (!description) { description = document.createElement('p'); description.dataset.k = 'diff-description'; description.className = 'gs-note'; diff.after(description); }
       const descriptions: Record<Difficulty, string> = {
         easy: T('Mais tempo para reagir e maior margem de erro da IA.', 'More reaction time and a larger AI error margin.'),
-        medium: T('Rea??o e precis?o intermedi?rias.', 'Intermediate reaction and precision.'),
-        hard: T('IA mais precisa, com rea??o ou planejamento mais forte.', 'More precise AI with stronger reactions or planning.'),
+        medium: T('Reação e precisão intermediárias.', 'Intermediate reaction and precision.'),
+        hard: T('IA mais precisa, com reação ou planejamento mais forte.', 'More precise AI with stronger reactions or planning.'),
       };
       description.textContent = descriptions[this.prefs.difficulty];
     }
@@ -533,6 +584,60 @@ export class Shell {
   hideAll() {
     this.container.querySelectorAll('.gs-overlay').forEach((o) => o.classList.remove('show'));
   }
+  private shopTab = 0;
+  /** Abre a loja do jogo na aba atual (do menu ou da pausa; a pausa continua aberta por baixo). */
+  openShop() {
+    this.renderShop();
+    this.show('shopbox');
+  }
+  private renderShop() {
+    const secs = this.o.shop ?? [];
+    const tabs = this.k('shop-tabs');
+    tabs.innerHTML = secs.length > 1 ? secs.map((x, i) => `<button role="tab" data-i="${i}" class="${i === this.shopTab ? 'on' : ''}" aria-selected="${i === this.shopTab}">${T(x.tabPt, x.tabEn)}</button>`).join('') : '';
+    tabs.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.addEventListener('click', () => { this.shopTab = Number(b.dataset.i); this.renderShop(); }));
+    const sec = secs[this.shopTab];
+    if (!sec) return;
+    const cur = equipped(sec.slot, sec.items).key;
+    const box = this.k('shop-items');
+    box.innerHTML = '';
+    for (const item of sec.items) {
+      const cat = itemByKey(item.key);
+      const on = item.key === cur;
+      const card = document.createElement('div');
+      card.className = `gs-item${on ? ' on' : ''}`;
+      card.dataset.item = item.key;
+      const cv = document.createElement('canvas');
+      cv.width = 192;
+      cv.height = 108;
+      const unlocked = isUnlocked(item.key);
+      const tagCls = cat?.tier === 'premium' ? 'prem' : unlocked && cat?.tier === 'coins' ? 'own' : '';
+      card.innerHTML = `<b>${T(cat?.name ?? item.en, item.en)}</b><span class="gs-tag ${tagCls}">${on ? T('✓ Em uso', '✓ Equipped') + ' · ' : ''}${tierTag(item.key)}</span><span class="gs-tag">${T(item.descPt, item.descEn)}</span>`;
+      card.prepend(cv);
+      const btn = document.createElement('button');
+      if (on) {
+        btn.textContent = T('Em uso', 'Equipped');
+        btn.disabled = true;
+      } else if (unlocked) {
+        btn.className = 'gs-primary';
+        btn.textContent = T('Usar', 'Use');
+        btn.addEventListener('click', () => this.useItem(sec, item.key));
+      } else {
+        wireLocked(btn, item.key, () => this.useItem(sec, item.key));
+      }
+      card.appendChild(btn);
+      box.appendChild(card);
+      const ctx = cv.getContext('2d');
+      if (ctx) sec.preview(ctx, cv.width, cv.height, item);
+    }
+  }
+  private useItem(sec: ShopSection, key: string) {
+    if (equip(sec.slot, key)) {
+      this.sfx.tone(880, 0.06, 0.12);
+      sec.onChange();
+    }
+    this.renderShop();
+  }
+
   overlayOpen(): boolean {
     return !!this.container.querySelector('.gs-overlay.show');
   }

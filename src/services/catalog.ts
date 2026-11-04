@@ -10,8 +10,8 @@
 export type ItemTier = 'default' | 'coins' | 'premium';
 export interface CatalogItem {
   key: string;
-  game: 'sinuca' | 'minigolfe' | 'efeitos';
-  kind: 'taco' | 'mesa' | 'campo' | 'rastro';
+  game: 'sinuca' | 'minigolfe' | 'efeitos' | 'air-hockey' | 'pong' | 'lig-4';
+  kind: 'taco' | 'mesa' | 'campo' | 'rastro' | 'disco' | 'quadra' | 'bola' | 'tabuleiro';
   name: string;
   tier: ItemTier;
   price: number;
@@ -76,6 +76,33 @@ export const CATALOG: CatalogItem[] = [
   it('fx.trail.estrelas', 'efeitos', 'rastro', 'Estrelas', 'premium', 0, '#ffd84d'),
   it('fx.trail.fumaca', 'efeitos', 'rastro', 'Fumaça roxa', 'premium', 0, '#9b59d0'),
   it('fx.trail.morcegos', 'efeitos', 'rastro', 'Morcegos', 'premium', 0, '#3a2a4a', 'halloween'),
+  // Air Hockey — mesas e discos (03/11: loja dentro do jogo; desenhados pelo renderizador, física igual)
+  it('hockey.table.classica', 'air-hockey', 'mesa', 'Clássica', 'default', 0, '#e8eff7'),
+  it('hockey.table.gelo', 'air-hockey', 'mesa', 'Pista de Gelo', 'coins', 120, '#bfe8ff'),
+  it('hockey.table.grafite', 'air-hockey', 'mesa', 'Grafite Neon', 'coins', 150, '#1b2337'),
+  it('hockey.table.madeira', 'air-hockey', 'mesa', 'Fliperama de Madeira', 'coins', 150, '#b07a45'),
+  it('hockey.table.lava', 'air-hockey', 'mesa', 'Lava', 'premium', 0, '#ff5a1f'),
+  it('hockey.table.galaxia', 'air-hockey', 'mesa', 'Galáxia', 'premium', 0, '#7542c0'),
+  it('hockey.puck.classico', 'air-hockey', 'disco', 'Clássico', 'default', 0, '#1d1f26'),
+  it('hockey.puck.ambar', 'air-hockey', 'disco', 'Âmbar', 'coins', 80, '#ffc24a'),
+  it('hockey.puck.cristal', 'air-hockey', 'disco', 'Cristal', 'coins', 100, '#9fe9ff'),
+  it('hockey.puck.neon', 'air-hockey', 'disco', 'Anel Neon', 'premium', 0, '#00e0ff'),
+  // Pong — quadras e bolas
+  it('pong.court.classica', 'pong', 'quadra', 'Clássica', 'default', 0, '#0c1a2e'),
+  it('pong.court.synthwave', 'pong', 'quadra', 'Synthwave', 'coins', 120, '#2a0f45'),
+  it('pong.court.gelo', 'pong', 'quadra', 'Gelo', 'coins', 120, '#cfeeff'),
+  it('pong.court.madeira', 'pong', 'quadra', 'Madeira', 'coins', 150, '#a8743f'),
+  it('pong.court.lava', 'pong', 'quadra', 'Lava', 'premium', 0, '#ff5a1f'),
+  it('pong.court.galaxia', 'pong', 'quadra', 'Galáxia', 'premium', 0, '#7542c0'),
+  it('pong.ball.classica', 'pong', 'bola', 'Clássica', 'default', 0, '#ffffff'),
+  it('pong.ball.ambar', 'pong', 'bola', 'Âmbar', 'coins', 80, '#ffc24a'),
+  it('pong.ball.teal', 'pong', 'bola', 'Teal', 'coins', 80, '#28c7b7'),
+  it('pong.ball.neon', 'pong', 'bola', 'Neon', 'premium', 0, '#00e0ff'),
+  // Quatro em Linha — tabuleiros (as peças continuam coral × azul, padrão de cores da plataforma)
+  it('c4.board.classico', 'lig-4', 'tabuleiro', 'Clássico', 'default', 0, '#4a3f99'),
+  it('c4.board.madeira', 'lig-4', 'tabuleiro', 'Madeira', 'coins', 120, '#a8743f'),
+  it('c4.board.grafite', 'lig-4', 'tabuleiro', 'Grafite', 'coins', 120, '#2a3247'),
+  it('c4.board.ouro', 'lig-4', 'tabuleiro', 'Ouro', 'premium', 0, '#ffc24a'),
 ];
 
 const BY_KEY = new Map(CATALOG.map((x) => [x.key, x]));

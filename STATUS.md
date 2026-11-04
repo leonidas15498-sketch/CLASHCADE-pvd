@@ -1,4 +1,4 @@
-# STATUS — Clashcade (nome provisório; antes "Jogaço") — 02/11/2026, 21h30
+# STATUS — Clashcade (nome provisório; antes "Jogaço") — 03/11/2026, 22h30
 
 ## Publicação (02/11, 22h15)
 - Repositório OFICIAL: leonidas15498-sketch/CLASHCADE-pvd (Cloudflare Worker "clashcade-pvd" publica a cada push na main).
@@ -14,6 +14,26 @@
   2. Minigolfe e Torre (mesmo modelo). 3. Pong como piloto de tempo real (medir atraso antes de Air Hockey/Rastros/Sumô/Cabo).
   4. Blocos: desafio assíncrono (mesma semente). Conferir limites do plano grátis do Supabase Realtime antes do tempo real.
 
+## Lojas em todos os jogos com itens + menus mais diretos (03/11, 22h30) — testado no navegador automatizado; FALTA celular real
+- **Loja do próprio jogo no Shell** (botão "🛍️ Loja" no topo do menu e na pausa; abas; amostra desenhada pelo mesmo código
+  do jogo; compra em 2 toques; saldo no topo). Itens novos no catálogo único (catalog.ts), temas em shared/arenaThemes.ts,
+  escolha salva por aparelho ('clashcade.equipped.v1'; item que deixar de estar liberado volta ao padrão):
+  Air Hockey — Mesa (Clássica, Pista de Gelo 120, Grafite Neon 150, Madeira 150, Lava★, Galáxia★) e Disco (Clássico, Âmbar 80,
+  Cristal 100, Anel Neon★); Pong — Quadra (Clássica, Synthwave 120, Gelo 120, Madeira 150, Lava★, Galáxia★) e Bola (Clássica,
+  Âmbar 80, Teal 80, Neon★); Quatro em Linha — Tabuleiro (Clássico roxo, Madeira 120, Grafite 120, Ouro★). ★ = premium.
+  Rebatedores, raquetes e peças continuam coral × azul (padrão de cores). Preços são hipóteses, como os da sinuca.
+- Sem loja (nenhum item ainda): Rastros, Torre, Blocos, Sumô, Cabo. Sugestão: Sumô (ringue) e Blocos (tema das peças) são os
+  próximos que fazem sentido; Rastros já tem cor fixa por jogador.
+- **Menus:** levantamento com capturas (qa/fluxo-menus.cjs, celular deitado 762×343): portal tinha 7,7 telas de altura e
+  nenhum jogo na 1ª tela; menus dos jogos escondiam Loja/Como jogar abaixo da dobra. Feito: Ajustes virou engrenagem ao lado
+  das fichas (aba lateral removida); no celular deitado os jogos aparecem logo abaixo do logo (placar/bônus vão para depois da
+  lista; portal 4,8 telas); Loja/Como jogar/Ajustes no topo do menu de TODOS os jogos (Shell, sinuca, golfe); 2P com os dois
+  nomes lado a lado (menu do Shell cabe em 1 tela). Corrigido "Rea??o/precis?o" na descrição da dificuldade.
+  Imagens do GPT da rodada 2 ainda não chegaram: usei o texto dos prompts 2–4 como direção (links no topo, loja com abas).
+- QA: qa/loja-shell.cjs (300 → compra Gelo → 180; disco premium; pixel da mesa muda na partida; loja pela pausa; Pong
+  Synthwave → 60; Lig-4 Ouro; persiste após recarregar; portal mostra 60; 5 jogos sem loja = sem botão), smoke-todos,
+  menu.cjs, tela-cheia (10/10), i18n-faltando; 254 testes. Erro de console só de rede externa bloqueada no ambiente de teste.
+
 ## Loja dentro do jogo (03/11, 21h40) — testado no navegador automatizado (qa/menu.cjs); enviado (push 03/11)
 - Portal: aba "Loja" removida (cada jogo tem a sua); carteira continua no topo. Corrigido "? Dispon?vel" → "✓ Disponível" nas capas.
 - Sinuca e Minigolfe: botão "🛍️ Loja" no menu e na pausa (antes "Tacos e mesa"/"Tacos e campo"); tela vira "Loja da Sinuca"/
@@ -22,10 +42,12 @@
 - **Falta decisão do Leon:** os outros 8 jogos (Shell) não têm NENHUM item no catálogo, então não ganharam loja.
 
 ## PRÓXIMO (pedido do Leon, 03/11 20h49) — fazer em conversa nova
-1. **Loja dentro de cada jogo:** (feito para sinuca e golfe, ver acima; falta itens para os 8 jogos do Shell) cada jogo com a SUA loja (só os itens dele: tacos, mesas, rastros...), aberta por um botão
+1. **Loja dentro de cada jogo:** FEITO 03/11 22h30 para sinuca, golfe, Air Hockey, Pong e Quatro em Linha (ver acima);
+   falta decidir itens de Sumô/Blocos/Rastros/Torre/Cabo. cada jogo com a SUA loja (só os itens dele: tacos, mesas, rastros...), aberta por um botão
    no menu do próprio jogo, como menu à parte. Hoje a loja é geral no portal (src/services/catalog.ts, shopUi.ts).
    Manter Fichas/Premium e a economia como estão (catálogo único; só muda onde e como aparece).
-2. **Menus mais intuitivos** de forma geral (portal e menus dos jogos). Levantar o fluxo atual com capturas antes de mudar.
+2. **Menus mais intuitivos:** 1ª rodada FEITA 03/11 22h30 (ver acima). Próxima: aplicar as imagens do GPT (prompts 1–4)
+   quando chegarem (capa à esquerda no menu do jogo, botões de modo com ícone).
 3. Mesa da sinuca "esticada" na horizontal: NÃO feito de propósito. Esticar só na largura deixa as bolas ovais e muda a
    física; o limite é a altura do celular. Já feito: layout compacto (+23%) e tela cheia. Leon ainda vai avaliar a versão
    de 20h48. Se quiser mais: diminuir a madeira da mesa no modo compacto (~+6% de feltro).

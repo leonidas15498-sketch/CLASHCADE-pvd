@@ -44,6 +44,8 @@ const COMMON: Record<string, string> = {
   Pronto: 'Done',
   Personalizar: 'Customize',
   '🛍️ Loja': '🛍️ Shop',
+  '❓ Como jogar': '❓ How to play',
+  '⚙️ Ajustes': '⚙️ Settings',
   'Loja da Sinuca': 'Pool shop',
   'Loja do Minigolfe': 'Mini golf shop',
   Tacos: 'Cues',

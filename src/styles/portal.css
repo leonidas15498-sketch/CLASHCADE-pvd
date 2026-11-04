@@ -187,3 +187,22 @@ button { font: inherit; cursor: pointer; }
 .tour-champ { margin: 0; font-size: clamp(18px, 4vw, 24px); font-weight: 900; color: #ffc24a; text-align: center; }
 .tour-panel .row { display: flex; gap: 10px; flex-wrap: wrap; }
 .tour-panel .row .btn { flex: 1 1 140px; min-height: 44px; }
+
+/* 03/11 — menus mais intuitivos: Ajustes vira engrenagem no topo; placar/bônus ficam em 2 colunas */
+.top-row { grid-template-columns: 1.25fr 1.1fr; }
+@media (max-width: 640px) { .top-row { grid-template-columns: 1fr; } }
+.gear-btn { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-soft); background: rgba(16,23,44,.85); color: #fff; cursor: pointer; flex: 0 0 auto; }
+.gear-btn svg { width: 22px; height: 22px; }
+.gear-btn.on { border-color: #00e0ff; box-shadow: 0 0 0 2px rgba(0,224,255,.35); }
+.back-games { align-self: flex-start; }
+/* Celular deitado (pouca altura): os jogos aparecem logo na 1ª tela; placar e bônus vão para baixo da lista */
+@media (max-height: 520px) and (orientation: landscape) {
+  .home { gap: 10px; }
+  .home-head { padding-top: 0; flex-wrap: nowrap; }
+  .home-head .subtitle, .home-head .tagline { display: none; }
+  .home-head .brand { transform: scale(.62); transform-origin: left center; margin: -18px -90px -18px 0; }
+  .top-row { order: 3; }
+  .home-foot { order: 4; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .card p { display: none; }
+}

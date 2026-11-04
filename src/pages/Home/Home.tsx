@@ -424,10 +424,6 @@ export function Home({ onOpen }: { onOpen: (route: string) => void }) {
     }
   }, []);
   const bal = getWallet().balance;
-  const nav: { id: Tab; icon: JSX.Element }[] = [
-    { id: 'games', icon: Icon.pad },
-    { id: 'settings', icon: Icon.gear },
-  ];
   return (
     <div className="home">
       <div className="arena-bg" aria-hidden="true">
@@ -450,25 +446,25 @@ export function Home({ onOpen }: { onOpen: (route: string) => void }) {
           <div className="wallet" title={`${t('coins', { n: bal })} · ${T('gaste na loja de cada jogo', 'spend them in each game\'s shop')}`} data-testid="wallet">
             <Coin size={22} /> <b>{new Intl.NumberFormat().format(bal)}</b>
           </div>
+          {/* Ajustes num botão de engrenagem no topo (03/11: menus mais intuitivos; antes era uma aba ao lado do placar) */}
+          <button className={`gear-btn${tab === 'settings' ? ' on' : ''}`} data-tab="settings" aria-pressed={tab === 'settings'} aria-label={t('nav.settings')} title={t('nav.settings')} onClick={() => setTab(tab === 'settings' ? 'games' : 'settings')}>
+            {Icon.gear}
+          </button>
         </div>
       </header>
 
       <div className="top-row">
         <Versus />
-        <nav className="panel side-nav" aria-label="Menu">
-          {nav.map((n) => (
-            <button key={n.id} className={`nav-item${tab === n.id ? ' on' : ''}`} aria-current={tab === n.id ? 'page' : undefined} onClick={() => setTab(n.id)} data-tab={n.id}>
-              {n.icon}
-              <span>{t(`nav.${n.id === 'games' ? 'play' : n.id}`)}</span>
-              <i aria-hidden="true">›</i>
-            </button>
-          ))}
-        </nav>
         <Daily />
       </div>
 
       {tab === 'games' && <Games onOpen={onOpen} />}
-      {tab === 'settings' && <Settings />}
+      {tab === 'settings' && (
+        <>
+          <button className="btn ghost small-btn back-games" data-tab="games" onClick={() => setTab('games')}>← {T('Jogos', 'Games')}</button>
+          <Settings />
+        </>
+      )}
 
       <footer className="home-foot">{t('foot')}</footer>
     </div>

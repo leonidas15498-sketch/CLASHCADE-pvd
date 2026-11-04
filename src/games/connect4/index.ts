@@ -2,6 +2,7 @@ import { onMountRollback } from '../shared/lifecycle';
 import { T } from '../../i18n/lang';
 import { ParticleSystem } from '../shared/fx';
 import { PLAYER_COLORS } from '../shared/players';
+import { C4_BOARDS, equipped, type C4BoardPal } from '../shared/arenaThemes';
 import { Shell, StartConfig } from '../shared/shell';
 import type { GameModule } from '../shared/types';
 import { chooseC4 } from './ai';
@@ -56,6 +57,7 @@ class Connect4Game {
   private thinking = false;
   private aiTimer = 0;
   private fx = new ParticleSystem();
+  private board = equipped('c4.board', C4_BOARDS);
   private ac = new AbortController();
   private t = 0;
   private resultShown = false;
@@ -76,6 +78,7 @@ class Connect4Game {
       // "Calculated Gambit" (Leon, Gemini): 104 BPM, 65 compassos (150 s), -14 LUFS.
       musicUrl: './music/calculated-gambit.mp3',
       helpHtml: T(HELP_PT, HELP_EN),
+      shop: [{ slot: 'c4.board', tabPt: 'Tabuleiro', tabEn: 'Board', items: C4_BOARDS as never, preview: (c, w, h, it) => previewC4(c, w, h, it.pal as C4BoardPal), onChange: () => { this.board = equipped('c4.board', C4_BOARDS); this.draw(); } }],
       onExit,
       onStart: (cfg) => {
         this.wins = [0, 0];
@@ -470,13 +473,13 @@ class Connect4Game {
         ctx.arc(x, y, u * 0.42, 0, Math.PI * 2);
       }
     const gb = ctx.createLinearGradient(0, by, 0, by + bh);
-    gb.addColorStop(0, '#4a3f99');
-    gb.addColorStop(1, '#2b2366');
+    gb.addColorStop(0, this.board.pal.top);
+    gb.addColorStop(1, this.board.pal.bottom);
     ctx.fillStyle = gb;
     ctx.fill('evenodd');
     ctx.restore();
     // pés da grade
-    ctx.fillStyle = '#221b52';
+    ctx.fillStyle = this.board.pal.edge;
     ctx.fillRect(bx - u * 0.1, by + bh - u * 0.05, u * 0.5, u * 0.15);
     ctx.fillRect(bx + bw - u * 0.4, by + bh - u * 0.05, u * 0.5, u * 0.15);
     if (s) {
@@ -542,3 +545,36 @@ const connect4: GameModule = {
   },
 };
 export default connect4;
+
+/** Amostra da loja: tabuleiro 7×6 no tema, com algumas peças coral e azuis (cores fixas dos jogadores). */
+function previewC4(ctx: CanvasRenderingContext2D, w: number, h: number, pal: C4BoardPal) {
+  ctx.fillStyle = '#0a1433';
+  ctx.fillRect(0, 0, w, h);
+  const u = Math.min((w * 0.9) / COLS, (h * 0.86) / ROWS);
+  const bx = (w - COLS * u) / 2;
+  const by = (h - ROWS * u) / 2;
+  const disc = [[0, 0, 0], [1, 0, 1], [2, 0, 0], [3, 0, 1], [3, 1, 0], [2, 1, 1], [3, 2, 0]];
+  for (const [c, r, p] of disc) {
+    ctx.fillStyle = PLAYER_COLORS[p];
+    ctx.beginPath();
+    ctx.arc(bx + (c + 0.5) * u, by + (ROWS - r - 0.5) * u, u * 0.4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.beginPath();
+  ctx.roundRect(bx - u * 0.12, by - u * 0.12, COLS * u + u * 0.24, ROWS * u + u * 0.24, u * 0.3);
+  for (let c = 0; c < COLS; c++)
+    for (let r = 0; r < ROWS; r++) {
+      const x = bx + (c + 0.5) * u;
+      const y = by + (r + 0.5) * u;
+      ctx.moveTo(x + u * 0.42, y);
+      ctx.arc(x, y, u * 0.42, 0, Math.PI * 2);
+    }
+  const g = ctx.createLinearGradient(0, by, 0, by + ROWS * u);
+  g.addColorStop(0, pal.top);
+  g.addColorStop(1, pal.bottom);
+  ctx.fillStyle = g;
+  ctx.fill('evenodd');
+  ctx.strokeStyle = pal.edge;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}

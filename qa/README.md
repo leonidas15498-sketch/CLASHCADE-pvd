@@ -10,3 +10,7 @@
 - `node qa/sumo.cjs <saída>` — Sumô Neon: joystick, avanço, partida contra IA até o fim, dois dedos (multitoque por CDP).
 - `node qa/cabo.cjs <saída>` — Cabo de Guerra: toque no tempo, dois dedos na mesma batida, metralhar escorrega, IA termina.
 - `smoke-todos.cjs`, `i18n-faltando.cjs` e `fps.cjs` já incluem os dois jogos novos.
+
+## 03/11 noite: lojas e menus
+- `node qa/fluxo-menus.cjs <saída> [prefixo]` — capturas portal → menu → loja (celular deitado e desktop) e altura em "telas".
+- `node qa/loja-shell.cjs <saída>` — loja do Air Hockey/Pong/Quatro em Linha: compra em 2 toques, equipar, tema na partida, persistência.

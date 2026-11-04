@@ -13,6 +13,8 @@
 - **Economia (decisão do Leon, 01/11):** só o padrão liberado; Fichas (bônus diário, partidas, desafios) compram itens 'coins';
   'premium' só com a compra do Premium (que também tira anúncios); sazonais podem ter versão por fichas e premium.
   Catálogo único src/services/catalog.ts; toda concessão idempotente (src/services/economy.ts). Cosmético nunca muda física.
+  Loja fica DENTRO de cada jogo (botão "🛍️ Loja" no topo do menu e na pausa). Jogos do Shell: opção `shop` + temas em
+  src/games/shared/arenaThemes.ts (paleta usada pelo renderizador; peças dos jogadores continuam coral × azul).
 - **Fim de partida:** Shell games chamam `shell.beginMatch()` no início e `shell.report(cfg, vencedor)` no fim; sinuca/golfe
   chamam reportMatch (src/services/match.ts). Partida abandonada nunca é relatada.
 - **Idiomas:** pt-BR e en-US. Nos jogos: `T(pt, en)` de src/i18n/lang.ts; sinuca/golfe: dicionário em src/i18n/poolGolfEn.ts.

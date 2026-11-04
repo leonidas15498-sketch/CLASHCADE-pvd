@@ -2,6 +2,7 @@ import { onMountRollback } from '../shared/lifecycle';
 import { T } from '../../i18n/lang';
 import { ParticleSystem } from '../shared/fx';
 import { PLAYER_COLORS } from '../shared/players';
+import { equipped, PONG_BALLS, PONG_COURTS, type PongBallPal, type PongCourtPal } from '../shared/arenaThemes';
 import { Shell, StartConfig } from '../shared/shell';
 import type { GameModule } from '../shared/types';
 import { PongAI } from './ai';
@@ -45,6 +46,8 @@ export class PongGame {
   private keys = new Set<string>();
   /** Rastro por tempo (0,12 s) e distância (≥ 1 cm): mesmo comprimento em 30, 60 ou 120 FPS. */
   private trail: Array<{ x: number; y: number; t: number }> = [];
+  private court = equipped('pong.court', PONG_COURTS);
+  private ball = equipped('pong.ball', PONG_BALLS);
   private fx = new ParticleSystem();
   private evIdx = 0;
   private ac = new AbortController();
@@ -62,6 +65,10 @@ export class PongGame {
       // "Center Court Rally" (Leon, Gemini): 120 BPM, 80 compassos (160 s), -15 LUFS como hockey e Duelo.
       musicUrl: './music/center-court-rally.mp3',
       helpHtml: T(HELP_PT, HELP_EN),
+      shop: [
+        { slot: 'pong.court', tabPt: 'Quadra', tabEn: 'Court', items: PONG_COURTS as never, preview: (c, w, h, it) => previewPong(c, w, h, it.pal as PongCourtPal, this.ball.pal), onChange: () => { this.court = equipped('pong.court', PONG_COURTS); this.draw(); } },
+        { slot: 'pong.ball', tabPt: 'Bola', tabEn: 'Ball', items: PONG_BALLS as never, preview: (c, w, h, it) => previewPong(c, w, h, this.court.pal, it.pal as PongBallPal), onChange: () => { this.ball = equipped('pong.ball', PONG_BALLS); this.draw(); } },
+      ],
       onExit,
       onStart: (cfg) => this.start(cfg),
       onPause: (p) => {
@@ -273,36 +280,14 @@ export class PongGame {
     const px = 1 / sc;
     const W = TABLE.w;
     const H = TABLE.h;
-    // quadra
-    ctx.fillStyle = '#0c1a2e';
-    ctx.beginPath();
-    ctx.roundRect(-RAIL, -RAIL, W + 2 * RAIL, H + 2 * RAIL, 0.06);
-    ctx.fill();
-    const g = ctx.createLinearGradient(0, 0, W, 0);
-    g.addColorStop(0, 'rgba(255,107,74,0.10)');
-    g.addColorStop(0.5, 'rgba(255,255,255,0.02)');
-    g.addColorStop(1, 'rgba(61,139,255,0.10)');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-    ctx.lineWidth = 3 * px;
-    ctx.strokeRect(0, 0, W, H);
-    // rede tracejada
-    ctx.setLineDash([0.04, 0.035]);
-    ctx.lineWidth = 4 * px;
-    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
-    ctx.beginPath();
-    ctx.moveTo(W / 2, 0);
-    ctx.lineTo(W / 2, H);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    drawCourt(ctx, this.court.pal, px);
     const s = this.s;
     if (!s) return;
     // placar grande no fundo
     // (texto em pixels de tela: fonte em fração de pixel não é confiável em todos os navegadores)
     ctx.save();
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
-    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    ctx.fillStyle = this.court.pal.score;
     ctx.font = `800 ${Math.round(0.32 * sc)}px system-ui, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -325,15 +310,17 @@ export class PongGame {
     const b = s.ball;
     for (const t of this.trail) {
       const k = 1 - Math.min(1, (s.t - t.t) / 0.12); // 1 = novo, 0 = some
-      ctx.fillStyle = `rgba(255,255,255,${k * 0.25})`;
+      ctx.globalAlpha = k * 0.25;
+      ctx.fillStyle = this.ball.pal.color;
       ctx.beginPath();
       ctx.arc(t.x, t.y, PONG.ballR * (0.4 + 0.6 * k), 0, Math.PI * 2);
       ctx.fill();
     }
+    ctx.globalAlpha = 1;
     if (s.freeze <= 0 || Math.floor(s.freeze * 6) % 2 === 0) {
-      ctx.shadowColor = '#ffffff';
+      ctx.shadowColor = this.ball.pal.color;
       ctx.shadowBlur = 12;
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = this.ball.pal.color;
       ctx.beginPath();
       ctx.arc(b.x, b.y, PONG.ballR, 0, Math.PI * 2);
       ctx.fill();
@@ -362,3 +349,61 @@ const pong: GameModule = {
   },
 };
 export default pong;
+
+/** Quadra com a paleta do tema da loja (jogo e amostra da loja usam o mesmo código). */
+function drawCourt(ctx: CanvasRenderingContext2D, pal: PongCourtPal, px: number) {
+  const W = TABLE.w;
+  const H = TABLE.h;
+  // quadra
+  ctx.fillStyle = pal.rail;
+  ctx.beginPath();
+  ctx.roundRect(-RAIL, -RAIL, W + 2 * RAIL, H + 2 * RAIL, 0.06);
+  ctx.fill();
+  ctx.fillStyle = pal.floor;
+  ctx.fillRect(0, 0, W, H);
+  if (pal.stars) {
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    for (let i = 0; i < 60; i++) ctx.fillRect(((i * 0.6180339) % 1) * W, ((i * 0.7548776) % 1) * H, 0.006 + (i % 3) * 0.003, 0.006 + (i % 3) * 0.003);
+  }
+  const g = ctx.createLinearGradient(0, 0, W, 0);
+  g.addColorStop(0, 'rgba(255,107,74,0.10)');
+  g.addColorStop(0.5, 'rgba(255,255,255,0.02)');
+  g.addColorStop(1, 'rgba(61,139,255,0.10)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = pal.line;
+  ctx.lineWidth = 3 * px;
+  ctx.strokeRect(0, 0, W, H);
+  // rede tracejada
+  ctx.setLineDash([0.04, 0.035]);
+  ctx.lineWidth = 4 * px;
+  ctx.strokeStyle = pal.net;
+  ctx.beginPath();
+  ctx.moveTo(W / 2, 0);
+  ctx.lineTo(W / 2, H);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+/** Amostra da loja: quadra inteira, raquetes nas cores dos jogadores e a bola no centro. */
+function previewPong(ctx: CanvasRenderingContext2D, w: number, h: number, court: PongCourtPal, ball: PongBallPal) {
+  ctx.fillStyle = '#0a1433';
+  ctx.fillRect(0, 0, w, h);
+  const sc = Math.min(w / (TABLE.w + 2 * RAIL), h / (TABLE.h + 2 * RAIL));
+  ctx.save();
+  ctx.setTransform(sc, 0, 0, sc, w / 2 - (TABLE.w / 2) * sc, h / 2 - (TABLE.h / 2) * sc);
+  drawCourt(ctx, court, 1 / sc);
+  for (const p of [0, 1] as const) {
+    ctx.fillStyle = PLAYER_COLORS[p];
+    ctx.beginPath();
+    ctx.roundRect(paddleX(p) - PONG.paddleW / 2, TABLE.h / 2 - PONG.paddleH / 2, PONG.paddleW, PONG.paddleH, PONG.paddleW / 2);
+    ctx.fill();
+  }
+  ctx.shadowColor = ball.color;
+  ctx.shadowBlur = 8;
+  ctx.fillStyle = ball.color;
+  ctx.beginPath();
+  ctx.arc(TABLE.w / 2, TABLE.h / 2, PONG.ballR * 1.3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}

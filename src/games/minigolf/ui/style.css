@@ -110,7 +110,9 @@
 .mg-row-btns { display: flex; gap: 10px; }
 .mg-row-btns button { flex: 1; }
 .mg-menu-box { width: min(760px, 96vw); }
-.mg-menu-top { display: flex; }
+.mg-menu-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.mg-menu-top .mg-row-btns { gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.mg-menu-top .mg-row-btns button { flex: 0 0 auto; min-height: 36px; padding: 4px 12px; border-radius: 999px; font-size: 13.5px; }
 .mg-link { min-height: 32px !important; background: transparent !important; border: 0 !important; color: var(--mg-muted) !important; padding: 2px 6px !important; }
 .mg-menu-box h1 { margin: 0; text-align: center; font-size: clamp(22px, 7vh, 38px); }
 .mg-menu-box h1 span { display: block; font-size: 0.45em; color: var(--mg-sun); letter-spacing: 0.08em; text-transform: uppercase; }

@@ -380,7 +380,9 @@ button.primary { background: linear-gradient(#3fbf6f, #1d7e44); border-color: rg
 .spin-desc { min-height: 1.3em; color: var(--gold) !important; font-weight: 700; }
 #btn-spin.has-spin { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(242, 193, 78, 0.35); }
 .row input[type="range"] { margin-left: auto; width: 45%; height: auto; accent-color: var(--gold); }
-.menu-top { display: flex; }
+.menu-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.menu-top .menu-links { gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.menu-top .menu-links button { flex: 0 0 auto; min-height: 36px; padding: 4px 12px; border-radius: 999px; font-size: 13.5px; }
 .back-link { min-height: 34px !important; padding: 4px 12px !important; font-size: 13px; background: transparent !important; color: #d8cbb8 !important; }
 
 /* Padrão da plataforma: fundo e moldura na cor de quem joga (J1 coral, J2/IA azul). */

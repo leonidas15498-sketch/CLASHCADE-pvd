@@ -50,6 +50,9 @@ describe('catálogo', () => {
     expect(defaults.get('sinuca.mesa')).toBe(1);
     expect(defaults.get('minigolfe.taco')).toBe(1);
     expect(defaults.get('minigolfe.campo')).toBe(1);
+    // Lojas dos jogos do Shell (03/11): toda categoria tem exatamente um item padrão.
+    const cats = new Set(CATALOG.map((x) => `${x.game}.${x.kind}`));
+    for (const c of cats) if (c !== 'efeitos.rastro') expect(defaults.get(c) ?? 0, c).toBe(1);
     expect(CATALOG.filter((x) => x.tier === 'coins').every((x) => x.price > 0)).toBe(true);
   });
   it('Halloween tem versão por fichas e versão premium', () => {

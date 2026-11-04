@@ -1,6 +1,7 @@
 import { onMountRollback } from '../shared/lifecycle';
 import { T } from '../../i18n/lang';
 import { PLAYER_COLORS } from '../shared/players';
+import { equipped, HOCKEY_PUCKS, HOCKEY_TABLES, type HockeyPuckPal, type HockeyTablePal } from '../shared/arenaThemes';
 import { Shell, StartConfig } from '../shared/shell';
 import type { GameModule } from '../shared/types';
 import { HockeyAI } from './ai';
@@ -46,6 +47,8 @@ class AirHockeyGame {
   private evIdx = 0;
   private ac = new AbortController();
   private nextServe: 0 | 1 = 0;
+  private table = equipped('hockey.table', HOCKEY_TABLES);
+  private puck = equipped('hockey.puck', HOCKEY_PUCKS);
 
   constructor(container: HTMLElement, onExit: () => void) {
     onMountRollback(() => this.dispose());
@@ -58,6 +61,10 @@ class AirHockeyGame {
       // "Ricochet Velocity" (Leon, Gemini). Volume ~2 dB abaixo das outras faixas para as batidas aparecerem.
       musicUrl: './music/ricochet-velocity.mp3',
       helpHtml: T(HELP_PT, HELP_EN),
+      shop: [
+        { slot: 'hockey.table', tabPt: 'Mesa', tabEn: 'Table', items: HOCKEY_TABLES as never, preview: (c, w, h, it) => previewHockey(c, w, h, (it.pal as HockeyTablePal), this.puck.pal, false), onChange: () => { this.table = equipped('hockey.table', HOCKEY_TABLES); this.draw(); } },
+        { slot: 'hockey.puck', tabPt: 'Disco', tabEn: 'Puck', items: HOCKEY_PUCKS as never, preview: (c, w, h, it) => previewHockey(c, w, h, this.table.pal, (it.pal as HockeyPuckPal), true), onChange: () => { this.puck = equipped('hockey.puck', HOCKEY_PUCKS); this.draw(); } },
+      ],
       onExit,
       onStart: (cfg) => this.start(cfg),
       onPause: (p) => {
@@ -256,52 +263,7 @@ class AirHockeyGame {
     const px = 1 / sc;
     const W = TABLE.w;
     const H = TABLE.h;
-    const g0 = (H - TABLE.goal) / 2;
-    // trilho
-    rr(ctx, -RAIL, -RAIL, W + 2 * RAIL, H + 2 * RAIL, 0.1);
-    ctx.fillStyle = '#1b2b4a';
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-    ctx.lineWidth = px * 2;
-    ctx.stroke();
-    // superfície
-    const g = ctx.createLinearGradient(0, 0, 0, H);
-    g.addColorStop(0, '#f4f8fc');
-    g.addColorStop(1, '#dbe6f1');
-    ctx.fillStyle = g;
-    rr(ctx, 0, 0, W, H, 0.06);
-    ctx.fill();
-    // metades na cor de cada jogador (bem suave)
-    ctx.fillStyle = hexA(PLAYER_COLORS[0], 0.07);
-    ctx.fillRect(0, 0, W / 2, H);
-    ctx.fillStyle = hexA(PLAYER_COLORS[1], 0.07);
-    ctx.fillRect(W / 2, 0, W / 2, H);
-    // furinhos do colchão de ar
-    ctx.fillStyle = 'rgba(30,50,80,0.13)';
-    for (let x = 0.05; x < W; x += 0.1) for (let y = 0.05; y < H; y += 0.1) ctx.fillRect(x - 0.003, y - 0.003, 0.006, 0.006);
-    // marcações
-    ctx.strokeStyle = 'rgba(200,40,60,0.55)';
-    ctx.lineWidth = 0.008;
-    ctx.beginPath();
-    ctx.moveTo(W / 2, 0);
-    ctx.lineTo(W / 2, H);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(W / 2, H / 2, 0.16, 0, Math.PI * 2);
-    ctx.stroke();
-    for (const side of [0, 1] as const) {
-      const x = side === 0 ? 0 : W;
-      ctx.strokeStyle = hexA(PLAYER_COLORS[side], 0.75);
-      ctx.lineWidth = 0.01;
-      ctx.beginPath();
-      ctx.arc(x, H / 2, 0.24, side === 0 ? -Math.PI / 2 : Math.PI / 2, side === 0 ? Math.PI / 2 : (Math.PI * 3) / 2);
-      ctx.stroke();
-      // boca do gol
-      ctx.fillStyle = '#0b1220';
-      ctx.fillRect(side === 0 ? -RAIL : W, g0, RAIL, TABLE.goal);
-      ctx.fillStyle = PLAYER_COLORS[side];
-      ctx.fillRect(side === 0 ? -0.012 : W, g0, 0.012, TABLE.goal);
-    }
+    drawTable(ctx, this.table.pal, px);
     // flash de gol
     if (this.flash) {
       ctx.fillStyle = hexA(PLAYER_COLORS[this.flash.player], 0.35 * (this.flash.t / 1.2));
@@ -312,7 +274,7 @@ class AirHockeyGame {
       // rastro do disco
       for (let i = 1; i < this.trail.length; i++) {
         const k = i / this.trail.length;
-        ctx.strokeStyle = `rgba(40,60,90,${0.25 * k})`;
+        ctx.strokeStyle = hexA(this.table.pal.dark ? this.puck.pal.ring : '#283c5a', 0.25 * k);
         ctx.lineWidth = PUCK_R * 1.6 * k;
         ctx.lineCap = 'round';
         ctx.beginPath();
@@ -326,13 +288,7 @@ class AirHockeyGame {
       const pyk = s.puck.py + (s.puck.y - s.puck.py) * a;
       ctx.fillStyle = 'rgba(0,0,0,0.25)';
       disc(ctx, pxk + 0.008, pyk + 0.012, PUCK_R);
-      ctx.fillStyle = '#1d1f26';
-      disc(ctx, pxk, pyk, PUCK_R);
-      ctx.strokeStyle = '#ffc93c';
-      ctx.lineWidth = 0.006;
-      ctx.beginPath();
-      ctx.arc(pxk, pyk, PUCK_R * 0.62, 0, Math.PI * 2);
-      ctx.stroke();
+      drawPuck(ctx, pxk, pyk, this.puck.pal);
       // rebatedores
       s.mallets.forEach((m, i) => {
         const c = PLAYER_COLORS[i];
@@ -351,6 +307,92 @@ class AirHockeyGame {
       });
     }
   }
+}
+
+/** Mesa (trilho, superfície, marcações e gols) com a paleta do tema da loja. Usada no jogo e na amostra da loja. */
+function drawTable(ctx: CanvasRenderingContext2D, pal: HockeyTablePal, px: number) {
+  const W = TABLE.w;
+  const H = TABLE.h;
+  const g0 = (H - TABLE.goal) / 2;
+  // trilho
+  rr(ctx, -RAIL, -RAIL, W + 2 * RAIL, H + 2 * RAIL, 0.1);
+  ctx.fillStyle = pal.rail;
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = px * 2;
+  ctx.stroke();
+  // superfície
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, pal.top);
+  g.addColorStop(1, pal.bottom);
+  ctx.fillStyle = g;
+  rr(ctx, 0, 0, W, H, 0.06);
+  ctx.fill();
+  // metades na cor de cada jogador (bem suave)
+  if (pal.stars) {
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    for (let i = 0; i < 70; i++) ctx.fillRect(((i * 0.6180339) % 1) * W, ((i * 0.7548776) % 1) * H, 0.006 + (i % 3) * 0.003, 0.006 + (i % 3) * 0.003);
+  }
+  ctx.fillStyle = hexA(PLAYER_COLORS[0], pal.dark ? 0.12 : 0.07);
+  ctx.fillRect(0, 0, W / 2, H);
+  ctx.fillStyle = hexA(PLAYER_COLORS[1], pal.dark ? 0.12 : 0.07);
+  ctx.fillRect(W / 2, 0, W / 2, H);
+  // furinhos do colchão de ar
+  ctx.fillStyle = pal.holes;
+  for (let x = 0.05; x < W; x += 0.1) for (let y = 0.05; y < H; y += 0.1) ctx.fillRect(x - 0.003, y - 0.003, 0.006, 0.006);
+  // marcações
+  ctx.strokeStyle = pal.line;
+  ctx.lineWidth = 0.008;
+  ctx.beginPath();
+  ctx.moveTo(W / 2, 0);
+  ctx.lineTo(W / 2, H);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(W / 2, H / 2, 0.16, 0, Math.PI * 2);
+  ctx.stroke();
+  for (const side of [0, 1] as const) {
+    const x = side === 0 ? 0 : W;
+    ctx.strokeStyle = hexA(PLAYER_COLORS[side], 0.75);
+    ctx.lineWidth = 0.01;
+    ctx.beginPath();
+    ctx.arc(x, H / 2, 0.24, side === 0 ? -Math.PI / 2 : Math.PI / 2, side === 0 ? Math.PI / 2 : (Math.PI * 3) / 2);
+    ctx.stroke();
+    // boca do gol
+    ctx.fillStyle = '#0b1220';
+    ctx.fillRect(side === 0 ? -RAIL : W, g0, RAIL, TABLE.goal);
+    ctx.fillStyle = PLAYER_COLORS[side];
+    ctx.fillRect(side === 0 ? -0.012 : W, g0, 0.012, TABLE.goal);
+  }
+}
+
+function drawPuck(ctx: CanvasRenderingContext2D, x: number, y: number, pal: HockeyPuckPal) {
+  ctx.fillStyle = pal.body;
+  disc(ctx, x, y, PUCK_R);
+  if (pal.glow) {
+    ctx.shadowColor = pal.glow;
+    ctx.shadowBlur = 10;
+  }
+  ctx.strokeStyle = pal.ring;
+  ctx.lineWidth = 0.006;
+  ctx.beginPath();
+  ctx.arc(x, y, PUCK_R * 0.62, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+}
+
+/** Amostra da loja: a mesa inteira (e o disco no centro) desenhada pelo mesmo código do jogo. */
+function previewHockey(ctx: CanvasRenderingContext2D, w: number, h: number, table: HockeyTablePal, puck: HockeyPuckPal, zoomPuck: boolean) {
+  ctx.fillStyle = '#0a1433';
+  ctx.fillRect(0, 0, w, h);
+  const fw = TABLE.w + 2 * RAIL;
+  const fh = TABLE.h + 2 * RAIL;
+  const sc = zoomPuck ? Math.min(w / 0.5, h / 0.28) : Math.min(w / fw, h / fh);
+  const cx = TABLE.w / 2;
+  ctx.save();
+  ctx.setTransform(sc, 0, 0, sc, w / 2 - cx * sc, h / 2 - (TABLE.h / 2) * sc);
+  drawTable(ctx, table, 1 / sc);
+  drawPuck(ctx, TABLE.w / 2, TABLE.h / 2, puck);
+  ctx.restore();
 }
 
 function rr(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
