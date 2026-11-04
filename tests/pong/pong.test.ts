@@ -94,3 +94,24 @@ describe('pong — IA', () => {
     expect(h).toBeGreaterThan(m + 0.15);
   }, 60_000);
 });
+
+// Leon (03/11): conferir se o hitbox da raquete bate com o desenho. Colisão = bola encostando na face desenhada
+// (retângulo paddleW × paddleH), incluindo o raio da bola: borda de contato a paddleH/2 + ballR do centro.
+describe('pong — hitbox igual ao desenho da raquete', () => {
+  const shoot = (dy: number) => {
+    const s = createPong(0, () => 0.5);
+    s.freeze = 0;
+    const face = paddleX(0) + PONG.paddleW / 2;
+    s.ball = { x: face + PONG.ballR + 0.05, y: TABLE.h / 2 + dy, vx: -2, vy: 0 };
+    for (let i = 0; i < 240 && s.ball.vx < 0 && s.ball.x > 0; i++) stepPong(s);
+    return s.ball.vx > 0;
+  };
+  it('rebate encostando na ponta e passa logo depois dela (diferença de 1 mm)', () => {
+    const edge = PONG.paddleH / 2 + PONG.ballR;
+    expect(shoot(0)).toBe(true);
+    expect(shoot(edge - 0.001)).toBe(true);
+    expect(shoot(-(edge - 0.001))).toBe(true);
+    expect(shoot(edge + 0.001)).toBe(false);
+    expect(shoot(-(edge + 0.001))).toBe(false);
+  });
+});

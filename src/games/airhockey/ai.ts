@@ -28,7 +28,7 @@ export interface Cfg {
 export const AI_CFG: Record<Difficulty, Cfg> = {
   easy: { reaction: 0.5, aimError: 0.22, speedScale: 0.3, strikeScale: 0.45, shotError: 0.3, bankShots: false, lapse: 0.35, lead: 0.2, homeDist: 0.55, track: 0.9, smartAim: false },
   medium: { reaction: 0.22, aimError: 0.08, speedScale: 0.58, strikeScale: 0.75, shotError: 0.12, bankShots: false, lapse: 0.1, lead: 0.6, homeDist: 0.26, track: 0.55, smartAim: false },
-  hard: { reaction: 0.14, aimError: 0.06, speedScale: 0.75, strikeScale: 1, shotError: 0.04, bankShots: true, lapse: 0.03, lead: 1, homeDist: 0.18, track: 0.35, smartAim: true },
+  hard: { reaction: 0.12, aimError: 0.05, speedScale: 0.85, strikeScale: 1, shotError: 0.04, bankShots: true, lapse: 0.03, lead: 1, homeDist: 0.18, track: 0.35, smartAim: true },
 };
 
 export class HockeyAI {

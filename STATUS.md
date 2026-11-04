@@ -25,6 +25,23 @@
 4. Telas dos outros jogos no celular (pedido de 02/11), usando o mesmo método de medição (Playwright 732×276 e 762×343).
    Tela cheia já feita em todos (03/11 21h); falta compactar cabeçalho/laterais onde sobrar espaço (qa/tela-cheia.cjs mede).
 
+## Air Hockey mais lento, Pong conferido, prompts de arte (03/11, 21h30) — testado por robôs; FALTA celular real
+- **Air Hockey (Leon: rápido demais, peças pequenas):** disco 5,5 → 5,0 m/s (cruza a mesa em 0,40 s; antes 0,36),
+  raio do disco 0,040 → 0,044, rebatedor 0,065 → 0,070 (~37 px no celular deitado), gol 0,34 → 0,46 para compensar.
+  IA Difícil: rebatedor 0,75 → 0,85 da velocidade, reação 0,14 → 0,12 s (sem isso empatava 50% com o "humano médio").
+  Bench: IA faz 9% / 33% / 64% dos gols (antes 15 / 41 / 65); ordem dos níveis mantida (teste passa).
+  ATENÇÃO: entre robôs, gols por minuto caem bastante com disco mais lento (Médio 4,1 → ~0,7–1,1). O robô de referência
+  defende ~95%, bem mais que gente no celular, então o número real deve ser maior — conferir jogando. Se a partida ficar
+  longa: reduzir goalsToWin 7 → 5. Medidas de todas as combinações: scripts/ab-hockey-tamanho.ts (ex.: 4,2 m/s + peças
+  grandes = 0,1 gol/min, empate eterno; por isso a redução foi pequena).
+- **Pong (Leon: conferir hitbox):** a colisão é exatamente a raquete desenhada + raio da bola. Teste novo em
+  tests/pong/pong.test.ts: rebate a 1 mm dentro da ponta e passa a 1 mm fora. Nada mudado. Se parecer "atravessar", a causa
+  provável é a raquete seguir o dedo com velocidade máxima 2,6 m/s (atraso visível em movimentos rápidos) — avaliar no celular.
+- **Prompts de arte (rodada 2):** docs/arte/prompts-gpt-2.md — portal, menu de jogo padrão, loja dentro do jogo (sinuca e
+  air hockey), Sumô (lutadores e ringue), Cabo de Guerra, capas que faltam, temas de mesa/quadra para a loja.
+- Fila (Leon 03/11 21h29): estética primeiro (com as referências do GPT); lojas por jogo já incluem personalizar mesa
+  (Air Hockey, Pong etc.); mais fases do golfe ficam para um segundo momento (as 9 atuais bastam por enquanto).
+
 ## Online ao vivo, aviso da 8 e tela cheia em todos os jogos (03/11, 21h) — testado localmente; FALTA celular real
 - **Relógio online:** aparece sempre (45 s da sala, mesmo com "sem limite" nas Configurações) e também na vez do outro.
   Antes o anel usava a preferência local (sem limite = escondido) e só contava na minha vez.

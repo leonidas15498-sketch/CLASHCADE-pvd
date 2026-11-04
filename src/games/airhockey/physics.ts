@@ -7,9 +7,16 @@ export interface Vec {
   y: number;
 }
 
-export const TABLE = { w: 2, h: 1, goal: 0.34 };
-export const PUCK_R = 0.04;
-export const MALLET_R = 0.065;
+/** 03/11 (Leon: disco rápido demais, peças pequenas): gol 0,34 → 0,46 para compensar disco mais lento e rebatedor maior. */
+export const TABLE = { w: 2, h: 1, goal: 0.46 };
+/** 03/11: 0,040 → 0,044 (+10%); rebatedor 0,065 → 0,070. No celular deitado: disco ~23 px, rebatedor ~37 px de diâmetro. */
+export let PUCK_R = 0.044;
+export let MALLET_R = 0.07;
+/** Só para medições A/B (scripts/): troca os raios; quem importa PUCK_R/MALLET_R vê o valor novo (ligação viva do ES module). */
+export function setSizesForBench(puck: number, mallet: number): void {
+  PUCK_R = puck;
+  MALLET_R = mallet;
+}
 
 export const AH = {
   dt: 1 / 240,
@@ -17,8 +24,8 @@ export const AH = {
   airDrag: 0.12,
   wallRestitution: 0.9,
   malletRestitution: 0.88,
-  /** 01/11: era 9 (cruzava a mesa em 0,22 s, rápido demais no celular). 5,5 → ~0,36 s. */
-  maxPuckSpeed: 5.5,
+  /** 01/11: 9 → 5,5 (0,36 s para cruzar). 03/11: 5,5 → 5,0 (0,40 s). Medições em scripts/ab-hockey-tamanho.ts e STATUS.md. */
+  maxPuckSpeed: 5,
   /** 01/11: era 7; reduzido junto para manter o equilíbrio rebatedor × disco. */
   maxMalletSpeed: 5,
   goalsToWin: 7,
