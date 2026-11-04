@@ -14,7 +14,7 @@
   2. Minigolfe e Torre (mesmo modelo). 3. Pong como piloto de tempo real (medir atraso antes de Air Hockey/Rastros/Sumô/Cabo).
   4. Blocos: desafio assíncrono (mesma semente). Conferir limites do plano grátis do Supabase Realtime antes do tempo real.
 
-## Loja dentro do jogo (03/11, 21h40) — testado no navegador automatizado (qa/menu.cjs); NÃO enviado (sem push)
+## Loja dentro do jogo (03/11, 21h40) — testado no navegador automatizado (qa/menu.cjs); enviado (push 03/11)
 - Portal: aba "Loja" removida (cada jogo tem a sua); carteira continua no topo. Corrigido "? Dispon?vel" → "✓ Disponível" nas capas.
 - Sinuca e Minigolfe: botão "🛍️ Loja" no menu e na pausa (antes "Tacos e mesa"/"Tacos e campo"); tela vira "Loja da Sinuca"/
   "Loja do Minigolfe" com saldo de fichas no topo que atualiza na compra (shared/shopUi.ts mountBalance). Economia igual.
