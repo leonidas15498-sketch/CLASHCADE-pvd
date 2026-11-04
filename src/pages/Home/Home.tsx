@@ -4,12 +4,12 @@ import { T } from '../../i18n/lang';
 import { Cover } from '../../components/Cover';
 import { GAMES } from '../../games/registry';
 import { gameText, LANGS, setLang, useI18n } from '../../i18n';
-import { CATALOG, CatalogItem } from '../../services/catalog';
-import { buy, challengesToday, claimDaily, DAILY_BONUS, dailyAvailable, EVENT, getWallet, isPremiumActive, isUnlocked } from '../../services/economy';
+import { challengesToday, claimDaily, DAILY_BONUS, dailyAvailable, EVENT, getWallet } from '../../services/economy';
 import { getSession, newSession, SESSION_EVENT } from '../../services/session';
 import { currentTournamentGame, endTournament, getTournament, startTournament, TOURNAMENT_EVENT, TOURNAMENT_GAMES, TOURNAMENT_WINS } from '../../services/tournament';
 
-type Tab = 'games' | 'shop' | 'settings';
+/** Loja saiu do portal (03/11): cada jogo tem a sua, no menu do próprio jogo. */
+type Tab = 'games' | 'settings';
 
 /** Re-render quando carteira, placar ou outra aba mudarem os dados. */
 function useStoreTick() {
@@ -356,7 +356,7 @@ function Games({ onOpen }: { onOpen: (route: string) => void }) {
           return (
             <article key={g.id} className="card">
               <button className="cover" onClick={() => onOpen(g.route)} aria-label={t('open', { name: tx.name })}>
-                <Cover kind={g.cover} /><span className="game-ready">? {T('Dispon?vel', 'Available')}</span>
+                <Cover kind={g.cover} /><span className="game-ready">✓ {T('Disponível', 'Available')}</span>
               </button>
               <div className="card-body">
                 <h3>{tx.name}</h3>
@@ -373,78 +373,6 @@ function Games({ onOpen }: { onOpen: (route: string) => void }) {
             </article>
           );
         })}
-      </div>
-    </section>
-  );
-}
-
-function ShopItem({ it }: { it: CatalogItem }) {
-  const { t } = useI18n();
-  const [armed, setArmed] = useState(false);
-  const owned = isUnlocked(it.key);
-  const bal = getWallet().balance;
-  let label: string;
-  let action: (() => void) | null = null;
-  if (it.tier === 'default') label = t('shop.default');
-  else if (it.tier === 'premium') label = isPremiumActive() ? t('shop.premiumTest') : `🔒 ${t('shop.premium')}`;
-  else if (owned) label = `✓ ${t('shop.owned')}`;
-  else if (bal < it.price) label = t('shop.funds', { n: it.price - bal });
-  else if (!armed) {
-    label = t('shop.buy', { n: it.price });
-    action = () => setArmed(true);
-  } else {
-    label = t('shop.confirm', { n: it.price });
-    action = () => {
-      buy(it.key);
-      setArmed(false);
-    };
-  }
-  return (
-    <li className={`item tier-${it.tier}${owned ? ' owned' : ''}`}>
-      <span className="swatch" style={{ background: it.swatch }} aria-hidden="true" />
-      <span className="item-name">
-        {it.name}
-        {it.seasonal && <em className="tag">{t('shop.seasonal')}</em>}
-        {it.tier === 'premium' && <em className="tag prem">Premium</em>}
-      </span>
-      {it.tier === 'coins' && !owned && (
-        <span className="price">
-          <Coin size={14} /> {it.price}
-        </span>
-      )}
-      <button className={`btn ${action ? 'cyan' : 'ghost'} item-btn`} disabled={!action} onClick={action ?? undefined} data-buy={it.key}>
-        {label}
-      </button>
-    </li>
-  );
-}
-
-function Shop() {
-  const { t } = useI18n();
-  const groups: { title: string; items: CatalogItem[] }[] = [];
-  for (const it of CATALOG) {
-    const title = `${t(`game.${it.game}`)} · ${t(`kind.${it.kind}`)}`;
-    let g = groups.find((x) => x.title === title);
-    if (!g) groups.push((g = { title, items: [] }));
-    g.items.push(it);
-  }
-  return (
-    <section aria-labelledby="h-shop" className="shop">
-      <h2 id="h-shop" className="section-title">
-        {t('shop.title')}
-      </h2>
-      <p className="muted">{t('shop.note')}</p>
-      <div className="shop-grid">
-        {groups.map((g) => (
-          <div key={g.title} className="panel shop-group">
-            <h3>{g.title}</h3>
-            <ul>
-              {g.items.map((it) => (
-                <ShopItem key={it.key} it={it} />
-              ))}
-            </ul>
-          </div>
-        ))}
       </div>
     </section>
   );
@@ -482,7 +410,7 @@ export function Home({ onOpen }: { onOpen: (route: string) => void }) {
   const [tab, setTabState] = useState<Tab>(() => {
     try {
       const v = sessionStorage.getItem('clashcade.tab');
-      return v === 'shop' || v === 'settings' ? v : 'games';
+      return v === 'settings' ? v : 'games';
     } catch {
       return 'games';
     }
@@ -498,7 +426,6 @@ export function Home({ onOpen }: { onOpen: (route: string) => void }) {
   const bal = getWallet().balance;
   const nav: { id: Tab; icon: JSX.Element }[] = [
     { id: 'games', icon: Icon.pad },
-    { id: 'shop', icon: Icon.hanger },
     { id: 'settings', icon: Icon.gear },
   ];
   return (
@@ -520,7 +447,7 @@ export function Home({ onOpen }: { onOpen: (route: string) => void }) {
             <b>{t('tagline2')}</b>
             <span>{t('tags')}</span>
           </p>
-          <div className="wallet" title={t('coins', { n: bal })} data-testid="wallet">
+          <div className="wallet" title={`${t('coins', { n: bal })} · ${T('gaste na loja de cada jogo', 'spend them in each game\'s shop')}`} data-testid="wallet">
             <Coin size={22} /> <b>{new Intl.NumberFormat().format(bal)}</b>
           </div>
         </div>
@@ -541,7 +468,6 @@ export function Home({ onOpen }: { onOpen: (route: string) => void }) {
       </div>
 
       {tab === 'games' && <Games onOpen={onOpen} />}
-      {tab === 'shop' && <Shop />}
       {tab === 'settings' && <Settings />}
 
       <footer className="home-foot">{t('foot')}</footer>

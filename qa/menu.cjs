@@ -1,4 +1,4 @@
-// QA: menu Clashcade — capturas desktop/celular, abas, idioma, bônus diário, loja (compra em 2 toques), placar de sessão.
+// QA: menu Clashcade — capturas desktop/celular, abas, idioma, bônus diário, loja dentro do golfe e da sinuca (compra em 2 toques), placar de sessão.
 // Uso: node qa/menu.cjs <pasta-de-saida>
 const { chromium } = require('playwright');
 const out = process.argv[2] || '.';
@@ -23,24 +23,37 @@ const out = process.argv[2] || '.';
       await p.reload();
       await p.waitForTimeout(300);
       console.log('após recarregar: carteira', (await p.textContent('[data-testid="wallet"]')).trim(), '| bônus desativado', await p.$eval('[data-testid="daily"]', (e) => e.disabled));
-      await p.click('[data-tab="shop"]');
-      await p.waitForTimeout(150);
-      const btn = p.locator('[data-buy="golf.putter.madeira"]');
-      console.log('loja: madeira (100) com 30 fichas →', (await btn.textContent()).trim(), '| desativado', await btn.isDisabled());
+      // Loja dentro do jogo (03/11): o portal não tem mais aba Loja; cada jogo abre a sua pelo menu.
+      console.log('aba Loja no portal (deve ser 0):', await p.locator('[data-tab="shop"]').count());
       await p.evaluate(() => {
         const k = 'jogaco.wallet.v1';
         const e = JSON.parse(localStorage.getItem(k));
         e.data.balance = 250;
         localStorage.setItem(k, JSON.stringify(e));
       });
-      await p.reload();
+      await p.goto('http://localhost:4174/#minigolfe');
+      await p.waitForSelector('#mg-menu-putters');
+      console.log('botão no menu do golfe:', (await p.textContent('#mg-menu-putters')).trim());
+      await p.click('#mg-menu-putters');
+      await p.waitForTimeout(200);
+      console.log('título:', (await p.textContent('#mg-putters h2')).trim(), '| saldo:', (await p.textContent('#mg-shop-bal b')).trim());
+      const btn = p.locator('[data-buy="golf.putter.madeira"]');
+      await btn.click();
+      console.log('1º toque:', (await btn.textContent()).trim());
+      await btn.click();
+      await p.waitForTimeout(150);
+      console.log('2º toque → saldo na loja:', (await p.textContent('#mg-shop-bal b')).trim(), '| botão comprar sumiu:', (await p.locator('[data-buy="golf.putter.madeira"]').count()) === 0);
+      await p.screenshot({ path: `${out}/loja-golfe.png` });
+      await p.goto('http://localhost:4174/#sinuca');
+      await p.waitForSelector('#btn-menu-cues');
+      console.log('botão no menu da sinuca:', (await p.textContent('#btn-menu-cues')).trim());
+      await p.click('#btn-menu-cues');
+      await p.waitForTimeout(200);
+      console.log('título:', (await p.textContent('#cues h2')).trim(), '| saldo:', (await p.textContent('#shop-bal b')).trim());
+      await p.screenshot({ path: `${out}/loja-sinuca.png` });
+      await p.goto('http://localhost:4174/');
       await p.waitForTimeout(300);
-      await btn.click();
-      console.log('1º toque:', (await btn.textContent()).trim(), '| carteira', (await p.textContent('[data-testid="wallet"]')).trim());
-      await btn.click();
-      await p.waitForTimeout(100);
-      console.log('2º toque:', (await btn.textContent()).trim(), '| carteira', (await p.textContent('[data-testid="wallet"]')).trim());
-      await p.screenshot({ path: `${out}/menu-loja.png` });
+      console.log('carteira no portal após compra:', (await p.textContent('[data-testid="wallet"]')).trim());
       await p.click('[data-tab="settings"]');
       await p.click('text=English');
       await p.waitForTimeout(150);

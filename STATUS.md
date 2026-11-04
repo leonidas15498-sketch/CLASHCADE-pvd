@@ -14,8 +14,15 @@
   2. Minigolfe e Torre (mesmo modelo). 3. Pong como piloto de tempo real (medir atraso antes de Air Hockey/Rastros/Sumô/Cabo).
   4. Blocos: desafio assíncrono (mesma semente). Conferir limites do plano grátis do Supabase Realtime antes do tempo real.
 
+## Loja dentro do jogo (03/11, 21h40) — testado no navegador automatizado (qa/menu.cjs); NÃO enviado (sem push)
+- Portal: aba "Loja" removida (cada jogo tem a sua); carteira continua no topo. Corrigido "? Dispon?vel" → "✓ Disponível" nas capas.
+- Sinuca e Minigolfe: botão "🛍️ Loja" no menu e na pausa (antes "Tacos e mesa"/"Tacos e campo"); tela vira "Loja da Sinuca"/
+  "Loja do Minigolfe" com saldo de fichas no topo que atualiza na compra (shared/shopUi.ts mountBalance). Economia igual.
+- QA: golfe 250 → compra Madeira em 2 toques → 150 na loja e no portal; sinuca mostra 150; i18n sem faltas novas; 251 testes.
+- **Falta decisão do Leon:** os outros 8 jogos (Shell) não têm NENHUM item no catálogo, então não ganharam loja.
+
 ## PRÓXIMO (pedido do Leon, 03/11 20h49) — fazer em conversa nova
-1. **Loja dentro de cada jogo:** cada jogo com a SUA loja (só os itens dele: tacos, mesas, rastros...), aberta por um botão
+1. **Loja dentro de cada jogo:** (feito para sinuca e golfe, ver acima; falta itens para os 8 jogos do Shell) cada jogo com a SUA loja (só os itens dele: tacos, mesas, rastros...), aberta por um botão
    no menu do próprio jogo, como menu à parte. Hoje a loja é geral no portal (src/services/catalog.ts, shopUi.ts).
    Manter Fichas/Premium e a economia como estão (catálogo único; só muda onde e como aparece).
 2. **Menus mais intuitivos** de forma geral (portal e menus dos jogos). Levantar o fluxo atual com capturas antes de mudar.

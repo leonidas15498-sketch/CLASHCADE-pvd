@@ -2,7 +2,7 @@ import { enterGameFullscreen, exitGameFullscreen } from '../../shared/fullscreen
 import { onMountRollback } from '../../shared/lifecycle';
 import { isEn, T } from '../../../i18n/lang';
 import { newMatchId, reportMatch } from '../../../services/match';
-import { tierTag, wireLocked } from '../../shared/shopUi';
+import { mountBalance, tierTag, wireLocked } from '../../shared/shopUi';
 import { chooseAIShot, makeRng } from '../ai/ai';
 import { GameController } from '../game/controller';
 import { ballIcon } from '../game/ballSprite';
@@ -292,6 +292,7 @@ export class App {
         this.renderCueList();
         this.show('cues');
       });
+    mountBalance($('shop-bal'), this.ac.signal);
     $('btn-cues-close').addEventListener('click', () => {
       this.hide('cues');
       this.paintCuePicks();

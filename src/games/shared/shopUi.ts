@@ -1,7 +1,20 @@
 import { T } from '../../i18n/lang';
 /** Etiqueta e botão de compra dos seletores de cosméticos (sinuca e golfe). Compra em dois toques, sem diálogo do navegador. */
-import { buy, getWallet, isPremiumActive, isUnlocked } from '../../services/economy';
+import { buy, EVENT, getWallet, isPremiumActive, isUnlocked } from '../../services/economy';
 import { itemByKey } from '../../services/catalog';
+
+/**
+ * Saldo de fichas no topo da loja do jogo (pedido do Leon, 03/11: cada jogo com a sua loja).
+ * Atualiza sozinho quando a carteira muda; o listener sai junto com o jogo (signal do destroy).
+ */
+export function mountBalance(el: HTMLElement, signal: AbortSignal) {
+  const paint = () => {
+    const n = new Intl.NumberFormat().format(getWallet().balance);
+    el.innerHTML = `<span class="shop-coin" aria-hidden="true"></span><b>${n}</b> ${T('fichas', 'chips')}<small>${T('Ganhe jogando, no bônus diário e nos desafios do portal.', 'Earn them by playing, with the daily bonus and the portal challenges.')}</small>`;
+  };
+  paint();
+  window.addEventListener(EVENT, paint, { signal });
+}
 
 export function tierTag(key: string): string {
   const it = itemByKey(key);

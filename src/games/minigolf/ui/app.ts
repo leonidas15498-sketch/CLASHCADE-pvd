@@ -14,7 +14,7 @@ const LEVEL_EN: Record<string, [string, string]> = {
   'Grande Final': ['Grand Finale', 'Go down the ramp, turn up, dodge the windmill and get around the last block.'],
 };
 import { newMatchId, reportMatch } from '../../../services/match';
-import { tierTag, wireLocked } from '../../shared/shopUi';
+import { mountBalance, tierTag, wireLocked } from '../../shared/shopUi';
 import { Music } from '../../shared/music';
 import { PowerGauge } from '../../shared/powerGauge';
 import { mountMusicControl } from '../../shared/musicControl';
@@ -170,6 +170,7 @@ export class MinigolfApp {
     });
     $('mg-menu-help').addEventListener('click', () => this.show('mg-helpbox'));
     for (const id of ['mg-menu-putters', 'mg-pause-putters']) $(id).addEventListener('click', () => this.showPutters());
+    mountBalance($('mg-shop-bal'), this.ac.signal);
     $('mg-putters-close').addEventListener('click', () => {
       this.hide('mg-putters');
       this.paintPutterPicks();
