@@ -229,6 +229,8 @@ const GAMES: Record<Lang, Record<string, GameText>> = {
     blocos: { name: 'Blocos Cromáticos', desc: 'Encaixe peças, limpe linhas e encadeie combos.', modes: ['1P recorde', '2P um após o outro'] },
     'sumo-neon': { name: 'Sumô Neon', desc: 'Empurre o rival para fora do ringue. Melhor de 3, rounds de segundos.', modes: ['1P × IA', '2P local'] },
     'cabo-de-guerra': { name: 'Cabo de Guerra', desc: 'Toque no ritmo da batida para puxar a corda para o seu lado.', modes: ['1P × IA', '2P local'] },
+    damas: { name: 'Damas', desc: 'Regras brasileiras: captura obrigatória e dama voadora.', modes: ['1P × IA', '2P por turnos'] },
+    ludo: { name: 'Ludo', desc: 'Role o dado e leve os 4 peões ao centro antes do rival.', modes: ['1P × IA', '2P por turnos'] },
   },
   'en-US': {
     sinuca: { name: '8-Ball Pool', desc: 'Real physics: spin, cushions, pockets and 8-ball rules.', modes: ['1P vs AI', '2P local'] },
@@ -241,6 +243,8 @@ const GAMES: Record<Lang, Record<string, GameText>> = {
     blocos: { name: 'Chromatic Blocks', desc: 'Fit pieces, clear lines and chain combos.', modes: ['1P high score', '2P one after another'] },
     'sumo-neon': { name: 'Neon Sumo', desc: 'Push your rival out of the ring. Best of 3, rounds last seconds.', modes: ['1P vs AI', '2P local'] },
     'cabo-de-guerra': { name: 'Tug of War', desc: 'Tap on the beat to pull the rope to your side.', modes: ['1P vs AI', '2P local'] },
+    damas: { name: 'Checkers', desc: 'Brazilian rules: mandatory captures and flying kings.', modes: ['1P vs AI', '2P turns'] },
+    ludo: { name: 'Ludo', desc: 'Roll the die and bring all 4 pawns home before your rival.', modes: ['1P vs AI', '2P turns'] },
   },
   'es-ES': {
     sinuca: { name: 'Billar 8 Bolas', desc: 'Física real: efecto, bandas, troneras y reglas de 8 bolas.', modes: ['1J vs IA', '2J local'] },
@@ -253,6 +257,8 @@ const GAMES: Record<Lang, Record<string, GameText>> = {
     blocos: { name: 'Bloques Cromáticos', desc: 'Encaja piezas, limpia líneas y encadena combos.', modes: ['1J récord', '2J uno tras otro'] },
     'sumo-neon': { name: 'Sumo Neón', desc: 'Empuja al rival fuera del ring. Al mejor de 3, rondas de segundos.', modes: ['1J vs IA', '2J local'] },
     'cabo-de-guerra': { name: 'Tira y Afloja', desc: 'Toca al ritmo para tirar de la cuerda hacia tu lado.', modes: ['1J vs IA', '2J local'] },
+    damas: { name: 'Damas', desc: 'Reglas brasileñas: captura obligatoria y dama voladora.', modes: ['1J vs IA', '2J por turnos'] },
+    ludo: { name: 'Parchís', desc: 'Tira el dado y lleva tus 4 fichas al centro antes que tu rival.', modes: ['1J vs IA', '2J por turnos'] },
   },
 };
 

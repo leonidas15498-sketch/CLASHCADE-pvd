@@ -10,7 +10,7 @@
 export type ItemTier = 'default' | 'coins' | 'premium';
 export interface CatalogItem {
   key: string;
-  game: 'sinuca' | 'minigolfe' | 'efeitos' | 'air-hockey' | 'pong' | 'lig-4';
+  game: 'sinuca' | 'minigolfe' | 'efeitos' | 'air-hockey' | 'pong' | 'lig-4' | 'damas' | 'ludo';
   kind: 'taco' | 'mesa' | 'campo' | 'rastro' | 'disco' | 'quadra' | 'bola' | 'tabuleiro';
   name: string;
   tier: ItemTier;
@@ -103,6 +103,11 @@ export const CATALOG: CatalogItem[] = [
   it('c4.board.madeira', 'lig-4', 'tabuleiro', 'Madeira', 'coins', 120, '#a8743f'),
   it('c4.board.grafite', 'lig-4', 'tabuleiro', 'Grafite', 'coins', 120, '#2a3247'),
   it('c4.board.ouro', 'lig-4', 'tabuleiro', 'Ouro', 'premium', 0, '#ffc24a'),
+  // Damas — tabuleiros (04/11)
+  it('checkers.board.madeira', 'damas', 'tabuleiro', 'Madeira', 'default', 0, '#a8703f'),
+  it('checkers.board.marmore', 'damas', 'tabuleiro', 'Mármore', 'coins', 120, '#3f7a5f'),
+  it('checkers.board.arena', 'damas', 'tabuleiro', 'Arena', 'coins', 120, '#151d36'),
+  it('checkers.board.ouro', 'damas', 'tabuleiro', 'Ouro', 'premium', 0, '#c9962f'),
 ];
 
 const BY_KEY = new Map(CATALOG.map((x) => [x.key, x]));

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { C4_BOARDS, equip, equipped, HOCKEY_PUCKS, HOCKEY_TABLES, PONG_BALLS, PONG_COURTS } from '../../src/games/shared/arenaThemes';
+import { C4_BOARDS, CHECKERS_BOARDS, equip, equipped, HOCKEY_PUCKS, HOCKEY_TABLES, PONG_BALLS, PONG_COURTS } from '../../src/games/shared/arenaThemes';
 import { CATALOG, itemByKey } from '../../src/services/catalog';
 import { buy, walletStore } from '../../src/services/economy';
 
@@ -16,13 +16,13 @@ const mem = new Map<string, string>();
   },
 } as Storage;
 
-const LISTS = { 'air-hockey': [...HOCKEY_TABLES, ...HOCKEY_PUCKS], pong: [...PONG_COURTS, ...PONG_BALLS], 'lig-4': C4_BOARDS };
+const LISTS = { 'air-hockey': [...HOCKEY_TABLES, ...HOCKEY_PUCKS], pong: [...PONG_COURTS, ...PONG_BALLS], 'lig-4': C4_BOARDS, damas: CHECKERS_BOARDS };
 
 describe('lojas dos jogos do Shell', () => {
   beforeEach(() => localStorage.clear());
   it('cada tema existe no catálogo, no jogo certo, e o primeiro de cada lista é o padrão', () => {
     for (const [game, list] of Object.entries(LISTS)) for (const t of list) expect(itemByKey(t.key)?.game, t.key).toBe(game);
-    for (const l of [HOCKEY_TABLES, HOCKEY_PUCKS, PONG_COURTS, PONG_BALLS, C4_BOARDS]) expect(itemByKey(l[0].key)?.tier).toBe('default');
+    for (const l of [HOCKEY_TABLES, HOCKEY_PUCKS, PONG_COURTS, PONG_BALLS, C4_BOARDS, CHECKERS_BOARDS]) expect(itemByKey(l[0].key)?.tier).toBe('default');
     // Todo item desses jogos no catálogo tem tema desenhável
     const keys = new Set(Object.values(LISTS).flat().map((t) => t.key));
     for (const it of CATALOG.filter((x) => x.game in LISTS)) expect(keys.has(it.key), it.key).toBe(true);

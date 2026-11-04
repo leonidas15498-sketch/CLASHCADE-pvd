@@ -118,6 +118,18 @@ const CSS = `
 .gs-item b{font-size:14px}.gs-item .gs-tag{font-size:11.5px;color:var(--muted)}
 .gs-item .gs-tag.prem{color:#ca86ff}.gs-item .gs-tag.own{color:#28c7b7}
 .gs-box .gs-item button{min-height:34px;padding:4px 8px;font-size:13px}
+/* 04/11 estética do menu (referência prompts-gpt-2 item 2): cartões com ícone, faixa de cor do modo, título com brilho */
+.gs-box h1{text-shadow:0 0 18px rgba(0,224,255,.35),0 2px 0 rgba(0,0,0,.4);letter-spacing:.01em}
+.gs-card{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(23,34,67,.92),rgba(10,20,51,.85));box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.gs-card::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--acc,#ffc24a)}
+.gs-c-ai{--acc:#3d8bff}.gs-c-two{--acc:linear-gradient(90deg,#ff6b4a 50%,#3d8bff 50%)}.gs-c-solo{--acc:#ffc24a}
+.gs-card h2{display:flex;align-items:center;gap:8px;margin:0;font-size:16px}
+.gs-ico{width:30px;height:30px;flex:0 0 30px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+.gs-ico svg{width:20px;height:20px;fill:#cfe6ff}
+.gs-c-ai .gs-ico{background:rgba(61,139,255,.22)}.gs-c-solo .gs-ico{background:rgba(255,194,74,.2)}.gs-c-solo .gs-ico svg{fill:#ffd877}
+.gs-card .gs-primary::after,.gs-box [data-k="resume"]::after{content:" ▶";font-size:.8em}
+.gs-seg button{transition:transform .08s ease}.gs-seg button:active,.gs-box button:active{transform:translateY(1px)}
+@media (max-height:420px){.gs-ico{width:24px;height:24px;flex-basis:24px}.gs-ico svg{width:16px;height:16px}.gs-card h2{font-size:14.5px}}
 @media (max-width:560px){.gs-top{grid-template-columns:1fr;justify-items:center}.gs-top>.gs-back,.gs-links,.gs-bal{justify-self:center}}
 .gs-box h1 small{display:block;font-size:.42em;color:var(--sun);letter-spacing:.08em;text-transform:uppercase}
 .gs-box h2{margin:0;font-size:clamp(17px,4.2vh,22px)}
@@ -205,13 +217,13 @@ export class Shell {
     <div class="gs-modes">
       ${
         m.solo
-          ? `<div class="gs-card"><h2>${T('1 Jogador', '1 Player')}</h2><label>${T('Apelido', 'Nickname')} <input data-k="n-solo" id="gs-${o.id}-solo" maxlength="14" placeholder="${T('Você', 'You')}"></label>
+          ? `<div class="gs-card gs-c-solo"><h2><span class="gs-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg></span>${T('1 Jogador', '1 Player')}</h2><label>${T('Apelido', 'Nickname')} <input data-k="n-solo" id="gs-${o.id}-solo" maxlength="14" placeholder="${T('Você', 'You')}"></label>
              <button class="gs-primary" data-k="play-solo">${m.solo}</button><p class="gs-note" data-k="note"></p></div>`
           : ''
       }
       ${
         m.ai
-          ? `<div class="gs-card"><h2>${T('1 Jogador contra IA', '1 Player vs AI')}</h2><label>${T('Apelido', 'Nickname')} <input data-k="n-ai" id="gs-${o.id}-ai" maxlength="14" placeholder="${T('Você', 'You')}"></label>
+          ? `<div class="gs-card gs-c-ai"><h2><span class="gs-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="4"/><rect x="11" y="2" width="2" height="5"/><circle cx="12" cy="2.5" r="1.6"/><circle cx="9" cy="13" r="1.6" fill="#0a1433"/><circle cx="15" cy="13" r="1.6" fill="#0a1433"/></svg></span>${T('1 Jogador contra IA', '1 Player vs AI')}</h2><label>${T('Apelido', 'Nickname')} <input data-k="n-ai" id="gs-${o.id}-ai" maxlength="14" placeholder="${T('Você', 'You')}"></label>
              <div class="gs-seg" data-k="diff" role="radiogroup" aria-label="${T('Dificuldade', 'Difficulty')}">
                <button data-d="easy" role="radio">${diffLabel('easy')}</button><button data-d="medium" role="radio">${diffLabel('medium')}</button><button data-d="hard" role="radio">${diffLabel('hard')}</button></div>
              <button class="gs-primary" data-k="play-ai">${T('Jogar contra a IA', 'Play vs AI')}</button></div>`
@@ -219,7 +231,7 @@ export class Shell {
       }
       ${
         m.local
-          ? `<div class="gs-card"><h2>${T('2 Jogadores Local', '2 Players, same device')}</h2>
+          ? `<div class="gs-card gs-c-two"><h2><span class="gs-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3.3" fill="#ff6b4a"/><path d="M1.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6z" fill="#ff6b4a"/><circle cx="16.5" cy="8" r="3.3" fill="#3d8bff"/><path d="M10 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6z" fill="#3d8bff"/></svg></span>${T('2 Jogadores Local', '2 Players, same device')}</h2>
              <div class="gs-names"><label><span><span class="gs-dot" style="background:${PLAYER_COLORS[0]}"></span>${T('Jogador 1', 'Player 1')}</span><input data-k="n1" id="gs-${o.id}-p1" maxlength="14" placeholder="${T('Jogador 1', 'Player 1')}"></label>
              <label><span><span class="gs-dot" style="background:${PLAYER_COLORS[1]}"></span>${T('Jogador 2', 'Player 2')}</span><input data-k="n2" id="gs-${o.id}-p2" maxlength="14" placeholder="${T('Jogador 2', 'Player 2')}"></label></div>
              <button class="gs-primary" data-k="play-local">${T('Jogar no mesmo aparelho', 'Play on this device')}</button>${o.localNote ? `<p class="gs-note">${o.localNote}</p>` : ''}</div>`

@@ -8,7 +8,7 @@ export interface GameEntry {
   description: string;
   /** Rota no hash da URL (#id). */
   route: string;
-  cover: 'pool' | 'minigolf' | 'hockey' | 'trails' | 'stack' | 'connect4' | 'pong' | 'blocks' | 'sumo' | 'tug';
+  cover: 'pool' | 'minigolf' | 'hockey' | 'trails' | 'stack' | 'connect4' | 'pong' | 'blocks' | 'sumo' | 'tug' | 'checkers' | 'ludo';
   modes: string[];
   highlights: string[];
   status: GameStatus;
@@ -64,7 +64,7 @@ export const GAMES: GameEntry[] = [
   {
     id: 'empilha',
     name: 'Torre de Bichinhos',
-    description: 'Gato, sapo, bolo, melancia… Cada um coloca uma peça na pilha. Quem derrubar perde!',
+    description: 'Tartaruga, hipopótamo, canguru, caracol… Cada um coloca um bicho na pilha. Quem derrubar perde!',
     route: 'empilha',
     cover: 'stack',
     modes: ['1P sozinho', '1P contra IA', '2P local por turnos'],
@@ -126,6 +126,28 @@ export const GAMES: GameEntry[] = [
     highlights: ['Jogo de ritmo', 'Os dois jogam ao mesmo tempo', 'IA em 3 níveis'],
     status: 'available',
     load: () => import('./tug'),
+  },
+  {
+    id: 'damas',
+    name: 'Damas',
+    description: 'O clássico de tabuleiro com regras brasileiras: captura obrigatória, lei da maioria e dama voadora.',
+    route: 'damas',
+    cover: 'checkers',
+    modes: ['1P contra IA', '2P local por turnos'],
+    highlights: ['Regras brasileiras', 'Mostra os lances possíveis', 'IA em 3 níveis'],
+    status: 'available',
+    load: () => import('./checkers'),
+  },
+  {
+    id: 'ludo',
+    name: 'Ludo',
+    description: 'Role o dado, tire seus 4 peões da base e leve todos ao centro. Capture o rival para mandá-lo de volta!',
+    route: 'ludo',
+    cover: 'ludo',
+    modes: ['1P contra IA', '2P local por turnos'],
+    highlights: ['Dado de verdade, sorte e estratégia', '4 jogadores em breve', 'IA em 3 níveis'],
+    status: 'available',
+    load: () => import('./ludo'),
   },
 ];
 

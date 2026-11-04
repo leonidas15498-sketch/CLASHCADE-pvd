@@ -8,7 +8,7 @@ const GAMES = [
   ['sinuca', '#btn-play-local', '#cv'], ['minigolfe', '#mg-play-solo', '#mg-cv, canvas'],
   ['air-hockey', '[data-k="play-ai"]'], ['duelo-rastros', '[data-k="play-ai"]'], ['empilha', '[data-k="play-solo"]'],
   ['lig-4', '[data-k="play-ai"]'], ['pong', '[data-k="play-ai"]'], ['blocos', '[data-k="play-solo"]'],
-  ['sumo-neon', '[data-k="play-ai"]'], ['cabo-de-guerra', '[data-k="play-ai"]'],
+  ['sumo-neon', '[data-k="play-ai"]'], ['cabo-de-guerra', '[data-k="play-ai"]'], ['damas', '[data-k="play-ai"]'], ['ludo', '[data-k="play-ai"]'],
 ];
 (async () => {
   const b = await chromium.launch();

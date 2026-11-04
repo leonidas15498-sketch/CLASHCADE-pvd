@@ -1,4 +1,50 @@
+import { useEffect, useRef } from 'react';
 import type { GameEntry } from '../games/registry';
+import { pieceById } from '../games/stack/pieces';
+import { T } from '../i18n/lang';
+
+/** Capa da Torre desenhada com os MESMOS bichos do jogo (04/11: bichos redesenhados como animais de verdade). */
+function StackCover() {
+  const ref = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const cv = ref.current;
+    const c = cv?.getContext('2d');
+    if (!cv || !c) return;
+    const g = c.createLinearGradient(0, 0, 0, 360);
+    g.addColorStop(0, '#2b1f6b');
+    g.addColorStop(1, '#0a1433');
+    c.fillStyle = g;
+    c.fillRect(0, 0, 640, 360);
+    // holofotes
+    for (const [x, col] of [[180, 'rgba(255,59,77,0.18)'], [460, 'rgba(47,107,255,0.22)']] as const) {
+      c.beginPath();
+      c.moveTo(x - 30, 0);
+      c.lineTo(x + 30, 0);
+      c.lineTo(x + 120, 360);
+      c.lineTo(x - 120, 360);
+      c.fillStyle = col;
+      c.fill();
+    }
+    c.fillStyle = '#2c3352';
+    c.beginPath();
+    c.roundRect(170, 300, 300, 26, 8);
+    c.fill();
+    c.fillStyle = '#ffc24a';
+    c.fillRect(178, 304, 284, 4);
+    const put = (id: string, x: number, y: number, a = 0, s = 62) => {
+      c.setTransform(s * Math.cos(a), -s * Math.sin(a), -s * Math.sin(a), -s * Math.cos(a), x, y);
+      pieceById(id).draw(c);
+      c.setTransform(1, 0, 0, 1, 0, 0);
+    };
+    put('hipopotamo', 320, 262, 0, 80);
+    put('tartaruga', 306, 203, 0, 80);
+    put('capivara', 334, 147, 0, 80);
+    put('coruja', 322, 81, 0, 80);
+    put('raposa', 505, 96, -0.35, 64);
+    put('caracol', 140, 272, 0, 60);
+  }, []);
+  return <canvas ref={ref} width={640} height={360} role="img" aria-label={T('Torre de bichos: hipopótamo, tartaruga, capivara e coruja empilhados', 'Critter tower: hippo, turtle, capybara and owl stacked')} style={{ width: '100%', height: '100%', display: 'block' }} />;
+}
 
 /** Capas desenhadas em SVG (sem imagens externas), uma por jogo. */
 export function Cover({ kind }: { kind: GameEntry['cover'] }) {
@@ -207,26 +253,79 @@ export function Cover({ kind }: { kind: GameEntry['cover'] }) {
         </svg>
       );
     case 'stack':
+      return <StackCover />;
+    case 'checkers': {
+      const sq: JSX.Element[] = [];
+      for (let r = 0; r < 8; r++)
+        for (let c = 0; c < 8; c++) sq.push(<rect key={`${r}-${c}`} x={88 + c * 18} y={18 + r * 18} width="18" height="18" fill={(r + c) % 2 ? '#a8703f' : '#f0d9b5'} />);
+      const pc = (r: number, c: number, col: string, king = false) => (
+        <g key={`p${r}${c}`}>
+          <circle cx={97 + c * 18} cy={29 + r * 18} r="7.5" fill="rgba(0,0,0,.35)" />
+          <circle cx={97 + c * 18} cy={27 + r * 18} r="7.5" fill={col} stroke="rgba(0,0,0,.35)" />
+          <circle cx={97 + c * 18} cy={27 + r * 18} r="4.8" fill="none" stroke="rgba(0,0,0,.25)" />
+          {king && <path d={`M${92 + c * 18} ${30 + r * 18} l0 -6 l2.5 3 l2.5 -4 l2.5 4 l2.5 -3 l0 6 z`} fill="#ffd34d" />}
+        </g>
+      );
       return (
-        <svg viewBox="0 0 320 180" role="img" aria-label="Pilha de bichinhos e objetos sobre uma mesa">
-          <rect width="320" height="180" fill="#8fd3ff" />
-          <ellipse cx="70" cy="40" rx="34" ry="11" fill="#fff" opacity="0.7" />
-          <rect x="95" y="150" width="130" height="14" rx="4" fill="#b87a47" />
-          <rect x="108" y="164" width="10" height="16" fill="#7a4a2a" />
-          <rect x="202" y="164" width="10" height="16" fill="#7a4a2a" />
-          <rect x="118" y="118" width="84" height="32" rx="10" fill="#f6a443" />
-          <circle cx="178" cy="130" r="4" fill="#1b1426" />
-          <circle cx="192" cy="130" r="4" fill="#1b1426" />
-          <rect x="138" y="80" width="46" height="38" rx="3" fill="#7c6cff" />
-          <rect x="157" y="80" width="8" height="38" fill="#ffd34d" />
-          <path d="M126 80 L196 80 L182 52 L140 52 Z" fill="#62cf63" />
-          <circle cx="150" cy="56" r="4" fill="#1b1426" />
-          <circle cx="172" cy="56" r="4" fill="#1b1426" />
-          <g transform="rotate(14 230 40)">
-            <rect x="214" y="22" width="40" height="34" rx="12" fill="#ffb1c8" />
-          </g>
-          <line x1="236" y1="0" x2="234" y2="22" stroke="#ff6b4a" strokeWidth="3" />
+        <svg viewBox="0 0 320 180" role="img" aria-label={T('Tabuleiro de damas com peças coral e azuis', 'Checkers board with coral and blue pieces')}>
+          <rect width="320" height="180" fill="#0d1530" />
+          <rect x="80" y="10" width="160" height="160" rx="8" fill="#5a3518" />
+          {sq}
+          {[[0, 1], [0, 3], [1, 2], [2, 5], [3, 0]].map(([r, c]) => pc(r, c, '#3d8bff'))}
+          {[[7, 0], [6, 1], [5, 4], [6, 5], [7, 6]].map(([r, c]) => pc(r, c, '#ff6b4a'))}
+          {pc(3, 4, '#ff6b4a', true)}
+          <path d="M187 75 L169 93" stroke="#28c7b7" strokeWidth="3" strokeDasharray="4 3" />
         </svg>
       );
+    }
+    case 'ludo': {
+      const cells: JSX.Element[] = [];
+      const u = 10.6;
+      const ox = 80.5;
+      const oy = 10.5;
+      for (let r = 0; r < 15; r++)
+        for (let c = 0; c < 15; c++) {
+          const arm = (r >= 6 && r <= 8) !== (c >= 6 && c <= 8);
+          if (!arm) continue;
+          let fill = '#f4f1e8';
+          if (c === 7 && r >= 9 && r <= 13) fill = '#ff6b4a';
+          if (c === 7 && r >= 1 && r <= 5) fill = '#3d8bff';
+          cells.push(<rect key={`${r}-${c}`} x={ox + c * u} y={oy + r * u} width={u} height={u} fill={fill} stroke="rgba(20,25,45,.3)" strokeWidth=".6" />);
+        }
+      const base = (r: number, c: number, col: string) => (
+        <g key={`b${r}${c}`}>
+          <rect x={ox + c * u} y={oy + r * u} width={6 * u} height={6 * u} fill={col} />
+          <rect x={ox + (c + 0.8) * u} y={oy + (r + 0.8) * u} width={4.4 * u} height={4.4 * u} rx="6" fill="#fff" opacity=".92" />
+        </g>
+      );
+      const pawn = (x: number, y: number, col: string) => (
+        <g key={`${x}-${y}`}>
+          <ellipse cx={x} cy={y + 6} rx="5" ry="2" fill="rgba(0,0,0,.3)" />
+          <path d={`M${x - 5} ${y + 5} q0 -3 3 -4 l1 -4 h2 l1 4 q3 1 3 4 z`} fill={col} stroke="rgba(15,10,30,.7)" />
+          <circle cx={x} cy={y - 4} r="3" fill={col} stroke="rgba(15,10,30,.7)" />
+        </g>
+      );
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label={T('Tabuleiro de Ludo com peões coral e azuis e um dado', 'Ludo board with coral and blue pawns and a die')}>
+          <rect width="320" height="180" fill="#0d1530" />
+          <rect x={ox - 3} y={oy - 3} width={15 * u + 6} height={15 * u + 6} rx="6" fill="#f4f1e8" />
+          {base(9, 0, '#ff6b4a')}
+          {base(0, 9, '#3d8bff')}
+          {base(0, 0, '#9aa3b8')}
+          {base(9, 9, '#9aa3b8')}
+          {cells}
+          <path d={`M${ox + 6 * u} ${oy + 9 * u} L${ox + 7.5 * u} ${oy + 7.5 * u} L${ox + 9 * u} ${oy + 9 * u} Z`} fill="#ff6b4a" />
+          <path d={`M${ox + 6 * u} ${oy + 6 * u} L${ox + 7.5 * u} ${oy + 7.5 * u} L${ox + 9 * u} ${oy + 6 * u} Z`} fill="#3d8bff" />
+          {pawn(ox + 2 * u, oy + 11 * u, '#ff6b4a')}
+          {pawn(ox + 6.5 * u, oy + 10.5 * u, '#ff6b4a')}
+          {pawn(ox + 12.5 * u, oy + 4 * u, '#3d8bff')}
+          {pawn(ox + 8.5 * u, oy + 2.5 * u, '#3d8bff')}
+          <g transform="translate(262 120) rotate(-14)">
+            <rect x="-20" y="-20" width="40" height="40" rx="8" fill="#fff" stroke="#ff6b4a" strokeWidth="3" />
+            {[[-1, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [1, 1]].map(([a, b]) => <circle key={`${a}${b}`} cx={a * 10} cy={b * 10} r="3.4" fill="#1b1426" />)}
+          </g>
+        </svg>
+      );
+    }
   }
 }

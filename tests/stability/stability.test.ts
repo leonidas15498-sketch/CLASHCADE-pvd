@@ -19,8 +19,8 @@ beforeEach(() => {
 afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); });
 
 describe('V12 navigation', () => {
-  it('accepts all ten routes and decodes escapes without throwing on invalid or unknown hashes', () => {
-    expect(GAMES).toHaveLength(10);
+  it('accepts all twelve routes and decodes escapes without throwing on invalid or unknown hashes', () => {
+    expect(GAMES).toHaveLength(12);
     for (const g of GAMES) expect(gameByRoute(decodeRoute('#' + g.route))).toBe(g);
     expect(decodeRoute('#%70ong')).toBe('pong');
     for (const h of ['#%', '#%E0%A4', '#%ZZ']) expect(decodeRoute(h)).toBe('');

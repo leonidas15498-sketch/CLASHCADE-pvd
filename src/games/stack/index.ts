@@ -6,7 +6,7 @@ import { Shell, StartConfig } from '../shared/shell';
 import type { GameModule } from '../shared/types';
 import { Drop, planStackDrop } from './ai';
 import { AIM_LIMIT, DT, landingY, PLATFORM, StackMatch, VIEW_W } from './logic';
-import { pieceById } from './pieces';
+import { pieceById, PIECES } from './pieces';
 
 const HELP_PT = `<ul>
 <li><b>Objetivo:</b> cada jogador, na sua vez, coloca uma peça na pilha. <b>Quem derrubar alguma peça da mesa perde.</b></li>
@@ -706,6 +706,29 @@ class StackGame {
       ctx.setTransform(this.dpr * 36, 0, 0, -this.dpr * 36, this.dpr * 56, this.dpr * 56);
       pieceById(m.nextPiece).draw(ctx);
     }
+  }
+
+  /** Para QA: prancha com todos os bichos desenhados pelo jogo (devolve imagem PNG em data URL). */
+  sheet(): string {
+    const cv = document.createElement('canvas');
+    const cell = 220;
+    cv.width = cell * 4;
+    cv.height = cell * 3;
+    const c = cv.getContext('2d')!;
+    c.fillStyle = '#0a1433';
+    c.fillRect(0, 0, cv.width, cv.height);
+    PIECES.forEach((p, i) => {
+      const x = (i % 4) * cell + cell / 2;
+      const y = Math.floor(i / 4) * cell + cell / 2;
+      c.setTransform(100, 0, 0, -100, x, y + 10);
+      p.draw(c);
+      c.setTransform(1, 0, 0, 1, 0, 0);
+      c.fillStyle = '#fff';
+      c.font = '700 15px system-ui';
+      c.textAlign = 'center';
+      c.fillText(p.name, x, y + cell / 2 - 10);
+    });
+    return cv.toDataURL('image/png');
   }
 
   /** Para testes no navegador. */

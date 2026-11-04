@@ -96,7 +96,7 @@ for (const d of Object.keys(duel)) console.log(`"Humano" (IA Média) × IA ${d}:
 // ---- Cenário controlado (mesmas jogadas antes/depois): peça B solta sobre peça A, deslocada 0 / 0,2 / 0,35 u.
 // Mede só o que a física muda (as partidas IA × IA acima mudam de rumo e misturam sorte da peça).
 {
-  const ids = ['gato', 'sapo', 'presente', 'bolo', 'urso', 'panda', 'pinguim', 'melancia'];
+  const ids = ['tartaruga', 'hipopotamo', 'capivara', 'jacare', 'cavalo', 'gorila', 'canguru', 'raposa'];
   const restC: number[] = [];
   const rotC: number[] = [];
   let fell = 0;

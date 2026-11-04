@@ -79,3 +79,12 @@ export function equip(slot: string, key: string) {
   store.save(e);
   return true;
 }
+
+// ---------- Damas ----------
+export interface CheckersBoardPal { light: string; dark: string; frame: string }
+export const CHECKERS_BOARDS: ShopTheme<CheckersBoardPal>[] = [
+  { key: 'checkers.board.madeira', en: 'Wood', descPt: 'Madeira clara e escura, o clássico.', descEn: 'Light and dark wood, the classic.', pal: { light: '#f0d9b5', dark: '#a8703f', frame: '#5a3518' } },
+  { key: 'checkers.board.marmore', en: 'Marble', descPt: 'Mármore branco e verde.', descEn: 'White and green marble.', pal: { light: '#ece8df', dark: '#3f7a5f', frame: '#2a3a33' } },
+  { key: 'checkers.board.arena', en: 'Arena', descPt: 'Azul-marinho com borda ciano.', descEn: 'Navy with a cyan rim.', pal: { light: '#2a3657', dark: '#151d36', frame: '#00b8d4' } },
+  { key: 'checkers.board.ouro', en: 'Gold', descPt: 'Creme com casas douradas.', descEn: 'Cream with golden squares.', pal: { light: '#fff3d1', dark: '#c9962f', frame: '#7a5510' } },
+];
