@@ -88,3 +88,11 @@ export const CHECKERS_BOARDS: ShopTheme<CheckersBoardPal>[] = [
   { key: 'checkers.board.arena', en: 'Arena', descPt: 'Azul-marinho com borda ciano.', descEn: 'Navy with a cyan rim.', pal: { light: '#2a3657', dark: '#151d36', frame: '#00b8d4' } },
   { key: 'checkers.board.ouro', en: 'Gold', descPt: 'Creme com casas douradas.', descEn: 'Cream with golden squares.', pal: { light: '#fff3d1', dark: '#c9962f', frame: '#7a5510' } },
 ];
+
+// ---------- Xadrez (04/11) — mesma paleta das Damas, itens próprios ----------
+export const CHESS_BOARDS: ShopTheme<CheckersBoardPal>[] = [
+  { key: 'chess.board.madeira', en: 'Wood', descPt: 'Madeira clara e escura, o clássico de clube.', descEn: 'Light and dark wood, the club classic.', pal: { light: '#f0d9b5', dark: '#b58863', frame: '#5a3518' } },
+  { key: 'chess.board.torneio', en: 'Tournament', descPt: 'Verde e creme dos tabuleiros de torneio.', descEn: 'Green and cream tournament board.', pal: { light: '#eeeed2', dark: '#769656', frame: '#3a4a2c' } },
+  { key: 'chess.board.arena', en: 'Arena', descPt: 'Azul-marinho com borda ciano.', descEn: 'Navy with a cyan rim.', pal: { light: '#3a4870', dark: '#1d2747', frame: '#00b8d4' } },
+  { key: 'chess.board.marmore', en: 'Marble', descPt: 'Mármore branco e cinza.', descEn: 'White and grey marble.', pal: { light: '#ece8df', dark: '#8a8f99', frame: '#3b3f47' } },
+];

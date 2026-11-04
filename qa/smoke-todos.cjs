@@ -9,7 +9,7 @@ const { chromium } = require('playwright');
   const errs = [];
   p.on('pageerror', (e) => errs.push(e.message));
   p.on('console', (m) => m.type() === 'error' && errs.push(m.text()));
-  const games = { damas: ['ai', 'local'], ludo: ['ai', 'local'], 'air-hockey': ['ai', 'local'], 'duelo-rastros': ['ai', 'local'], empilha: ['solo', 'ai', 'local'], 'lig-4': ['ai', 'local'], pong: ['ai', 'local'], blocos: ['solo', 'local'], 'sumo-neon': ['ai', 'local'], 'cabo-de-guerra': ['ai', 'local'] };
+  const games = { damas: ['ai', 'local'], ludo: ['ai', 'local'], 'air-hockey': ['ai', 'local'], 'duelo-rastros': ['ai', 'local'], empilha: ['solo', 'ai', 'local'], 'lig-4': ['ai', 'local'], pong: ['ai', 'local'], blocos: ['solo', 'ai', 'local'], xadrez: ['ai', 'local'], cobrinha: ['solo', 'ai', 'local'], 'sumo-neon': ['ai', 'local'], 'cabo-de-guerra': ['ai', 'local'] };
   for (const [route, modes] of Object.entries(games)) {
     const res = [];
     for (const mode of modes) {

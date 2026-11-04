@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { blocksAiScore } from '../bench/blocks-ai';
 import {
   BOARD_CLEAR_BONUS,
   canPlace,
@@ -146,4 +147,15 @@ describe('blocos — faixas', () => {
     const gr = benchBlocks('greedy', 8);
     expect(gr.median).toBeGreaterThan(rnd.median * 3);
   });
+});
+
+describe('blocos — IA medida (pontos até acabar o espaço, mesmas sementes)', () => {
+  it('Fácil < Médio < Difícil com folga', () => {
+    const avg = (d: 'easy' | 'medium' | 'hard') => [1007, 2007, 3007, 4007].reduce((a, s) => a + blocksAiScore(d, s, 200).score, 0) / 4;
+    const e = avg('easy');
+    const m = avg('medium');
+    const h = avg('hard');
+    expect(m).toBeGreaterThan(e * 1.4);
+    expect(h).toBeGreaterThan(m * 1.4);
+  }, 300000);
 });

@@ -8,10 +8,12 @@ export interface GameEntry {
   description: string;
   /** Rota no hash da URL (#id). */
   route: string;
-  cover: 'pool' | 'minigolf' | 'hockey' | 'trails' | 'stack' | 'connect4' | 'pong' | 'blocks' | 'sumo' | 'tug' | 'checkers' | 'ludo';
+  cover: 'pool' | 'minigolf' | 'hockey' | 'trails' | 'stack' | 'connect4' | 'pong' | 'blocks' | 'sumo' | 'tug' | 'checkers' | 'ludo' | 'snake' | 'chess';
   modes: string[];
   highlights: string[];
   status: GameStatus;
+  /** Jogo de tabuleiro (aparece no filtro "Tabuleiro" do portal). */
+  board?: boolean;
   /** Mostra o selo "Novo" na capa (jogos recém-chegados). */
   isNew?: boolean;
   /** Carregamento sob demanda: o código do jogo só é baixado quando ele é aberto. */
@@ -36,7 +38,7 @@ export const GAMES: GameEntry[] = [
     description: 'Nove buracos numa ilha tropical: curvas, rampas, moinho e água. Menor número de tacadas vence.',
     route: 'minigolfe',
     cover: 'minigolf',
-    modes: ['1P', '2P local por turnos'],
+    modes: ['1P', '1P contra IA', '2P local por turnos'],
     highlights: ['Circuito progressivo de 9 buracos', 'Física consistente', 'Mira e barra de força'],
     status: 'available',
     load: () => import('./minigolf'),
@@ -80,6 +82,7 @@ export const GAMES: GameEntry[] = [
     description: 'Solte as peças na grade e alinhe 4 da sua cor antes do adversário: na horizontal, vertical ou diagonal.',
     route: 'lig-4',
     cover: 'connect4',
+    board: true,
     modes: ['1P contra IA', '2P local por turnos'],
     highlights: ['Partidas rápidas', 'Revanche alterna quem começa', 'IA em 3 níveis'],
     status: 'available',
@@ -102,7 +105,7 @@ export const GAMES: GameEntry[] = [
     description: 'Encaixe as peças na grade 8×8, complete linhas e colunas e encadeie combos para multiplicar os pontos.',
     route: 'blocos',
     cover: 'blocks',
-    modes: ['1P (recorde)', '2P local, um de cada vez'],
+    modes: ['1P (recorde)', '1P contra IA', '2P local, um de cada vez'],
     highlights: ['Combos até ×5', 'Faixas Bronze a Diamante', 'Partidas de poucos minutos'],
     status: 'available',
     load: () => import('./blocks'),
@@ -135,6 +138,7 @@ export const GAMES: GameEntry[] = [
     description: 'O clássico de tabuleiro com regras brasileiras: captura obrigatória, lei da maioria e dama voadora.',
     route: 'damas',
     cover: 'checkers',
+    board: true,
     isNew: true,
     modes: ['1P contra IA', '2P local por turnos'],
     highlights: ['Regras brasileiras', 'Mostra os lances possíveis', 'IA em 3 níveis'],
@@ -147,11 +151,37 @@ export const GAMES: GameEntry[] = [
     description: 'Role o dado, tire seus 4 peões da base e leve todos ao centro. Capture o rival para mandá-lo de volta!',
     route: 'ludo',
     cover: 'ludo',
+    board: true,
     isNew: true,
     modes: ['1P contra IA', '2P local por turnos'],
     highlights: ['Dado de verdade, sorte e estratégia', '4 jogadores em breve', 'IA em 3 níveis'],
     status: 'available',
     load: () => import('./ludo'),
+  },
+  {
+    id: 'xadrez',
+    name: 'Xadrez',
+    description: 'Regras oficiais completas: roque, en passant, promoção, xeque-mate e todos os empates.',
+    route: 'xadrez',
+    cover: 'chess',
+    board: true,
+    isNew: true,
+    modes: ['1P contra IA', '2P local por turnos'],
+    highlights: ['Regras oficiais', 'Mostra os lances possíveis', 'IA em 3 níveis'],
+    status: 'available',
+    load: () => import('./chess'),
+  },
+  {
+    id: 'cobrinha',
+    name: 'Cobrinha',
+    description: 'O clássico Snake: coma as frutas, cresça e não bata. Sozinho pelo recorde ou em duelo de cobras.',
+    route: 'cobrinha',
+    cover: 'snake',
+    isNew: true,
+    modes: ['1P (recorde)', '1P contra IA', '2P local'],
+    highlights: ['Deslize para virar', 'Duelo: os dois ao mesmo tempo', 'IA em 3 níveis'],
+    status: 'available',
+    load: () => import('./snake'),
   },
 ];
 

@@ -10,14 +10,14 @@ import { applyMove, CheckersState, count, createCheckers, dark, DRAW_PLIES, idx,
 
 const HELP_PT = `<ul>
 <li>Toque numa peça sua (as que podem jogar brilham) e depois na casa de destino.</li>
-<li>A pedra anda 1 casa na diagonal para a frente e <b>captura para a frente e para trás</b>, pulando a peça do rival.</li>
+<li>A pedra anda 1 casa na diagonal para a frente e <b>captura para a frente e para trás</b>, pulando a peça do rival. Essa é a regra oficial brasileira; quem preferir pode desligar no menu ("Pedra captura para trás?").</li>
 <li><b>Captura é obrigatória</b>, e vale a <b>lei da maioria</b>: se houver várias, é obrigatório a que toma mais peças. Numa captura múltipla, toque no destino final.</li>
 <li>Chegou à última linha (terminando o lance lá)? Vira <b>dama</b>, que anda e captura em qualquer distância na diagonal.</li>
 <li>Perde quem fica sem peças ou sem lance. Empate: ${DRAW_PLIES} lances seguidos só de damas, sem captura.</li>
 </ul>`;
 const HELP_EN = `<ul>
 <li>Tap one of your pieces (the ones that can move glow), then the target square.</li>
-<li>Men move 1 square diagonally forward and <b>capture forward and backward</b> by jumping the rival piece.</li>
+<li>Men move 1 square diagonally forward and <b>capture forward and backward</b> by jumping the rival piece. That is the official Brazilian rule; you can turn it off in the menu ("Can men capture backward?").</li>
 <li><b>Capturing is mandatory</b> and the <b>majority rule</b> applies: you must take the sequence that captures the most pieces. In a multi-jump, tap the final square.</li>
 <li>Finish a move on the far row and the man becomes a <b>king</b>, which moves and captures at any distance diagonally.</li>
 <li>You lose with no pieces or no legal move. Draw: ${DRAW_PLIES} king-only moves in a row with no capture.</li>
@@ -69,6 +69,17 @@ class CheckersGame {
       localNote: T('Um de cada vez, no mesmo aparelho. O coral começa embaixo.', 'Take turns on the same device. Coral starts at the bottom.'),
       musicUrl: null,
       helpHtml: T(HELP_PT, HELP_EN),
+      variants: [
+        {
+          key: 'back',
+          labelPt: 'Pedra captura para trás?',
+          labelEn: 'Can men capture backward?',
+          choices: [
+            { v: 'sim', pt: 'Sim (oficial)', en: 'Yes (official)', notePt: 'Regra oficial brasileira: a pedra só ANDA para a frente, mas pode CAPTURAR para trás.', noteEn: 'Official Brazilian rule: men only MOVE forward but may CAPTURE backward.' },
+            { v: 'nao', pt: 'Não', en: 'No', notePt: 'Variante caseira (como no checkers americano): a pedra só captura para a frente. A dama não muda.', noteEn: 'House variant (like American checkers): men only capture forward. Kings are unchanged.' },
+          ],
+        },
+      ],
       shop: [{ slot: 'checkers.board', tabPt: 'Tabuleiro', tabEn: 'Board', items: CHECKERS_BOARDS as never, preview: (c, w, h, it) => previewBoard(c, w, h, it.pal as CheckersBoardPal), onChange: () => { this.theme = equipped('checkers.board', CHECKERS_BOARDS); } }],
       onExit,
       onStart: (cfg) => {
@@ -117,7 +128,7 @@ class CheckersGame {
     this.cfg = cfg;
     if (!sameFirst) this.first = (1 - this.first) as Side;
     // o coral fica sempre embaixo; a cada partida alterna quem começa (mais justo numa sessão de várias partidas)
-    this.s = createCheckers(this.first);
+    this.s = createCheckers(this.first, this.shell.variant('back') !== 'nao');
     this.sel = -1;
     this.anim = null;
     this.lastMove = null;
@@ -144,7 +155,7 @@ class CheckersGame {
       return c.men + c.kings;
     };
     this.shell.setScore(Shell.pill(0, n[0], left(0), on(0)) + Shell.pill(1, n[1], left(1), on(1)));
-    this.shell.setSubtitle(s.winner === null ? `${T('Vez de', 'Turn:')} ${n[s.current]} · ${T('vitórias', 'wins')} ${this.wins[0]}×${this.wins[1]}` : T('Fim da partida', 'Match over'));
+    this.shell.setSubtitle(s.winner === null ? `${T('Vez de', 'Turn:')} ${n[s.current]}${s.menBack ? '' : T(' · só captura para a frente', ' · forward captures only')} · ${T('vitórias', 'wins')} ${this.wins[0]}×${this.wins[1]}` : T('Fim da partida', 'Match over'));
   }
 
   private movesFrom(i: number) {

@@ -10,7 +10,7 @@ import { record, count, strings, text } from './validation';
 import { createStore } from './storage';
 
 /** Rotas (registry) elegíveis. Ordem aqui não importa: o torneio sorteia. */
-export const TOURNAMENT_GAMES = ['air-hockey', 'duelo-rastros', 'empilha', 'lig-4', 'pong', 'sumo-neon', 'cabo-de-guerra'] as const;
+export const TOURNAMENT_GAMES = ['air-hockey', 'duelo-rastros', 'empilha', 'lig-4', 'pong', 'sumo-neon', 'cabo-de-guerra', 'cobrinha'] as const;
 export const TOURNAMENT_WINS = 4;
 export const TOURNAMENT_MAX = 7;
 

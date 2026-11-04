@@ -14,6 +14,21 @@
   2. Minigolfe e Torre (mesmo modelo). 3. Pong como piloto de tempo real (medir atraso antes de Air Hockey/Rastros/Sumô/Cabo).
   4. Blocos: desafio assíncrono (mesma semente). Conferir limites do plano grátis do Supabase Realtime antes do tempo real.
 
+## Rodada da manhã 04/11 (pedido do Leon) — testado no navegador automatizado (qa/novos-04-11.cjs); FALTA celular real
+- **Damas:** a regra "pedra captura para trás" EXISTE na regra brasileira oficial (só não anda para trás) — o jogo estava
+  certo. Mesmo assim entrou a opção no menu "Pedra captura para trás? Sim (oficial) / Não" (variante caseira; salva por
+  aparelho). Novo recurso genérico do Shell: `variants` (opções de regra no menu).
+- **Xadrez (novo):** regras oficiais completas, gerador conferido por perft; IA alfa-beta (Médio vence Fácil 100%, Difícil vence
+  Médio 100%); Difícil ~0,9 s por lance no navegador (tela congela enquanto pensa; Worker se incomodar). Loja de tabuleiros.
+- **Cobrinha / Snake (novo):** solo (recorde), contra IA e 2P simultâneo (cada um desliza na sua metade). No Torneio.
+- **IA em TODOS os jogos:** Minigolfe e Blocos ganharam "1 Jogador contra IA".
+  Minigolfe: IA usa o mesmo simulador e erra a mão por nível — média 30 / 22 / 17 tacadas (par 28).
+  Blocos: você joga e depois a IA joga com a MESMA sequência de peças — média 420 / 1.000 / 3.300 pontos.
+- **Auditoria das IAs (vitest, 300 testes):** todos os jogos passam no teste Fácil < Médio < Difícil com folga
+  (`npx vite-node scripts/bench.ts` imprime os números, agora também cobrinha, xadrez, golfe e blocos).
+- **Portal:** filtro "♟ Tabuleiro" (Quatro em Linha, Damas, Ludo, Xadrez); "Contra IA" mostra os 14 jogos.
+- Sem música própria: Damas, Ludo, Xadrez, Cobrinha (fazer pacotes em docs/jogos/musica.md).
+
 ## Rodada noturna 04/11 (autonomia do Leon) — testado no navegador automatizado; FALTA celular real
 - **Torre de Bichos — 12 animais de verdade** (referência docs/arte/referencias-gpt/torre-catalogo.png): tartaruga, hipopótamo,
   elefante (Base); capivara, gorila, castor (Bloco); jacaré, canguru, caracol (Assimétrico); cavalo, raposa, coruja (Desafio).
@@ -69,6 +84,8 @@
 - **Falta decisão do Leon:** os outros 8 jogos (Shell) não têm NENHUM item no catálogo, então não ganharam loja.
 
 ## PRÓXIMO (atualizado 04/11)
+00. Leon: testar no celular Xadrez (toque, promoção, tempo do Difícil), Cobrinha (deslize no solo e no 2P), Damas com a
+    opção nova, Minigolfe e Blocos contra a IA. Ideias de próximos tabuleiros: Reversi/Othello e Trilha (regras simples, IA boa).
 0. Leon: testar no celular a rodada de 04/11 (Torre nova, Damas, Ludo) e os itens de 03/11 que ainda faltam.
    Depois: Ludo para 4 jogadores (lógica já pronta para os assentos 2 e 3; falta menu com 3–4 nomes e IA para os extras);
    músicas de Damas e Ludo; xadrez só se o Leon quiser (regras e IA bem mais trabalhosas).

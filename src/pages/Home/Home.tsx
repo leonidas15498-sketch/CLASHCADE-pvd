@@ -325,10 +325,11 @@ function TournamentPanel({ onOpen }: { onOpen: (route: string) => void }) {
 
 function Games({ onOpen }: { onOpen: (route: string) => void }) {
   const { t, lang } = useI18n();
-  const [filter, setFilter] = useState<'all' | 'ai' | 'local' | 'solo'>('all');
+  const [filter, setFilter] = useState<'all' | 'ai' | 'local' | 'solo' | 'board'>('all');
+  // todos os jogos têm 1P contra IA e 2P no aparelho (04/11); "Solo" = modo sozinho pelo recorde
   const visible = GAMES.filter((g) => g.status === 'available' && (
-    filter === 'all' || filter === 'local' ||
-    (filter === 'ai' ? !['minigolfe', 'blocos'].includes(g.id) : ['minigolfe', 'blocos', 'empilha'].includes(g.id))
+    filter === 'all' || filter === 'local' || filter === 'ai' ||
+    (filter === 'board' ? !!g.board : ['minigolfe', 'blocos', 'empilha', 'cobrinha'].includes(g.id))
   ));
   return (
     <section aria-labelledby="h-games">
@@ -346,7 +347,7 @@ function Games({ onOpen }: { onOpen: (route: string) => void }) {
       </div>
       {getTournament().active && <TournamentPanel onOpen={onOpen} />}
       <div className="game-filters" role="group" aria-label={T('Filtrar por modo', 'Filter by mode')}>
-        {([['all', T('Todos', 'All')], ['ai', T('Contra IA', 'Vs AI')], ['local', T('2P no aparelho', '2P on device')], ['solo', 'Solo']] as const).map(([mode, label]) => (
+        {([['all', T('Todos', 'All')], ['ai', T('Contra IA', 'Vs AI')], ['local', T('2P no aparelho', '2P on device')], ['solo', 'Solo'], ['board', T('♟ Tabuleiro', '♟ Board games')]] as const).map(([mode, label]) => (
           <button key={mode} className={`btn ${filter === mode ? 'cyan' : 'ghost'}`} aria-pressed={filter === mode} onClick={() => setFilter(mode)}>{label}</button>
         ))}
       </div>

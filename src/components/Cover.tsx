@@ -278,6 +278,63 @@ export function Cover({ kind }: { kind: GameEntry['cover'] }) {
         </svg>
       );
     }
+    case 'snake': {
+      const tiles: JSX.Element[] = [];
+      for (let r = 0; r < 9; r++) for (let c = 0; c < 16; c++) tiles.push(<rect key={`${r}-${c}`} x={c * 20} y={r * 20} width="20" height="20" fill={(r + c) % 2 ? '#1d4d3a' : '#215842'} />);
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label={T('Duas cobrinhas, coral e azul, num gramado com frutas', 'Two snakes, coral and blue, on a lawn with fruit')}>
+          {tiles}
+          <path d="M30 150 H110 V90 H170" stroke="rgba(0,0,0,.3)" strokeWidth="18" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M30 150 H110 V90 H170" stroke="#ff6b4a" strokeWidth="15" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="170" cy="90" r="10" fill="#ff6b4a" />
+          <circle cx="173" cy="85" r="3" fill="#fff" /><circle cx="173" cy="95" r="3" fill="#fff" />
+          <circle cx="174" cy="85" r="1.5" fill="#111" /><circle cx="174" cy="95" r="1.5" fill="#111" />
+          <path d="M300 30 H230 V70" stroke="#3d8bff" strokeWidth="15" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="230" cy="70" r="10" fill="#3d8bff" />
+          <circle cx="225" cy="73" r="3" fill="#fff" /><circle cx="235" cy="73" r="3" fill="#fff" />
+          <circle cx="225" cy="74" r="1.5" fill="#111" /><circle cx="235" cy="74" r="1.5" fill="#111" />
+          {[[210, 90], [250, 130]].map(([x, y]) => (
+            <g key={`${x}`}>
+              <circle cx={x} cy={y} r="8" fill="#e02f3f" />
+              <ellipse cx={x + 5} cy={y - 9} rx="5" ry="2.5" fill="#4fe08a" transform={`rotate(-30 ${x + 5} ${y - 9})`} />
+            </g>
+          ))}
+        </svg>
+      );
+    }
+    case 'chess': {
+      const sq: JSX.Element[] = [];
+      for (let r = 0; r < 8; r++)
+        for (let c = 0; c < 8; c++) sq.push(<rect key={`${r}-${c}`} x={88 + c * 18} y={18 + r * 18} width="18" height="18" fill={(r + c) % 2 ? '#b58863' : '#f0d9b5'} />);
+      // silhuetas simples (rei, dama, cavalo, torre, peões) nas cores dos jogadores
+      const piece = (x: number, y: number, col: string, d: string, s = 0.22) => (
+        <g key={`${x}-${y}`} transform={`translate(${x} ${y}) scale(${s})`}>
+          <path d="M-28 30 H28 V44 H-28 Z" fill={col} stroke="rgba(0,0,0,.55)" strokeWidth="5" />
+          <path d={d} fill={col} stroke="rgba(0,0,0,.55)" strokeWidth="5" strokeLinejoin="round" />
+        </g>
+      );
+      const KING = 'M-22 30 L-18 0 Q-28 -14 -14 -20 L-4 -18 L-4 -26 L-11 -26 L-11 -32 L-4 -32 L-4 -40 L4 -40 L4 -32 L11 -32 L11 -26 L4 -26 L4 -18 L14 -20 Q28 -14 18 0 L22 30 Z';
+      const QUEEN = 'M-22 30 L-17 2 L-28 -24 L-12 -6 L-8 -32 L0 -8 L8 -32 L12 -6 L28 -24 L17 2 L22 30 Z';
+      const KNIGHT = 'M-20 30 L-16 6 Q-22 -2 -18 -10 L-2 -28 L0 -38 L6 -30 Q22 -24 24 -2 L26 30 Z';
+      const ROOK = 'M-18 30 L-15 -14 L-22 -16 L-22 -36 L-13 -36 L-13 -28 L-4 -28 L-4 -36 L4 -36 L4 -28 L13 -28 L13 -36 L22 -36 L22 -16 L15 -14 L18 30 Z';
+      const PAWN = 'M-14 30 L-9 4 Q-16 -2 -10 -10 A13 13 0 1 1 10 -10 Q16 -2 9 4 L14 30 Z';
+      return (
+        <svg viewBox="0 0 320 180" role="img" aria-label={T('Tabuleiro de xadrez com peças coral e azuis', 'Chess board with coral and blue pieces')}>
+          <rect width="320" height="180" fill="#0d1530" />
+          <rect x="80" y="10" width="160" height="160" rx="8" fill="#5a3518" />
+          {sq}
+          {piece(97 + 4 * 18, 27 + 0 * 18, '#3d8bff', KING)}
+          {piece(97 + 6 * 18, 27 + 2 * 18, '#3d8bff', KNIGHT)}
+          {piece(97 + 0 * 18, 27 + 0 * 18, '#3d8bff', ROOK)}
+          {[1, 2, 5].map((c) => piece(97 + c * 18, 27 + 1 * 18, '#3d8bff', PAWN))}
+          {piece(97 + 4 * 18, 27 + 7 * 18, '#ff6b4a', KING)}
+          {piece(97 + 5 * 18, 27 + 3 * 18, '#ff6b4a', QUEEN)}
+          {piece(97 + 7 * 18, 27 + 7 * 18, '#ff6b4a', ROOK)}
+          {[3, 4, 6].map((c) => piece(97 + c * 18, 27 + (c === 4 ? 4 : 6) * 18, '#ff6b4a', PAWN))}
+          <path d="M187 81 L205 63" stroke="#28c7b7" strokeWidth="3" strokeDasharray="4 3" />
+        </svg>
+      );
+    }
     case 'ludo': {
       const cells: JSX.Element[] = [];
       const u = 10.6;

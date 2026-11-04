@@ -10,7 +10,7 @@
 export type ItemTier = 'default' | 'coins' | 'premium';
 export interface CatalogItem {
   key: string;
-  game: 'sinuca' | 'minigolfe' | 'efeitos' | 'air-hockey' | 'pong' | 'lig-4' | 'damas' | 'ludo';
+  game: 'sinuca' | 'minigolfe' | 'efeitos' | 'air-hockey' | 'pong' | 'lig-4' | 'damas' | 'ludo' | 'xadrez';
   kind: 'taco' | 'mesa' | 'campo' | 'rastro' | 'disco' | 'quadra' | 'bola' | 'tabuleiro';
   name: string;
   tier: ItemTier;
@@ -108,6 +108,11 @@ export const CATALOG: CatalogItem[] = [
   it('checkers.board.marmore', 'damas', 'tabuleiro', 'Mármore', 'coins', 120, '#3f7a5f'),
   it('checkers.board.arena', 'damas', 'tabuleiro', 'Arena', 'coins', 120, '#151d36'),
   it('checkers.board.ouro', 'damas', 'tabuleiro', 'Ouro', 'premium', 0, '#c9962f'),
+  // Xadrez — tabuleiros (04/11)
+  it('chess.board.madeira', 'xadrez', 'tabuleiro', 'Madeira', 'default', 0, '#b58863'),
+  it('chess.board.torneio', 'xadrez', 'tabuleiro', 'Torneio', 'coins', 120, '#769656'),
+  it('chess.board.arena', 'xadrez', 'tabuleiro', 'Arena', 'coins', 120, '#1d2747'),
+  it('chess.board.marmore', 'xadrez', 'tabuleiro', 'Mármore', 'premium', 0, '#8a8f99'),
 ];
 
 const BY_KEY = new Map(CATALOG.map((x) => [x.key, x]));

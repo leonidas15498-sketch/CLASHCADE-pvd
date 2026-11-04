@@ -45,6 +45,15 @@ export interface ShellOptions {
   menuNote?: () => string;
   /** Loja do próprio jogo (pedido do Leon, 03/11): abas com os itens só deste jogo. */
   shop?: ShopSection[];
+  /** Opções de regra mostradas no menu (ex.: variante das Damas). Salvas por aparelho; ler com shell.variant(key). */
+  variants?: ShellVariant[];
+}
+
+export interface ShellVariant {
+  key: string;
+  labelPt: string;
+  labelEn: string;
+  choices: Array<{ v: string; pt: string; en: string; notePt: string; noteEn: string }>;
 }
 
 /** Uma aba da loja do jogo: itens do catálogo único + como desenhar a amostra (pelo mesmo renderizador do jogo). */
@@ -137,6 +146,7 @@ const CSS = `
 .gs-box button{min-height:44px;border-radius:12px;border:1px solid var(--line);background:#1f2a4a;padding:8px 14px}
 .gs-box .gs-primary{background:linear-gradient(#ffd877,#ffb52e 55%,#e0901a);color:#2a1600;border-color:#ffe7a6;font-weight:900;box-shadow:0 3px 0 #9c5d08}
 .gs-modes{display:flex;flex-wrap:wrap;gap:12px}
+.gs-vars{margin-top:12px;display:flex;flex-direction:column;gap:6px}.gs-var>b{display:block;font-size:13px;margin-bottom:4px}.gs-var .gs-note{margin:4px 0 0}
 .gs-card{flex:1 1 230px;min-width:0;display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:14px;background:rgba(10,20,51,.6);border:1px solid var(--line)}
 .gs-names{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.gs-names label{min-width:0}.gs-names input{width:100%;min-width:0;box-sizing:border-box}
 .gs-card label{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--muted)}
@@ -194,6 +204,12 @@ export class Shell {
     this.style.textContent = CSS;
     document.head.appendChild(this.style);
     this.prefs = this.loadPrefs();
+    try {
+      const raw = JSON.parse(localStorage.getItem(`clashcade.${o.id}.variants`) || '{}');
+      if (raw && typeof raw === 'object') for (const [k, v] of Object.entries(raw)) if (typeof v === 'string') this.variantVals[k] = v;
+    } catch {
+      /* sem armazenamento */
+    }
     this.sfx.enabled = this.prefs.sound;
     const m = o.modes;
     container.innerHTML = `
@@ -238,6 +254,18 @@ export class Shell {
           : ''
       }
     </div>
+    ${
+      o.variants?.length
+        ? `<div class="gs-vars">${o.variants
+            .map(
+              (va) =>
+                `<div class="gs-var"><b>${T(va.labelPt, va.labelEn)}</b><div class="gs-seg" data-var="${va.key}" role="radiogroup" aria-label="${T(va.labelPt, va.labelEn)}">${va.choices
+                  .map((c) => `<button data-v="${c.v}" role="radio">${T(c.pt, c.en)}</button>`)
+                  .join('')}</div><p class="gs-note" data-varnote="${va.key}"></p></div>`,
+            )
+            .join('')}</div>`
+        : ''
+    }
   </div></section>
 
   <section class="gs-overlay top" data-k="shopbox"><div class="gs-box gs-wide gs-shop">
@@ -325,6 +353,18 @@ export class Shell {
       b.addEventListener('click', () => {
         this.prefs.difficulty = b.dataset.d as Difficulty;
         this.savePrefs();
+        this.refreshMenu();
+      }),
+    );
+    this.container.querySelectorAll<HTMLButtonElement>('[data-var] button').forEach((b) =>
+      b.addEventListener('click', () => {
+        const key = b.parentElement!.dataset.var!;
+        this.variantVals[key] = b.dataset.v!;
+        try {
+          localStorage.setItem(`clashcade.${this.o.id}.variants`, JSON.stringify(this.variantVals));
+        } catch {
+          /* sem armazenamento */
+        }
         this.refreshMenu();
       }),
     );
@@ -429,7 +469,26 @@ export class Shell {
     );
   }
 
+  private variantVals: Record<string, string> = {};
+  /** Valor escolhido de uma opção de regra (o 1º da lista se nada foi escolhido ou o salvo não vale mais). */
+  variant(key: string): string {
+    const va = this.o.variants?.find((x) => x.key === key);
+    if (!va) return '';
+    const v = this.variantVals[key];
+    return va.choices.some((c) => c.v === v) ? v : va.choices[0].v;
+  }
+
   private refreshMenu() {
+    for (const va of this.o.variants ?? []) {
+      const cur = this.variant(va.key);
+      this.container.querySelectorAll<HTMLButtonElement>(`[data-var="${va.key}"] button`).forEach((b) => {
+        b.classList.toggle('on', b.dataset.v === cur);
+        b.setAttribute('aria-checked', String(b.dataset.v === cur));
+      });
+      const c = va.choices.find((x) => x.v === cur)!;
+      const note = this.q(`[data-varnote="${va.key}"]`);
+      if (note) note.textContent = T(c.notePt, c.noteEn);
+    }
     this.container.querySelectorAll<HTMLButtonElement>('[data-k="diff"] button').forEach((b) => {
       const on = b.dataset.d === this.prefs.difficulty;
       b.classList.toggle('on', on);

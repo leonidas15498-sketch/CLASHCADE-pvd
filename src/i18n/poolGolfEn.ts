@@ -279,6 +279,10 @@ for (const p of POOL_PATTERNS) {
 }
 
 export const GOLF_EN: Record<string, string> = {
+  '1 Jogador contra IA': '1 Player vs AI',
+  'Fácil': 'Easy',
+  'Médio': 'Medium',
+  'Difícil': 'Hard',
   ...COMMON,
   'Voltar ao menu do minigolfe': 'Back to the mini golf menu',
   Minigolfe: 'Mini Golf',

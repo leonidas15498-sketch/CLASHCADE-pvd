@@ -44,6 +44,8 @@ const PT = /[ãõçáéíóúâêô]|\b(de|da|do|para|com|que|não|vez|bola|joga
     ['blocos', '[data-k="play-solo"]'],
     ['damas', '[data-k="play-ai"]'],
     ['ludo', '[data-k="play-ai"]'],
+    ['xadrez', '[data-k="play-ai"]'],
+    ['cobrinha', '[data-k="play-ai"]'],
   ];
   for (const [route, play] of games) {
     await p.goto('http://localhost:4174/#' + route);

@@ -7,6 +7,8 @@
  * - Dama "voadora": anda e captura em qualquer distância na diagonal.
  * - Pedra vira dama só se TERMINAR o lance na última linha.
  * - Perde quem não tem lance (sem peças ou bloqueado). Empate: 20 lances seguidos só de damas, sem captura.
+ * Opção da casa (pedido do Leon, 04/11): `menBack = false` faz a pedra capturar SÓ para a frente (como no checkers
+ * americano/inglês). O resto das regras brasileiras continua igual. Padrão: true (regra oficial brasileira).
  * Casas: índice = linha·8 + coluna; linha 0 é a de cima (lado do Jogador 2).
  */
 export const N = 8;
@@ -21,6 +23,8 @@ export interface CheckersState {
   /** Lances seguidos só de damas, sem captura (empate em DRAW_PLIES). */
   quiet: number;
   plies: number;
+  /** Pedra pode capturar para trás (regra oficial brasileira). */
+  menBack: boolean;
 }
 
 export interface Move {
@@ -41,7 +45,7 @@ const DIRS: Array<[number, number]> = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
 /** Para onde a pedra de cada lado anda (Jogador 1 sobe = linha diminui). */
 const FWD: Record<Side, number> = { 0: -1, 1: 1 };
 
-export function createCheckers(first: Side = 0): CheckersState {
+export function createCheckers(first: Side = 0, menBack = true): CheckersState {
   const board: Cell[] = Array(N * N).fill(0);
   for (let r = 0; r < N; r++)
     for (let c = 0; c < N; c++) {
@@ -49,13 +53,13 @@ export function createCheckers(first: Side = 0): CheckersState {
       if (r <= 2) board[idx(r, c)] = -1;
       else if (r >= 5) board[idx(r, c)] = 1;
     }
-  return { board, current: first, winner: null, quiet: 0, plies: 0 };
+  return { board, current: first, winner: null, quiet: 0, plies: 0, menBack };
 }
 
 export const clone = (s: CheckersState): CheckersState => ({ ...s, board: s.board.slice() });
 
 /** Todas as sequências de captura a partir de `from` (busca em profundidade). */
-function captures(board0: Cell[], from: number, side: Side, king: boolean): Move[] {
+function captures(board0: Cell[], from: number, side: Side, king: boolean, menBack: boolean): Move[] {
   const out: Move[] = [];
   // a casa de origem fica vazia durante o lance (a peça pode passar de novo por ela)
   const board = board0.slice();
@@ -65,6 +69,7 @@ function captures(board0: Cell[], from: number, side: Side, king: boolean): Move
   const rec = (r: number, c: number, path: number[], taken: number[]) => {
     let extended = false;
     for (const [dr, dc] of DIRS) {
+      if (!king && !menBack && dr !== FWD[side]) continue;
       let rr = r + dr;
       let cc = c + dc;
       if (king) while (inside(rr, cc) && board[idx(rr, cc)] === 0) {
@@ -103,7 +108,7 @@ export function legalMoves(s: CheckersState): Move[] {
     const v = s.board[i];
     if (sideOf(v) !== side) continue;
     const king = isKing(v);
-    caps.push(...captures(s.board, i, side, king));
+    caps.push(...captures(s.board, i, side, king, s.menBack));
     const [r, c] = rc(i);
     for (const [dr, dc] of DIRS) {
       if (!king && dr !== FWD[side]) continue;

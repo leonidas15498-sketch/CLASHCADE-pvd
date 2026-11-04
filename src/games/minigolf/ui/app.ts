@@ -20,6 +20,8 @@ import { PowerGauge } from '../../shared/powerGauge';
 import { mountMusicControl } from '../../shared/musicControl';
 import { LEVELS } from '../levels/levels';
 import { findShot } from '../levels/solver';
+import { chooseGolfShot } from '../ai';
+import type { Difficulty } from '../../shared/shell';
 import { aimRay, createWorld, GolfWorld, step, strike } from '../physics/sim';
 import { GOLF, Level, Vec } from '../physics/types';
 import {
@@ -76,6 +78,10 @@ export class MinigolfApp {
   phase: Phase = 'menu';
   aimAngle = 0;
   power = 0;
+  /** Nível da IA quando a partida é 1P contra IA (a IA é o Jogador 2); null nos outros modos. */
+  private aiDiff: Difficulty | null = null;
+  private aiTimer = 0;
+  private aiPick: Difficulty = 'medium';
   private pulling = false;
   private paused = false;
   private inputCleanups: (() => void)[] = [];
@@ -136,6 +142,7 @@ export class MinigolfApp {
     exitGameFullscreen();
     if (this.disposed) return;
     this.disposed = true;
+    clearTimeout(this.aiTimer);
     cancelAnimationFrame(this.raf);
     this.ac.abort();
     for (const cancel of this.inputCleanups) cancel();
@@ -161,6 +168,44 @@ export class MinigolfApp {
     $('mg-play-solo').addEventListener('click', () => this.startSolo(LEVELS.map((_, i) => i)));
     $('mg-pick').addEventListener('click', () => this.showLevels());
     $('mg-levels-close').addEventListener('click', () => this.hide('mg-levels'));
+    const paintDiff = () => {
+      this.root.querySelectorAll<HTMLButtonElement>('#mg-diff button').forEach((b) => {
+        b.classList.toggle('on', b.dataset.d === this.aiPick);
+        b.setAttribute('aria-checked', String(b.dataset.d === this.aiPick));
+      });
+      const notes: Record<Difficulty, string> = {
+        easy: T('Erra bastante a mira e a força (≈ 30 tacadas no circuito).', 'Misses aim and power a lot (≈ 30 strokes per round).'),
+        medium: T('Erro moderado (≈ 22 tacadas no circuito).', 'Moderate error (≈ 22 strokes per round).'),
+        hard: T('Quase não erra (≈ 17 tacadas no circuito).', 'Rarely misses (≈ 17 strokes per round).'),
+      };
+      $('mg-diff-note').textContent = notes[this.aiPick];
+    };
+    try {
+      const d = localStorage.getItem('clashcade.minigolf.aiDiff');
+      if (d === 'easy' || d === 'medium' || d === 'hard') this.aiPick = d;
+    } catch {
+      /* sem armazenamento */
+    }
+    ($('mg-name-ai') as HTMLInputElement).value = this.save.name1;
+    this.root.querySelectorAll<HTMLButtonElement>('#mg-diff button').forEach((b) =>
+      b.addEventListener('click', () => {
+        this.aiPick = b.dataset.d as Difficulty;
+        try {
+          localStorage.setItem('clashcade.minigolf.aiDiff', this.aiPick);
+        } catch {
+          /* sem armazenamento */
+        }
+        paintDiff();
+      }),
+    );
+    paintDiff();
+    $('mg-play-ai').addEventListener('click', () => {
+      const n = ($('mg-name-ai') as HTMLInputElement).value.trim();
+      this.save.name1 = n;
+      golfStore.save(this.save);
+      const lbl = { easy: T('Fácil', 'Easy'), medium: T('Médio', 'Medium'), hard: T('Difícil', 'Hard') }[this.aiPick];
+      this.start('duo', [n || T('Você', 'You'), `${T('IA', 'AI')} (${lbl})`], LEVELS.map((_, i) => i), this.aiPick);
+    });
     $('mg-play-duo').addEventListener('click', () => {
       const a = ($('mg-p1') as HTMLInputElement).value.trim();
       const b = ($('mg-p2') as HTMLInputElement).value.trim();
@@ -372,7 +417,9 @@ export class MinigolfApp {
     this.start('solo', [n || 'Você'], holes);
   }
 
-  start(mode: 'solo' | 'duo', names: string[], holes: number[]) {
+  start(mode: 'solo' | 'duo', names: string[], holes: number[], ai: Difficulty | null = null) {
+    this.aiDiff = mode === 'duo' ? ai : null;
+    clearTimeout(this.aiTimer);
     // celular: partida em tela cheia, sem a barra do navegador (mesmo método da sinuca, pedido do Leon 03/11)
     enterGameFullscreen();
     this.sfx.unlock();
@@ -407,6 +454,29 @@ export class MinigolfApp {
     }
     this.phase = 'aim';
     this.updateHUD();
+    if (this.aiTurn()) this.scheduleAI();
+  }
+
+  private aiTurn() {
+    return !!this.aiDiff && !!this.match && !this.match.finished && this.match.current === 1;
+  }
+
+  /** Vez da IA: mira na tela por um instante (para o jogador ver) e taca pelo mesmo caminho do humano. */
+  private scheduleAI() {
+    clearTimeout(this.aiTimer);
+    this.aiTimer = window.setTimeout(() => {
+      if (this.disposed || !this.aiTurn() || this.phase !== 'aim' || !this.world || this.world.status !== 'rest') return;
+      if (this.paused) return this.scheduleAI();
+      const w = this.world;
+      const shot = chooseGolfShot(this.level, { x: w.x, y: w.y }, w.t, this.aiDiff!, Math.random);
+      this.aimAngle = shot.angle;
+      this.aiTimer = window.setTimeout(() => {
+        if (this.disposed || !this.aiTurn() || this.phase !== 'aim') return;
+        if (this.paused) return this.scheduleAI();
+        this.sfx.unlock();
+        this.swing = { t: 0, power: shot.power, angle: shot.angle };
+      }, 650);
+    }, 700);
   }
 
   private restartHole() {
@@ -422,7 +492,7 @@ export class MinigolfApp {
   }
 
   canAim(): boolean {
-    return !this.paused && this.phase === 'aim' && !this.swing && !!this.world && this.world.status === 'rest';
+    return !this.aiTurn() && !this.paused && this.phase === 'aim' && !this.swing && !!this.world && this.world.status === 'rest';
   }
 
   shoot(): boolean {
@@ -482,7 +552,7 @@ export class MinigolfApp {
     const m = this.match!;
     if (m.finished) {
       // revanche com os mesmos jogadores e buracos
-      this.start(m.mode, m.players.map((p) => p.name), m.holes);
+      this.start(m.mode, m.players.map((p) => p.name), m.holes, this.aiDiff);
       return;
     }
     if (!holeComplete(m)) {
@@ -546,7 +616,7 @@ export class MinigolfApp {
     if (done) {
       const r = result(m);
       if (this.matchId) {
-        reportMatch({ matchId: this.matchId, game: 'minigolfe', mode: m.mode === 'solo' ? 'solo' : 'local', winner: m.mode === 'solo' ? null : r.winner === null ? 'draw' : (r.winner as 0 | 1) });
+        reportMatch({ matchId: this.matchId, game: 'minigolfe', mode: m.mode === 'solo' ? 'solo' : this.aiDiff ? 'ai' : 'local', difficulty: this.aiDiff ?? undefined, winner: m.mode === 'solo' ? null : r.winner === null ? 'draw' : (r.winner as 0 | 1) });
         this.matchId = null;
       }
       if (m.mode === 'solo') {
@@ -783,6 +853,7 @@ export class MinigolfApp {
   }
 
   private toMenu() {
+    clearTimeout(this.aiTimer);
     this.match = null;
     this.world = null;
     this.phase = 'menu';

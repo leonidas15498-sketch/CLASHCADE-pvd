@@ -2,9 +2,11 @@
 
 ## Escopo fixo (plataforma "Clashcade" — nome provisório, antes "Jogaço"; marca em src/brand.ts, ver docs/marca.md)
 - Portal web de minijogos locais: catálogo → jogo → modalidade → partida → resultado → revanche/menu.
-- Jogos disponíveis (12; Damas e Ludo entraram em 04/11): Sinuca 8-Ball (1P vs IA, 2P local), Minigolfe (1P, 2P local por turnos), Air Hockey (1P vs IA, 2P local simultâneo),
+- Jogos disponíveis (14; Damas e Ludo entraram em 04/11 de madrugada, Xadrez e Cobrinha em 04/11 de manhã — TODOS têm 1P contra IA): Sinuca 8-Ball (1P vs IA, 2P local), Minigolfe (1P, 2P local por turnos), Air Hockey (1P vs IA, 2P local simultâneo),
   Duelo de Rastros (1P vs IA, 2P local simultâneo) Torre de Bichinhos, ex-Empilha (solo, 1P vs IA, 2P por turnos; física planck.js),
-  Quatro em Linha, ex-Lig-4 (1P vs IA, 2P por turnos), Pong (1P vs IA, 2P local simultâneo) e Blocos Cromáticos (1P recorde, 2P um após o outro), Sumô Neon e Cabo de Guerra rítmico (1P vs IA, 2P simultâneo), Damas (regras brasileiras, 1P vs IA, 2P por turnos) e Ludo (2P agora, lógica pronta para 4). Padrão para jogo novo: docs/jogos/_padrao.md.
+  Quatro em Linha, ex-Lig-4 (1P vs IA, 2P por turnos), Pong (1P vs IA, 2P local simultâneo) e Blocos Cromáticos (1P recorde, 2P um após o outro), Sumô Neon e Cabo de Guerra rítmico (1P vs IA, 2P simultâneo), Damas (regras brasileiras, 1P vs IA, 2P por turnos) e Ludo (2P agora, lógica pronta para 4), Xadrez (regras oficiais FIDE) e Cobrinha (solo, 1P vs IA, 2P simultâneo). Minigolfe e Blocos ganharam 1P contra IA em 04/11.
+- **Opções de regra no menu:** `variants` do Shell (ex.: Damas "Pedra captura para trás?"); ler com `shell.variant(key)`.
+- Portal: filtro "♟ Tabuleiro" lista os jogos com `board: true` no registro. Padrão para jogo novo: docs/jogos/_padrao.md.
 - **Modo Torneio (01/11):** melhor de 7 entre jogos curtos sorteados (src/services/tournament.ts, lista TOURNAMENT_GAMES;
   sinuca, golfe e blocos fora por serem longos). O Shell abre o jogo da vez direto no 2P e registra o resultado; empate repete o jogo.
   Jogo novo com 2P local curto: incluir em TOURNAMENT_GAMES.

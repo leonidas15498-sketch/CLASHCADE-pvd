@@ -1,4 +1,4 @@
-/** Imprime as medições de IA. Uso: npx vite-node scripts/bench.ts [hockey|pool] */
+/** Imprime as medições de IA. Uso: npx vite-node scripts/bench.ts [hockey|pool|trails|stack|connect4|pong|snake|chess|golf|blocks] */
 import { attackRate, benchHockey, defenseRate, REF } from '../tests/bench/hockey';
 import { matchRate, potRate } from '../tests/bench/pool';
 
@@ -56,5 +56,32 @@ if (!only || only === 'pong') {
   for (const d of ['easy', 'medium', 'hard'] as const) {
     const r = pongVsRef(d, 10);
     console.log(`  ${d.padEnd(6)} faz ${pct(r.share)} dos pontos | ${r.rally.toFixed(1)} rebatidas por ponto`);
+  }
+}
+if (!only || only === 'snake') {
+  const { snakeDuel, snakeSolo } = await import('../tests/bench/snake');
+  console.log('COBRINHA');
+  for (const d of ['easy', 'medium', 'hard'] as const) console.log(`  ${d.padEnd(6)} sozinha come ${snakeSolo(d).toFixed(1)} frutas`);
+  for (const [a, b] of [['medium', 'easy'], ['hard', 'medium'], ['hard', 'easy']] as const) console.log(`  ${a} × ${b}: ${a} vence ${pct(snakeDuel(a, b).winA)} das rodadas`);
+}
+if (!only || only === 'chess') {
+  const { chessDuel } = await import('../tests/bench/chess');
+  console.log('XADREZ (partidas IA × IA, cores alternadas; teto 160 meios-lances adjudicado por ±3 peões)');
+  for (const [a, b] of [['medium', 'easy'], ['hard', 'medium']] as const) console.log(`  ${a} × ${b}: ${a} faz ${pct(chessDuel(a, b, 8).score)} dos pontos`);
+}
+if (!only || only === 'golf') {
+  const { golfRound } = await import('../tests/bench/minigolf');
+  console.log('MINIGOLFE (tacadas da IA nos 9 buracos; par 28)');
+  for (const d of ['easy', 'medium', 'hard'] as const) {
+    const r = [1, 2, 3, 4, 5, 6].map((s) => golfRound(d, s));
+    console.log(`  ${d.padEnd(6)} média ${(r.reduce((a, x) => a + x.total, 0) / r.length).toFixed(1)} tacadas | ${r[0].ms.toFixed(0)} ms por decisão`);
+  }
+}
+if (!only || only === 'blocks') {
+  const { blocksAiScore } = await import('../tests/bench/blocks-ai');
+  console.log('BLOCOS (pontos da IA até acabar o espaço; teto 300 jogadas)');
+  for (const d of ['easy', 'medium', 'hard'] as const) {
+    const r = [1, 2, 3, 4, 5, 6].map((s) => blocksAiScore(d, s * 1000 + 7));
+    console.log(`  ${d.padEnd(6)} média ${Math.round(r.reduce((a, x) => a + x.score, 0) / r.length)} pontos`);
   }
 }

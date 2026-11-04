@@ -25,6 +25,21 @@ describe('damas — regras brasileiras', () => {
     expect(m[0].captured).toEqual([idx(5, 4)]);
     expect(m[0].path).toEqual([idx(4, 3), idx(6, 5)]);
   });
+  it('opção "só para a frente": a pedra não captura para trás, mas a dama continua capturando', () => {
+    const s = setup([[4, 3, 1], [5, 4, -1], [0, 1, -1]]);
+    s.menBack = false;
+    const m = legalMoves(s);
+    expect(m.every((x) => x.captured.length === 0)).toBe(true);
+    // para a frente continua valendo e é obrigatória
+    const f = setup([[4, 3, 1], [3, 4, -1], [5, 2, -1], [0, 1, -1]]);
+    f.menBack = false;
+    const fm = legalMoves(f);
+    expect(fm.length).toBe(1);
+    expect(fm[0].captured).toEqual([idx(3, 4)]);
+    const k = setup([[4, 3, 2], [5, 4, -1], [0, 1, -1]]);
+    k.menBack = false;
+    expect(legalMoves(k).some((x) => x.captured.length === 1)).toBe(true);
+  });
   it('lei da maioria: obriga a sequência que toma mais peças', () => {
     // pedra em (5,0): pode tomar 1 para um lado ou 2 em sequência para o outro
     const s = setup([[5, 2, 1], [4, 1, -1], [4, 3, -1], [2, 3, -1], [0, 7, -1]]);

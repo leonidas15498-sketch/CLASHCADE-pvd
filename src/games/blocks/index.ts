@@ -4,6 +4,7 @@ import { ParticleSystem } from '../shared/fx';
 import { Shell, StartConfig } from '../shared/shell';
 import type { GameModule } from '../shared/types';
 import { createStore } from '../../services/storage';
+import { chooseBlocks } from './ai';
 import {
   BlocksState,
   canPlace,
@@ -33,6 +34,7 @@ const HELP_PT = `<ul>
 ${COMBO_GRACE - 1} jogadas sem limpar sem perder o combo; na ${COMBO_GRACE}ª ele zera.</li>
 <li>Grade totalmente vazia: bônus de +300.</li>
 <li><b>Faixas:</b> ${TIERS.map((t) => `${t.name} ${t.min.toLocaleString('pt-BR')}`).join(' · ')}.</li>
+<li><b>Contra a IA:</b> você joga a sua partida; depois a IA joga com a <b>mesma sequência de peças</b>. Maior pontuação vence.</li>
 <li><b>2 jogadores:</b> cada um joga uma partida inteira, um depois do outro; maior pontuação vence.</li>
 <li><b>Teclado:</b> 1, 2, 3 escolhem a peça; setas movem; Enter ou espaço encaixam.</li>
 </ul>`;
@@ -46,6 +48,7 @@ const HELP_EN = `<ul>
 ${COMBO_GRACE - 1} moves without clearing and keep the combo; on the ${COMBO_GRACE}rd it resets.</li>
 <li>Completely empty board: +300 bonus.</li>
 <li><b>Tiers:</b> ${TIERS.map((t) => `${TIER_EN[t.name]} ${t.min.toLocaleString('en-US')}`).join(' · ')}.</li>
+<li><b>Vs AI:</b> you play your game; then the AI plays with the <b>same sequence of pieces</b>. Highest score wins.</li>
 <li><b>2 players:</b> each plays a full game, one after the other; highest score wins.</li>
 <li><b>Keyboard:</b> 1, 2, 3 pick a piece; arrows move; Enter or space place it.</li>
 </ul>`;
@@ -110,6 +113,8 @@ class BlocksGame {
   /** 2P: de quem é a vez (cada um joga uma partida inteira). */
   private turn: 0 | 1 = 0;
   private scores: [number | null, number | null] = [null, null];
+  /** Semente da partida contra a IA (ela joga depois com as mesmas peças). */
+  private seed = 0;
   private raf = 0;
   private last = 0;
   private t = 0;
@@ -137,7 +142,7 @@ class BlocksGame {
       id: 'blocks',
       title: T('Blocos Cromáticos', 'Chromatic Blocks'),
       subtitle: T('Encaixe, limpe linhas, faça combos', 'Fit pieces, clear lines, chain combos'),
-      modes: { solo: T('Jogar', 'Play'), local: true },
+      modes: { solo: T('Jogar', 'Play'), ai: true, local: true },
       localNote: T('Cada um joga uma partida inteira, um depois do outro. Maior pontuação vence.', 'Each plays a full game, one after the other. Highest score wins.'),
       // "Seven Blue Tiles" (Leon, Gemini): 110 BPM, 72 compassos (157 s), -14 LUFS.
       musicUrl: './music/seven-blue-tiles.mp3',
@@ -192,7 +197,8 @@ class BlocksGame {
     clearTimeout(this.overTimer);
     if (p === 0) this.shell.beginMatch();
     this.turn = p;
-    this.s = createBlocks();
+    this.seed = (Math.random() * 2 ** 31) | 0;
+    this.s = createBlocks(this.seed);
     this.drag = null;
     this.kb = null;
     this.fading = [];
@@ -205,6 +211,7 @@ class BlocksGame {
     this.shell.setTurn(p);
     this.paintHud();
     if (this.cfg?.mode === 'local') this.shell.toast(`${T('Vez de', 'Turn:')} ${this.cfg.names[p]}.`, 1600);
+    if (this.cfg?.mode === 'ai') this.shell.toast(T('Faça o máximo de pontos. Depois a IA joga com as mesmas peças.', 'Score as much as you can. Then the AI plays with the same pieces.'), 2400);
   }
 
   private markBorn() {
@@ -308,6 +315,31 @@ class BlocksGame {
         return;
       }
       this.scores[this.turn] = snap.score;
+      if (cfg.mode === 'ai') {
+        // a IA joga agora, com a mesma semente (mesmas peças, enquanto as grades não divergirem)
+        const ai = createBlocks(this.seed);
+        let guard = 0;
+        while (!ai.over && guard++ < 400) {
+          const m = chooseBlocks(ai, cfg.difficulty, Math.random);
+          if (!m || !place(ai, m.idx, m.r, m.c)) break;
+        }
+        const a = snap.score;
+        const b = ai.score;
+        this.scores = [a, b];
+        const w = a === b ? 'draw' : a > b ? 0 : 1;
+        this.shell.report(cfg, w);
+        this.shell.setTurn(w === 'draw' ? null : w);
+        if (w === 0) this.shell.sfx.win();
+        this.shell.showResult(
+          w === 'draw' ? T('Empate!', 'Draw!') : w === 0 ? T('Vitória!', 'Victory!') : T('Derrota', 'Defeat'),
+          `${cfg.names[0]} ${fmt(a)} × ${fmt(b)} ${cfg.names[1]} · ${T('a IA durou', 'the AI lasted')} ${ai.moves} ${T('jogadas', 'moves')}${ai.over ? '' : T(' (limite)', ' (limit)')}`,
+          () => {
+            this.scores = [null, null];
+            this.startTurn(0);
+          },
+        );
+        return;
+      }
       if (this.turn === 0) {
         this.shell.showResult(
           `${cfg.names[0]}: ${fmt(snap.score)} ${snap.score === 1 ? T('ponto', 'point') : T('pontos', 'points')}`,
