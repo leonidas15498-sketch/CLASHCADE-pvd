@@ -29,6 +29,7 @@ export class SupabaseRooms implements Rooms {
   private heartbeat = 0;
   private disposed = false;
   private watchTimer = 0;
+  private live = false;
   constructor(private client: SupabaseClient, readonly game: OnlineGame) {}
   async identity() {
     const { data, error } = await this.client.auth.getSession();
@@ -71,7 +72,12 @@ export class SupabaseRooms implements Rooms {
         if (!this.disposed) { events.connection('reconnecting'); events.error(e instanceof Error ? e.message : String(e)); }
       }
     };
-    this.channel = this.client.channel('clashcade:' + room.id)
+    this.live = false;
+    this.channel = this.client.channel('clashcade:' + room.id, { config: { broadcast: { self: false, ack: false } } })
+      .on('broadcast', { event: 'live' }, msg => {
+        const data = (msg as { payload?: unknown }).payload;
+        if (!this.disposed && data && typeof data === 'object' && !Array.isArray(data)) events.live?.(data as Record<string, unknown>);
+      })
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'clashcade_rooms', filter: 'id=eq.' + room.id }, payload => {
         if (this.disposed) return;
         try { events.state(parseRoom(payload.new)); }
@@ -84,9 +90,11 @@ export class SupabaseRooms implements Rooms {
         if (this.disposed) { clearTimeout(timeout); reject(new Error('Connection closed')); return; }
         if (status === 'SUBSCRIBED') {
           realtimeConnected = true;
+          this.live = true;
           clearTimeout(timeout); events.connection('connected'); void refresh(); resolve();
         } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
           realtimeConnected = false;
+          this.live = false;
           announcedReady = false;
           events.connection(status === 'CLOSED' ? 'disconnected' : 'reconnecting');
           events.error(T('Conexão interrompida. Tentando reconectar…', 'Connection interrupted. Reconnecting…'));
@@ -95,8 +103,13 @@ export class SupabaseRooms implements Rooms {
     });
     if (!this.disposed) this.heartbeat = window.setInterval(() => { void refresh(); }, 10000);
   }
+  /** Só pelo WebSocket já conectado (sem cair no envio por HTTP): perder uma mensagem de mira não importa. */
+  sendLive(_room: Room, data: Record<string, unknown>) {
+    if (this.disposed || !this.live || !this.channel) return;
+    void this.channel.send({ type: 'broadcast', event: 'live', payload: data }).catch(() => {});
+  }
   dispose() {
-    this.disposed = true; clearInterval(this.heartbeat); clearTimeout(this.watchTimer);
+    this.disposed = true; this.live = false; clearInterval(this.heartbeat); clearTimeout(this.watchTimer);
     if (this.channel) void this.client.removeChannel(this.channel);
     this.channel = null;
   }

@@ -213,6 +213,8 @@ export const POOL_EN: Record<string, string> = {
   'Puxe o taco da lateral para baixo e solte.': 'Pull the side cue down and release.',
   'Posição da branca inválida.': 'Invalid cue ball position.',
   'Toque numa caçapa para cantar a 8': 'Tap a pocket to call the 8',
+  '🎱 Cante a caçapa da bola 8': '🎱 Call the 8-ball pocket',
+  'Toque na caçapa onde a 8 vai cair': 'Tap the pocket where the 8 will drop',
   'Abertura: arraste a branca na área clara': 'Break: drag the cue ball in the light area',
   'Bola na mão: arraste a branca': 'Ball in hand: drag the cue ball',
   'Puxe o taco e solte para tacar': 'Pull the cue and release to shoot',
@@ -248,6 +250,7 @@ const foul = (s: string) => FOULS.reduce((a, [pt, en]) => a.replace(pt, en), s);
 export const POOL_PATTERNS: Patterns = [
   [/^Você contra a IA \((Fácil|Médio|Difícil)\)\. Sua abertura!$/, 'You vs the AI ($1). Your break!'],
   [/^Bola 8 cantada na caçapa (.+)\.$/, '8-ball called in the $1 pocket.'],
+  [/^(.+) está jogando…$/, '$1 is playing…'],
   [/^IA canta a 8 na caçapa (.+)\.$/, 'AI calls the 8 in the $1 pocket.'],
   [/^⏱ (\S+) · Vez de (.+)$/, '⏱ $1 · Turn: $2'],
   [/^⏱ (\S+) · (.+) venceu$/, '⏱ $1 · $2 wins'],

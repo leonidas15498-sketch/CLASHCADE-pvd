@@ -1,4 +1,5 @@
 import { onMountRollback } from './lifecycle';
+import { enterGameFullscreen, exitGameFullscreen } from './fullscreen';
 import { GAMES } from '../registry';
 import { newMatchId, reportMatch } from '../../services/match';
 import { isEn, T } from '../../i18n/lang';
@@ -273,6 +274,8 @@ export class Shell {
     const start = (cfg: StartConfig) => {
       if (cfg.mode !== 'local') this.tour = false;
       this.sfx.unlock();
+      // celular: partida em tela cheia, sem a barra do navegador (mesmo método da sinuca, pedido do Leon 03/11)
+      enterGameFullscreen();
       this.hideAll();
       this.inMatch = true;
       this.paused = false;
@@ -565,6 +568,7 @@ export class Shell {
   }
 
   dispose() {
+    exitGameFullscreen();
     this.ac.abort();
     clearTimeout(this.toastTimer);
     this.music?.dispose();

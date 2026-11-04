@@ -33,6 +33,8 @@ export interface RoomEvents {
   state(room: Room): void;
   connection(state: ConnectionState): void;
   error(message: string): void;
+  /** Mensagem efêmera do outro aparelho (ex.: mira ao vivo). Não passa pelo banco; pode chegar fora de ordem ou se perder. */
+  live?(data: Record<string, unknown>): void;
 }
 export interface Rooms {
   readonly game: OnlineGame;
@@ -45,6 +47,8 @@ export interface Rooms {
   submit(room: Room, payload: StatePayload): Promise<Room>;
   rematch(room: Room): Promise<Room>;
   leave(room: Room): Promise<void>;
+  /** Envia mensagem efêmera ao outro aparelho (Realtime broadcast). Opcional: sem suporte, simplesmente não envia. */
+  sendLive?(room: Room, data: Record<string, unknown>): void;
   dispose(): void;
 }
 export type Connect4Rooms = Rooms;

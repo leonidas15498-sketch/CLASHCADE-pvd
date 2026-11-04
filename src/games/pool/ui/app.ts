@@ -29,6 +29,10 @@ import { applyState, encodeState, parsePoolState, PoolNetState } from '../online
 /** Online: tempo fixo da tacada (o servidor aceita o "tempo esgotado" de quem joga após 35 s e do outro após 55 s). */
 const NET_SHOT_TIME = 45;
 const NET_CLAIM_AFTER = 62;
+/** Mira ao vivo (online): envio no máximo a cada 90 ms (~11/s), só quando muda; o outro suaviza entre as mensagens. */
+const NET_AIM_EVERY = 90;
+/** Sem mensagem nova por este tempo (ms), o outro aparelho esconde a mira remota (ex.: rede caiu). */
+const NET_AIM_STALE = 4000;
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 /** Quanto puxar o taco na mesa (m) para chegar a 100% de força. */
@@ -106,6 +110,14 @@ export class App {
   /** Relógio local de quando vi a vez mudar (não depende do horário do servidor). */
   private netTurnSeen = 0;
   private netClaimed = -1;
+  /** Mira do outro jogador recebida ao vivo (só para mostrar; ninguém aqui mexe nela). */
+  private netAim: { mv: number; a: number; p: number; at: number } | null = null;
+  /** Ângulo/força mostrados (suavizados em direção ao último recebido). */
+  private netAimShown = { a: 0, p: 0 };
+  private netAimSent = { t: 0, key: '' };
+  /** Aviso da bola 8: uma vez por vez de jogar (chave = partida + tacada + jogador). */
+  private call8Key = '';
+  private call8Timer = 0;
   private netOverKey = '';
   /** QA: maior diferença (m) entre a repetição local e o estado enviado na última tacada recebida. */
   netLastDrift = 0;
@@ -164,6 +176,7 @@ export class App {
     for (const cancel of this.inputCleanups) cancel();
     this.cancelAI();
     clearTimeout(this.toastTimer);
+    clearTimeout(this.call8Timer);
     this.net?.dispose();
     this.net = null;
     this.music?.dispose();
@@ -923,6 +936,7 @@ export class App {
       boxClass: 'dialog',
       primaryClass: 'primary',
       placeBar: (bar) => $('msgbar').append(bar),
+      live: (d) => this.netLiveIn(d),
     });
     $('online-card').hidden = false;
   }
@@ -958,6 +972,7 @@ export class App {
       this.netMine = false;
       this.netPredicted = null;
       this.netOverKey = '';
+      this.netAim = null;
       this.paused = false;
     }
     const g = this.game;
@@ -985,11 +1000,86 @@ export class App {
           this.prepareTurn();
         }
         this.netMoves = room.moves;
+        this.netAim = null;
         this.netTurnSeen = performance.now();
       }
     }
     this.updateHUD();
     this.netStatus(room);
+  }
+
+  /** Mira ao vivo: na minha vez, envia ângulo, força puxada e (com bola na mão) a posição da branca. */
+  private netLiveOut() {
+    const g = this.game;
+    const net = this.net;
+    if (!g || !net?.active || !this.humanCanAim()) return;
+    const now = performance.now();
+    if (now - this.netAimSent.t < NET_AIM_EVERY) return;
+    const cb = g.cue;
+    const hand = g.match.ballInHand !== 'none';
+    const r = (n: number) => Math.round(n * 1e4) / 1e4;
+    const d: Record<string, unknown> = { k: 'aim', mv: this.netMoves, a: r(this.aimAngle), p: r(this.power) };
+    if (hand) { d.x = r(cb.x); d.y = r(cb.y); }
+    const key = JSON.stringify(d);
+    if (key === this.netAimSent.key) return;
+    this.netAimSent = { t: now, key };
+    net.sendLive(d);
+  }
+
+  /** Mira recebida do outro aparelho: só aceita do jogador da vez, desta mesma jogada, com números válidos. */
+  private netLiveIn(d: Record<string, unknown>) {
+    const g = this.game;
+    const net = this.net;
+    if (!g || !net?.active || d.k !== 'aim' || this.netReplay || this.netMine || g.phase !== 'aiming') return;
+    const pl = d.pl, mv = d.mv, a = d.a, p = d.p;
+    if (pl !== g.match.current || pl === net.player || mv !== this.netMoves) return;
+    if (typeof a !== 'number' || !Number.isFinite(a) || Math.abs(a) > 100 || typeof p !== 'number' || !(p >= 0 && p <= 1)) return;
+    if (!this.netAim) this.netAimShown = { a, p };
+    this.netAim = { mv, a, p, at: performance.now() };
+    const x = d.x, y = d.y;
+    if (typeof x === 'number' && typeof y === 'number' && Number.isFinite(x) && Number.isFinite(y)) g.placeCue(x, y);
+  }
+
+  /** O outro jogador está mirando agora e eu recebo a mira dele? */
+  private netAimVisible(): boolean {
+    const g = this.game;
+    const a = this.netAim;
+    return !!g && !!this.net?.active && !!a && a.mv === this.netMoves && g.phase === 'aiming' && g.match.winner === null &&
+      !this.netReplay && !this.netMine && this.net.player !== g.match.current && performance.now() - a.at < NET_AIM_STALE;
+  }
+
+  /**
+   * Bola 8 (todos os modos, pedido do Leon 03/11): quem precisa cantar vê um aviso amarelo no MEIO da mesa;
+   * depois de 1,9 s ele "voa" até a linha de status (onde o lembrete continua); ao escolher a caçapa, some.
+   * Não bloqueia o toque (pointer-events: none): dá para tocar na caçapa com o aviso na tela.
+   */
+  private updateCall8() {
+    const g = this.game;
+    const el = $('call8');
+    const need = !!g && g.phase === 'aiming' && g.match.winner === null && !g.currentIsAI() && !this.strikeAnim &&
+      (!this.net?.active || this.net.player === g.match.current) && g.needsCall() && g.match.calledPocket === null;
+    if (!need) {
+      if (el.className) { el.className = ''; el.setAttribute('aria-hidden', 'true'); clearTimeout(this.call8Timer); }
+      return;
+    }
+    const key = `${this.netKey}:${this.matchId}:${g.match.shotCount}:${g.match.current}`;
+    if (key === this.call8Key) return;
+    this.call8Key = key;
+    clearTimeout(this.call8Timer);
+    el.className = 'show';
+    el.setAttribute('aria-hidden', 'false');
+    this.call8Timer = window.setTimeout(() => {
+      if (this.disposed || el.className !== 'show') return;
+      const a = el.getBoundingClientRect();
+      const sub = $('sub');
+      const b = sub.getBoundingClientRect();
+      el.style.setProperty('--dx', `${b.left + b.width / 2 - (a.left + a.width / 2)}px`);
+      el.style.setProperty('--dy', `${b.top + b.height / 2 - (a.top + a.height / 2)}px`);
+      el.className = 'dock';
+      // pisca o lembrete quando o aviso chega (Web Animations: o updateHUD troca a classe do #sub o tempo todo)
+      sub.animate?.([{ transform: 'scale(1)' }, { transform: 'scale(1.12)', color: '#ffd54a' }, { transform: 'scale(1)' }],
+        { duration: 450, iterations: 2, delay: 450 });
+    }, 1900);
   }
 
   /** Envia o estado depois da minha tacada (ou do meu tempo esgotado / do tempo do outro). */
@@ -1283,6 +1373,7 @@ export class App {
       st.textContent = `⏱ ${clock} · Vez de ${cur.name}`;
       if (g.phase === 'rolling') sub.textContent = 'Bolas em movimento…';
       else if (cur.isAI) sub.textContent = 'IA pensando…';
+      else if (this.net?.active && this.net.player !== m.current) sub.textContent = `${cur.name} está jogando…`;
       else if (g.needsCall() && m.calledPocket === null) {
         sub.textContent = 'Toque numa caçapa para cantar a 8';
         sub.className = 'foul';
@@ -1302,7 +1393,8 @@ export class App {
   /** Anel do tempo em volta da foto do jogador da vez (atualizado a cada quadro). */
   private updateTimerRing() {
     const g = this.game;
-    const limit = this.prefs.shotTime;
+    // online o tempo é sempre o da sala (45 s), mesmo com "sem limite" nas Configurações, e aparece também na vez do outro
+    const limit = this.net?.active ? NET_SHOT_TIME : this.prefs.shotTime;
     for (const i of [0, 1] as const) {
       const wrap = $(`p${i}`).querySelector<HTMLElement>('.avatar-wrap')!;
       const t = wrap.querySelector<HTMLElement>('.ptime')!;
@@ -1396,7 +1488,13 @@ export class App {
       const overlayOpen = !!document.querySelector('.overlay.show:not(#spin)');
       if (!overlayOpen && g.match.winner === null) {
         this.matchTime += dtReal;
-        if ((this.prefs.shotTime > 0 || this.net?.active) && this.humanCanAim()) {
+        if (this.net?.active) {
+          // online: o relógio corre para os dois (cada aparelho mostra a vez de quem joga); só quem joga aplica o tempo esgotado
+          if (g.phase === 'aiming' && !this.netMine && !this.netReplay && this.net.room?.status === 'playing') {
+            this.turnLeft = Math.max(0, this.turnLeft - dtReal);
+            if (this.turnLeft <= 0 && this.humanCanAim()) this.handleTimeout();
+          }
+        } else if (this.prefs.shotTime > 0 && this.humanCanAim()) {
           this.turnLeft -= dtReal;
           if (this.turnLeft <= 0) this.handleTimeout();
         }
@@ -1408,14 +1506,25 @@ export class App {
     if (g) {
       // online: na vez do outro não desenha taco/mira locais (ele mira no aparelho dele)
       const aiming = g.phase === 'aiming' && g.match.winner === null && (!this.net?.active || this.net.player === g.match.current);
-      this.aimHit = aiming ? aimRaycast(g.world, this.aimAngle) : null;
+      // online, vez do outro: mostra a mira e o taco DELE (recebidos ao vivo), sem deixar mexer
+      const remote = !aiming && this.netAimVisible();
+      if (remote) {
+        const t = this.netAim!;
+        let da = t.a - this.netAimShown.a;
+        da = Math.atan2(Math.sin(da), Math.cos(da));
+        const k = Math.min(1, dtReal * 14);
+        this.netAimShown = { a: this.netAimShown.a + da * k, p: this.netAimShown.p + (t.p - this.netAimShown.p) * k };
+      }
+      const angle = remote ? this.netAimShown.a : this.aimAngle;
+      const showing = aiming || remote;
+      this.aimHit = showing ? aimRaycast(g.world, angle) : null;
       let legal = true;
       if (this.aimHit && this.aimHit.kind === 'ball') {
         legal = legalTargets(g.match, g.match.current, g.onTable()).includes(this.aimHit.ballId!);
       }
       const pull = this.strikeAnim
         ? this.strikeAnim.power * Math.max(0, 1 - this.strikeAnim.t / 0.11)
-        : this.power;
+        : remote ? this.netAimShown.p : this.power;
       const cue = g.cue;
       const cb = getBall(g.world, 0);
       if (g.phase === 'rolling' && cb && !cb.pocketed && (cb.vx !== 0 || cb.vy !== 0)) {
@@ -1428,14 +1537,14 @@ export class App {
         particles: this.fx,
         world: g.world,
         alpha,
-        aimAngle: this.aimAngle,
-        showAim: aiming && !this.strikeAnim,
+        aimAngle: angle,
+        showAim: showing && !this.strikeAnim,
         aimHit: this.aimHit,
         aimLegal: legal,
         objectPath: this.prefs.guide && this.aimHit ? objectBallPath(g.world, this.aimHit) : null,
         cuePull: pull,
-        showCue: aiming,
-        ballInHand: aiming ? g.match.ballInHand : 'none',
+        showCue: showing,
+        ballInHand: showing ? g.match.ballInHand : 'none',
         cueValid: g.match.ballInHand === 'none' || g.canPlaceCue(cue.x, cue.y) || g.canShoot(),
         callMode: aiming && g.needsCall(),
         calledPocket: g.match.calledPocket,
@@ -1448,6 +1557,8 @@ export class App {
       });
       this.gauge.setLocked(!this.humanCanAim() && this.dragging !== 'power');
       ($('btn-spin') as HTMLButtonElement).disabled = !this.humanCanAim();
+      this.netLiveOut();
+      this.updateCall8();
       if (this.frameCount++ % 15 === 0) this.updateHUD();
     } else {
       this.renderIdle();

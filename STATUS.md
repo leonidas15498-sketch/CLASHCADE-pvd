@@ -23,6 +23,24 @@
    física; o limite é a altura do celular. Já feito: layout compacto (+23%) e tela cheia. Leon ainda vai avaliar a versão
    de 20h48. Se quiser mais: diminuir a madeira da mesa no modo compacto (~+6% de feltro).
 4. Telas dos outros jogos no celular (pedido de 02/11), usando o mesmo método de medição (Playwright 732×276 e 762×343).
+   Tela cheia já feita em todos (03/11 21h); falta compactar cabeçalho/laterais onde sobrar espaço (qa/tela-cheia.cjs mede).
+
+## Online ao vivo, aviso da 8 e tela cheia em todos os jogos (03/11, 21h) — testado localmente; FALTA celular real
+- **Relógio online:** aparece sempre (45 s da sala, mesmo com "sem limite" nas Configurações) e também na vez do outro.
+  Antes o anel usava a preferência local (sem limite = escondido) e só contava na minha vez.
+- **Mira ao vivo:** na vez do outro, vejo o taco, a linha de mira, a força puxada e a branca (bola na mão) dele, sem poder
+  mexer. Vai por Realtime *broadcast* (mensagem efêmera, não grava no banco, sem SQL novo), ~11 msgs/s no máximo, só
+  quando muda; o outro suaviza o movimento. QA 2 navegadores: ângulo recebido 0,300/0,800/−0,499 (enviado 0,3/0,8/−0,5),
+  "pode mexer: false", mesas idênticas 4/4. NÃO testado no Supabase real: se o projeto estiver com "só canais privados"
+  no Realtime, o broadcast não chega (a partida continua funcionando, só sem a mira ao vivo).
+- **Linha guia (conferido):** 4 traços, 5,4 raios ≈ 15 cm (GUIDE_DASHES=4 no renderer). Rastro da bola: 0,35 s (não mudou).
+- **Aviso "Cante a caçapa da bola 8"** (todos os modos; online só para quem joga): cartão amarelo no meio da mesa por 1,9 s,
+  depois voa até a linha de status (que pisca e mantém o lembrete); some ao tocar a caçapa. Não bloqueia o toque.
+  QA qa/sinuca-bola8.cjs (2P 915×412 e IA 732×276).
+- **Tela cheia no celular em TODOS os jogos** (pedido do Leon: "igual à sinuca"): Shell (8 jogos) e Minigolfe entram em tela
+  cheia ao começar a partida e saem ao voltar. QA qa/tela-cheia.cjs (celular simulado 762×343): 10/10 entram e saem.
+  Não inclui o layout compacto da sinuca (cabeçalho/laterais menores) — isso é o item 4 do PRÓXIMO, jogo a jogo.
+- Testes: 251 passando; smoke-todos sem erro de código.
 
 ## Sinuca: online quase simultâneo + linha guia (03/11, 20h) — testado localmente; FALTA testar em 2 celulares
 - Pedido do Leon: o outro celular só via a tacada depois que as bolas paravam no aparelho de quem tacou (~6 s parado).

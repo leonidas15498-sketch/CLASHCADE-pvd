@@ -12,6 +12,8 @@ export interface LobbyOptions {
   primaryClass: string;
   /** Onde colocar a barra da sala (código, vez, sair). */
   placeBar(bar: HTMLElement): void;
+  /** Mensagem efêmera do outro jogador (ex.: mira ao vivo); `pl` = número de quem enviou. Validar antes de usar. */
+  live?(data: Record<string, unknown>): void;
 }
 
 /** Janela de criar/entrar em sala privada + barra de status. Serve a qualquer jogo por turnos. */
@@ -26,8 +28,10 @@ export class RoomLobby {
   protected busy = false;
   private errorText = '';
   private savedKey: string;
+  private onLive?: (data: Record<string, unknown>) => void;
   constructor(root: HTMLElement, protected network: Rooms, private change: (room: Room) => void, end: () => void, opts: LobbyOptions) {
     this.savedKey = opts.savedKey;
+    this.onLive = opts.live;
     this.overlay = document.createElement('section'); this.overlay.className = opts.overlayClass + ' online-lobby';
     this.overlay.innerHTML = `<div class="${opts.boxClass}"><h2>${opts.title}</h2>
       <label>${T('Apelido', 'Nickname')}<input data-net="name" maxlength="14" autocomplete="nickname"></label>
@@ -77,6 +81,7 @@ export class RoomLobby {
       state: next => this.accept(next),
       connection: next => { if (this.disposed) return; this.connection = next; if (next === 'connected') this.errorText = ''; this.render(); },
       error: message => this.error(message),
+      live: data => { if (!this.disposed && this.room) this.onLive?.(data); },
     });
   }
   get player(): 0 | 1 | null { return !this.uid || !this.room ? null : this.room.host_id === this.uid ? 0 : this.room.guest_id === this.uid ? 1 : null; }
@@ -100,6 +105,11 @@ export class RoomLobby {
     this.busy = true;
     try { const next = await this.network.submit(this.room, payload); this.accept(next); return next; }
     finally { this.busy = false; }
+  }
+  /** Mensagem efêmera para o outro aparelho, marcada com o número deste jogador (`pl`). */
+  sendLive(data: Record<string, unknown>) {
+    if (this.disposed || !this.room || this.player === null || this.connection !== 'connected') return;
+    this.network.sendLive?.(this.room, { ...data, pl: this.player });
   }
   get pending() { return this.busy; }
   get connected() { return this.connection === 'connected'; }

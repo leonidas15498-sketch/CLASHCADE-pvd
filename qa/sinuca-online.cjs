@@ -25,6 +25,7 @@ window.__clashcadeTestRooms = (game) => {
     resume: (id) => cmd('resume', { p_room_id: id }),
     async watch(room, events) {
       window.__push = (r) => { if (!disposed && r.id === room.id) events.state(r); };
+      window.__liveIn = (d) => { if (!disposed && events.live) events.live(d); };
       events.connection('connected');
       events.state(await cmd('ready', { p_room_id: room.id }));
       hb = setInterval(() => cmd('heartbeat', { p_room_id: room.id }).then(events.state).catch(() => {}), 10000);
@@ -33,6 +34,7 @@ window.__clashcadeTestRooms = (game) => {
     submit: (room, payload) => cmd('move', { p_room_id: room.id, p_version: room.version, p_round: room.round, p_payload: payload }),
     rematch: (room) => cmd('rematch', { p_room_id: room.id, p_round: room.round }),
     leave: async (room) => { await cmd('leave', { p_room_id: room.id }); },
+    sendLive: (room, d) => { if (!disposed) window.__liveOut(d); },
     dispose() { disposed = true; clearInterval(hb); },
   };
 };`;
@@ -68,6 +70,8 @@ window.__clashcadeTestRooms = (game) => {
   for (const [i, uid] of UIDS.entries()) {
     const ctx = await b.newContext({ viewport: { width: 915, height: 412 }, locale: 'pt-BR' });
     await ctx.exposeFunction('__rpc', rpc);
+    // "broadcast" do Realtime: repassa a mensagem efêmera ao OUTRO navegador (atraso simulado de 60 ms)
+    await ctx.exposeFunction('__liveOut', (d) => { setTimeout(() => { const o = pages[1 - i]; if (o) o.evaluate((x) => window.__liveIn && window.__liveIn(x), d).catch(() => {}); }, 60); });
     await ctx.addInitScript(fake(uid));
     const p = await ctx.newPage();
     p.on('pageerror', (e) => errs.push(`P${i + 1} ${e.message}`));
@@ -110,6 +114,23 @@ window.__clashcadeTestRooms = (game) => {
   let a = await st(A), bb = await st(B);
   console.log('Começou:', a.status, '| A é J', a.me + 1, 'pode tacar:', a.canAim, '| B é J', bb.me + 1, 'pode tacar:', bb.canAim);
   await A.screenshot({ path: `${out}/sinuca-online-A.png` });
+
+  // 1b) Mira ao vivo + relógio na vez do outro (pedido do Leon 03/11 21h)
+  {
+    const [S, V] = (await st(A)).canAim ? [A, B] : [B, A];
+    await V.evaluate(() => { window.__sinuca.prefs.shotTime = 0; }); // "sem limite" local não pode esconder o relógio online
+    for (const ang of [0.3, 0.8, -0.5]) {
+      await S.evaluate((x) => { const a = window.__sinuca; a.aimAngle = x; a.power = 0.4; }, ang);
+      await W(500);
+      const v = await V.evaluate(() => { const a = window.__sinuca; const t = document.querySelector('.pcard.active .ptime');
+        return { vis: a.netAimVisible(), a: a.netAimShown.a, p: a.netAimShown.p, canAim: a.humanCanAim(), timer: t && getComputedStyle(t).display !== 'none' ? t.textContent : '(escondido)' }; });
+      console.log(`Mira ao vivo: enviei ${ang} → o outro vê ${v.vis ? v.a.toFixed(3) + ' força ' + v.p.toFixed(2) : 'NADA'} | o outro pode mexer: ${v.canAim} | relógio no outro: ${v.timer}`);
+    }
+    const mine = await S.evaluate(() => { const t = document.querySelector('.pcard.active .ptime'); return t && getComputedStyle(t).display !== 'none' ? t.textContent : '(escondido)'; });
+    console.log('Relógio em quem joga:', mine);
+    await V.screenshot({ path: `${out}/sinuca-online-mira-remota.png` });
+    await S.evaluate(() => { window.__sinuca.power = 0; });
+  }
 
   // 2) Tacadas alternadas: quem está na vez taca; o outro repete; mesas têm de ficar idênticas
   const shooter = async () => ((await st(A)).canAim ? A : (await st(B)).canAim ? B : null);

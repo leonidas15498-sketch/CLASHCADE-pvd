@@ -478,3 +478,27 @@ button.primary { background: linear-gradient(#3fbf6f, #1d7e44); border-color: rg
   #msgbar > .online-bar { pointer-events: auto; }
   #msgbar > .online-bar button { min-height: 22px; padding: 1px 6px; }
 }
+
+/* ---------- Aviso "cante a caçapa da 8" (pedido do Leon, 03/11): surge no meio, depois voa para a linha de status ---------- */
+#call8 {
+  position: absolute; left: 50%; top: 50%; z-index: 4; pointer-events: none;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 10px 18px; border-radius: 14px; text-align: center;
+  background: #ffd54a; color: #2a1a00; border: 2px solid #fff3c4;
+  box-shadow: 0 0 0 4px rgba(255, 213, 74, 0.35), 0 10px 30px rgba(0, 0, 0, 0.55);
+  opacity: 0; transform: translate(-50%, -50%) scale(0.6); visibility: hidden;
+}
+#call8 b { font-size: clamp(15px, 4.2vh, 22px); }
+#call8 span { font-size: clamp(11px, 3vh, 14px); font-weight: 600; }
+#call8.show {
+  visibility: visible; opacity: 1; transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.28s cubic-bezier(0.2, 1.5, 0.4, 1), opacity 0.2s;
+  animation: call8-glow 0.9s ease-in-out infinite alternate;
+}
+#call8.dock {
+  visibility: visible; opacity: 0;
+  transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, -200px))) scale(0.3);
+  transition: transform 0.6s cubic-bezier(0.5, 0, 0.7, 0.4), opacity 0.6s ease-in, visibility 0s 0.6s;
+}
+@keyframes call8-glow { to { box-shadow: 0 0 0 9px rgba(255, 213, 74, 0.15), 0 10px 30px rgba(0, 0, 0, 0.55); } }
+@media (prefers-reduced-motion: reduce) { #call8.show { animation: none; } }

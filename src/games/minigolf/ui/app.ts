@@ -1,4 +1,5 @@
 import { onMountRollback } from '../../shared/lifecycle';
+import { enterGameFullscreen, exitGameFullscreen } from '../../shared/fullscreen';
 import { T } from '../../../i18n/lang';
 /** Nome e dica dos buracos em inglês (chave = nome em português). */
 const LEVEL_EN: Record<string, [string, string]> = {
@@ -132,6 +133,7 @@ export class MinigolfApp {
   }
 
   dispose(): void {
+    exitGameFullscreen();
     if (this.disposed) return;
     this.disposed = true;
     cancelAnimationFrame(this.raf);
@@ -370,6 +372,8 @@ export class MinigolfApp {
   }
 
   start(mode: 'solo' | 'duo', names: string[], holes: number[]) {
+    // celular: partida em tela cheia, sem a barra do navegador (mesmo método da sinuca, pedido do Leon 03/11)
+    enterGameFullscreen();
     this.sfx.unlock();
     this.match = createMatch(mode, names, holes, LEVELS[holes[0]].tee);
     this.matchId = newMatchId('minigolfe');
