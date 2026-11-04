@@ -2,9 +2,9 @@
 
 ## Escopo fixo (plataforma "Clashcade" — nome provisório, antes "Jogaço"; marca em src/brand.ts, ver docs/marca.md)
 - Portal web de minijogos locais: catálogo → jogo → modalidade → partida → resultado → revanche/menu.
-- Jogos disponíveis (10): Sinuca 8-Ball (1P vs IA, 2P local), Minigolfe (1P, 2P local por turnos), Air Hockey (1P vs IA, 2P local simultâneo),
+- Jogos disponíveis (12; Damas e Ludo entraram em 04/11): Sinuca 8-Ball (1P vs IA, 2P local), Minigolfe (1P, 2P local por turnos), Air Hockey (1P vs IA, 2P local simultâneo),
   Duelo de Rastros (1P vs IA, 2P local simultâneo) Torre de Bichinhos, ex-Empilha (solo, 1P vs IA, 2P por turnos; física planck.js),
-  Quatro em Linha, ex-Lig-4 (1P vs IA, 2P por turnos), Pong (1P vs IA, 2P local simultâneo) e Blocos Cromáticos (1P recorde, 2P um após o outro), Sumô Neon e Cabo de Guerra rítmico (1P vs IA, 2P simultâneo). Padrão para jogo novo: docs/jogos/_padrao.md.
+  Quatro em Linha, ex-Lig-4 (1P vs IA, 2P por turnos), Pong (1P vs IA, 2P local simultâneo) e Blocos Cromáticos (1P recorde, 2P um após o outro), Sumô Neon e Cabo de Guerra rítmico (1P vs IA, 2P simultâneo), Damas (regras brasileiras, 1P vs IA, 2P por turnos) e Ludo (2P agora, lógica pronta para 4). Padrão para jogo novo: docs/jogos/_padrao.md.
 - **Modo Torneio (01/11):** melhor de 7 entre jogos curtos sorteados (src/services/tournament.ts, lista TOURNAMENT_GAMES;
   sinuca, golfe e blocos fora por serem longos). O Shell abre o jogo da vez direto no 2P e registra o resultado; empate repete o jogo.
   Jogo novo com 2P local curto: incluir em TOURNAMENT_GAMES.
@@ -111,6 +111,10 @@
 - Captura no buraco: limite = 13,5·(1−(d/R)²)^0,35 u/s. Evento `lip` só quando a bola sai do buraco sem cair
   (som + aviso "Forte demais!").
 - Air Hockey: disco máx. 5,5 m/s, rebatedor 5 m/s (01/11; antes 9 e 7, rápido demais no celular).
+
+- **Torre de Bichos (04/11):** peças = 12 animais de perfil (src/games/stack/pieces.ts), forma física em várias partes
+  convexas que seguem a silhueta; desenho com contorno único (blob). Bicho novo: mesma técnica, e o teste de "fica em pé
+  sozinho em 0° e 90°" precisa passar.
 
 ## Próximas etapas registradas
 - Anúncios e app (fora do escopo atual). Snake e Blocos (ideia vinda

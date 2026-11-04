@@ -25,7 +25,7 @@ const out = process.argv[2] || '.';
     }
     // segurar e soltar no centro (o jogo solta ao arrastar para baixo? usa o mesmo gesto do qa/empilha: soltar = botão)
     const drop = await p.$('[data-k="drop"], button:has-text("Soltar")');
-    if (drop) await drop.click();
+    if (drop) await drop.click({ timeout: 2000 }).catch(() => {}); // fora da vez ou fim de partida o botão some
     await p.waitForTimeout(1500);
   }
   const d = await p.evaluate(() => window.__stack.debug());

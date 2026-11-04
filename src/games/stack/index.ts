@@ -15,6 +15,7 @@ const HELP_PT = `<ul>
 <li><b>Girar:</b> toque rápido na tela (sem arrastar) gira 45°.</li>
 <li>Depois de soltar, espere a pilha parar de balançar: só aí passa a vez. Se algo cair nesse tempo, conta para quem jogou.</li>
 <li><b>Sozinho:</b> empilhe o máximo de peças que conseguir.</li>
+<li><b>Os 12 bichos:</b> <b>Base</b> (tartaruga, hipopótamo, elefante) são largos e firmes; <b>Bloco</b> (capivara, gorila, castor) são robustos; <b>Assimétricos</b> (jacaré, canguru, caracol) têm o peso fora do centro; <b>Desafio</b> (cavalo, raposa, coruja) são altos ou delicados. Pernas deixam vão: apoie no corpo!</li>
 <li><b>Teclado:</b> ← → (ou A D) movem, Shift + ← → move fino, ↑ (ou W) gira, espaço ou Enter soltam.</li>
 </ul>`;
 const HELP_EN = `<ul>
@@ -24,6 +25,7 @@ const HELP_EN = `<ul>
 <li><b>Rotate:</b> quick tap on the screen (no drag) turns it 45°.</li>
 <li>After dropping, wait for the tower to stop wobbling: only then does the turn pass. If something falls meanwhile, it counts against whoever just played.</li>
 <li><b>Solo:</b> stack as many pieces as you can.</li>
+<li><b>The 12 critters:</b> <b>Base</b> (turtle, hippo, elephant) are wide and steady; <b>Block</b> (capybara, gorilla, beaver) are sturdy; <b>Asymmetric</b> (alligator, kangaroo, snail) carry their weight off-center; <b>Challenge</b> (horse, fox, owl) are tall or delicate. Legs leave gaps: rest pieces on the body!</li>
 <li><b>Keyboard:</b> ← → (or A D) move, Shift + ← → fine move, ↑ (or W) rotates, space or Enter drop.</li>
 </ul>`;
 

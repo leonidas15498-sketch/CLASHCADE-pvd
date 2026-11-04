@@ -12,6 +12,8 @@ export interface GameEntry {
   modes: string[];
   highlights: string[];
   status: GameStatus;
+  /** Mostra o selo "Novo" na capa (jogos recém-chegados). */
+  isNew?: boolean;
   /** Carregamento sob demanda: o código do jogo só é baixado quando ele é aberto. */
   load?: () => Promise<{ default: GameModule }>;
 }
@@ -133,6 +135,7 @@ export const GAMES: GameEntry[] = [
     description: 'O clássico de tabuleiro com regras brasileiras: captura obrigatória, lei da maioria e dama voadora.',
     route: 'damas',
     cover: 'checkers',
+    isNew: true,
     modes: ['1P contra IA', '2P local por turnos'],
     highlights: ['Regras brasileiras', 'Mostra os lances possíveis', 'IA em 3 níveis'],
     status: 'available',
@@ -144,6 +147,7 @@ export const GAMES: GameEntry[] = [
     description: 'Role o dado, tire seus 4 peões da base e leve todos ao centro. Capture o rival para mandá-lo de volta!',
     route: 'ludo',
     cover: 'ludo',
+    isNew: true,
     modes: ['1P contra IA', '2P local por turnos'],
     highlights: ['Dado de verdade, sorte e estratégia', '4 jogadores em breve', 'IA em 3 níveis'],
     status: 'available',

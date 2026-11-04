@@ -1,4 +1,4 @@
-# STATUS — Clashcade (nome provisório; antes "Jogaço") — 03/11/2026, 22h30
+# STATUS — Clashcade (nome provisório; antes "Jogaço") — 04/11/2026, madrugada
 
 ## Publicação (02/11, 22h15)
 - Repositório OFICIAL: leonidas15498-sketch/CLASHCADE-pvd (Cloudflare Worker "clashcade-pvd" publica a cada push na main).
@@ -13,6 +13,33 @@
      do Quatro em Linha, generalizado para vários jogos).
   2. Minigolfe e Torre (mesmo modelo). 3. Pong como piloto de tempo real (medir atraso antes de Air Hockey/Rastros/Sumô/Cabo).
   4. Blocos: desafio assíncrono (mesma semente). Conferir limites do plano grátis do Supabase Realtime antes do tempo real.
+
+## Rodada noturna 04/11 (autonomia do Leon) — testado no navegador automatizado; FALTA celular real
+- **Torre de Bichos — 12 animais de verdade** (referência docs/arte/referencias-gpt/torre-catalogo.png): tartaruga, hipopótamo,
+  elefante (Base); capivara, gorila, castor (Bloco); jacaré, canguru, caracol (Assimétrico); cavalo, raposa, coruja (Desafio).
+  Forma física em VÁRIAS partes convexas (corpo, cabeça, pernas com vão, cauda que apoia, casco redondo do caracol); desenho
+  com contorno único (stroke de todas as partes e depois o preenchimento). Saíram gato, sapo, pinguim, porco, presente,
+  melancia, queijo, bolo, pato, urso, panda, coelho e bola. Capa do portal desenhada com os mesmos bichos do jogo.
+  "Como jogar" explica os 4 grupos. Bench (IA sozinha, peças até cair): Fácil 3,5 · Médio 8,5 · Difícil 16,8;
+  IA×IA Médio vence Fácil 70%, Difícil vence Médio 90%. Difícil decide em ~1,5 s no navegador sem travar (maior quadro 33 ms).
+- **Damas (novo):** regras brasileiras (captura obrigatória, lei da maioria, pedra captura para trás, dama voadora, promoção
+  só terminando na última linha, empate com 20 lances só de damas). Toque na peça (as que podem jogar brilham) e no destino;
+  rota da captura múltipla desenhada. IA minimax alfa-beta (prof. 1/3/6): Médio vence Fácil 100%, Difícil vence Médio 90%
+  (10% empate); Difícil ~94 ms/lance (pior 432 ms). Loja: tabuleiro Madeira (padrão), Mármore 120, Arena 120, Ouro★.
+  Sem música própria ainda (musicUrl null): fazer pacote musical (docs/jogos/musica.md).
+- **Ludo (novo, 2P):** tabuleiro 15×15 clássico, 4 peões, sai com 6, 6/captura/chegada = joga de novo, três 6 perdem a vez,
+  casas seguras (saídas e ★), número exato para o centro, sem barreiras (simplificação). Pronto para 4P (assentos 2 e 3 em
+  logic.ts SEATS, cores âmbar/teal já definidas). IA: Fácil aleatório, Médio prioridades, Difícil com risco de captura;
+  em 400 partidas: Médio vence Fácil 88%, Difícil vence Médio 58% (dado = muita sorte), Difícil vence Fácil 89%.
+  Sem música própria ainda. Fora do Torneio (partida longa).
+- **Menus:** cartões de modo com ícone (robô, dois jogadores coloridos, solo) e faixa de cor do modo; título com brilho;
+  "▶" no botão principal; selo "★ Novo" nas capas de Damas e Ludo. Pesquisa rápida (GameAnalytics, Game Developer):
+  um botão principal por cartão, rótulo de texto junto do ícone, menos opções por tela, ações frequentes ao alcance do polegar.
+- QA novo: qa/torre-bichos.cjs (prancha dos 12 + partida), qa/damas-ludo.cjs (jogadas pelo toque), qa/captura.cjs.
+  267 testes; smoke 10/10 jogos do Shell; tela cheia 12/12; i18n sem faltas novas; loja ok.
+- **Para o Leon conferir no celular:** tamanho dos bichos e se as pernas com vão deixam a Torre gostosa ou difícil demais;
+  Damas (toque na peça + destino); Ludo (tocar no dado e no peão). Se a Torre ficar difícil, a primeira alavanca é dar
+  mais peso no sorteio aos bichos "Base" (weight em pieces.ts).
 
 ## Lojas em todos os jogos com itens + menus mais diretos (03/11, 22h30) — testado no navegador automatizado; FALTA celular real
 - **Loja do próprio jogo no Shell** (botão "🛍️ Loja" no topo do menu e na pausa; abas; amostra desenhada pelo mesmo código
@@ -41,7 +68,12 @@
 - QA: golfe 250 → compra Madeira em 2 toques → 150 na loja e no portal; sinuca mostra 150; i18n sem faltas novas; 251 testes.
 - **Falta decisão do Leon:** os outros 8 jogos (Shell) não têm NENHUM item no catálogo, então não ganharam loja.
 
-## PRÓXIMO (pedido do Leon, 03/11 20h49) — fazer em conversa nova
+## PRÓXIMO (atualizado 04/11)
+0. Leon: testar no celular a rodada de 04/11 (Torre nova, Damas, Ludo) e os itens de 03/11 que ainda faltam.
+   Depois: Ludo para 4 jogadores (lógica já pronta para os assentos 2 e 3; falta menu com 3–4 nomes e IA para os extras);
+   músicas de Damas e Ludo; xadrez só se o Leon quiser (regras e IA bem mais trabalhosas).
+
+## Fila anterior (03/11 20h49)
 1. **Loja dentro de cada jogo:** FEITO 03/11 22h30 para sinuca, golfe, Air Hockey, Pong e Quatro em Linha (ver acima);
    falta decidir itens de Sumô/Blocos/Rastros/Torre/Cabo. cada jogo com a SUA loja (só os itens dele: tacos, mesas, rastros...), aberta por um botão
    no menu do próprio jogo, como menu à parte. Hoje a loja é geral no portal (src/services/catalog.ts, shopUi.ts).

@@ -206,3 +206,4 @@ button { font: inherit; cursor: pointer; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
   .card p { display: none; }
 }
+.game-ready.game-new { background: linear-gradient(#ffd877, #ffb52e); color: #2a1600; border-color: #ffe7a6; font-weight: 900; }

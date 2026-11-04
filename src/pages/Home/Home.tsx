@@ -356,7 +356,7 @@ function Games({ onOpen }: { onOpen: (route: string) => void }) {
           return (
             <article key={g.id} className="card">
               <button className="cover" onClick={() => onOpen(g.route)} aria-label={t('open', { name: tx.name })}>
-                <Cover kind={g.cover} /><span className="game-ready">✓ {T('Disponível', 'Available')}</span>
+                <Cover kind={g.cover} />{g.isNew ? <span className="game-ready game-new">★ {T('Novo', 'New')}</span> : <span className="game-ready">✓ {T('Disponível', 'Available')}</span>}
               </button>
               <div className="card-body">
                 <h3>{tx.name}</h3>
