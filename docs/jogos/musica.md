@@ -17,3 +17,6 @@ Entregar sempre: (1) conceito musical em português, (2) prompt final em inglês
 Pós-processamento (Claude, quando o Leon manda o mp3): medir silêncio e cauda; cortar num número inteiro de compassos;
 normalizar (sinuca/golfe ≈ -13,5 LUFS; jogos de ação com muitos efeitos -15 LUFS); 128 kbps em public/music/;
 loop com fade cruzado de 2,5 s (shared/music.ts).
+
+Loop: o próximo ciclo começa em `duração - 2,5 s`; por isso o arquivo deve ter N compassos + 2,5 s (senão a emenda sai fora do
+tempo). Pegar só o trecho estável (o Gemini costuma pôr intro, pausa no meio e final mais baixo mesmo pedindo para não pôr).

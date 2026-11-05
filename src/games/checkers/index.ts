@@ -67,7 +67,7 @@ class CheckersGame {
       subtitle: T('Regras brasileiras', 'Brazilian rules'),
       modes: { ai: true, local: true },
       localNote: T('Um de cada vez, no mesmo aparelho. O coral começa embaixo.', 'Take turns on the same device. Coral starts at the bottom.'),
-      musicUrl: null,
+      musicUrl: './music/the-afternoon-gambit.mp3',
       helpHtml: T(HELP_PT, HELP_EN),
       variants: [
         {

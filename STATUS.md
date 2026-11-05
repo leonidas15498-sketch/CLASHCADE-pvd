@@ -27,7 +27,10 @@
 - **Auditoria das IAs (vitest, 300 testes):** todos os jogos passam no teste Fácil < Médio < Difícil com folga
   (`npx vite-node scripts/bench.ts` imprime os números, agora também cobrinha, xadrez, golfe e blocos).
 - **Portal:** filtro "♟ Tabuleiro" (Quatro em Linha, Damas, Ludo, Xadrez); "Contra IA" mostra os 14 jogos.
-- Sem música própria: Damas, Ludo, Xadrez, Cobrinha (fazer pacotes em docs/jogos/musica.md).
+- **Músicas novas (04/11, noite):** Xadrez "The Unwavering Line" (83 BPM, ciclo 81 s), Damas "The Afternoon Gambit" (104 BPM, 92 s),
+  Ludo "Sunday Morning Roll" (112 BPM, 111 s; 2ª versão, a 1ª tinha intro e pausa),
+  Cobrinha "Level Nine Dash" (127 BPM, 45 s). Cortes em compassos inteiros + 2,5 s de fade; -13,9 LUFS (tabuleiro calmo) e
+  -15,4 (Ludo/Cobrinha). QA `qa/musica-novos.cjs` OK. FALTA ouvir no celular. Sem música: só o Cabo de Guerra.
 
 ## Rodada noturna 04/11 (autonomia do Leon) — testado no navegador automatizado; FALTA celular real
 - **Torre de Bichos — 12 animais de verdade** (referência docs/arte/referencias-gpt/torre-catalogo.png): tartaruga, hipopótamo,
@@ -41,7 +44,6 @@
   só terminando na última linha, empate com 20 lances só de damas). Toque na peça (as que podem jogar brilham) e no destino;
   rota da captura múltipla desenhada. IA minimax alfa-beta (prof. 1/3/6): Médio vence Fácil 100%, Difícil vence Médio 90%
   (10% empate); Difícil ~94 ms/lance (pior 432 ms). Loja: tabuleiro Madeira (padrão), Mármore 120, Arena 120, Ouro★.
-  Sem música própria ainda (musicUrl null): fazer pacote musical (docs/jogos/musica.md).
 - **Ludo (novo, 2P):** tabuleiro 15×15 clássico, 4 peões, sai com 6, 6/captura/chegada = joga de novo, três 6 perdem a vez,
   casas seguras (saídas e ★), número exato para o centro, sem barreiras (simplificação). Pronto para 4P (assentos 2 e 3 em
   logic.ts SEATS, cores âmbar/teal já definidas). IA: Fácil aleatório, Médio prioridades, Difícil com risco de captura;

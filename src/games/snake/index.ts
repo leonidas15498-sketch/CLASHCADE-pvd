@@ -62,7 +62,7 @@ class SnakeGame {
       subtitle: T('Coma, cresça e não bata', "Eat, grow, don't crash"),
       modes: { solo: T('Jogar sozinho', 'Play solo'), ai: true, local: true },
       localNote: T('Os dois jogam ao mesmo tempo: cada um desliza na sua metade da tela.', 'Both play at once: each swipes on their own half of the screen.'),
-      musicUrl: null,
+      musicUrl: './music/level-nine-dash.mp3',
       helpHtml: T(HELP_PT, HELP_EN),
       menuNote: () => (this.save.best ? `${T('Seu recorde', 'Your record')}: ${this.save.best} ${T('frutas', 'fruits')}` : T('Sem recorde ainda.', 'No record yet.')),
       onExit,

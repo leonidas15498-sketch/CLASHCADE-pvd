@@ -70,7 +70,7 @@ class LudoGame {
       subtitle: T('Dado, sorte e estratégia', 'Dice, luck and strategy'),
       modes: { ai: true, local: true },
       localNote: T('2 jogadores no mesmo aparelho (4 jogadores em breve).', '2 players on one device (4 players coming soon).'),
-      musicUrl: null,
+      musicUrl: './music/sunday-morning-roll.mp3',
       helpHtml: T(HELP_PT, HELP_EN),
       onExit,
       onStart: (cfg) => {

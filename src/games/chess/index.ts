@@ -75,7 +75,7 @@ class ChessGame {
       subtitle: T('Regras oficiais', 'Official rules'),
       modes: { ai: true, local: true },
       localNote: T('Um de cada vez, no mesmo aparelho. O coral (brancas) começa embaixo.', 'Take turns on the same device. Coral (white) starts at the bottom.'),
-      musicUrl: null,
+      musicUrl: './music/the-unwavering-line.mp3',
       helpHtml: T(HELP_PT, HELP_EN),
       shop: [{ slot: 'chess.board', tabPt: 'Tabuleiro', tabEn: 'Board', items: CHESS_BOARDS as never, preview: (c, w, h, it) => previewBoard(c, w, h, it.pal as CheckersBoardPal), onChange: () => { this.theme = equipped('chess.board', CHESS_BOARDS); } }],
       onExit,

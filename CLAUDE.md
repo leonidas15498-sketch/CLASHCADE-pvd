@@ -32,7 +32,7 @@
 - Falha em um jogo não derruba o portal (error boundary + tela de erro com "Voltar aos jogos").
 - Cada jogo tem SUA música e um botão de música próprio (liga/desliga + volume), separado dos efeitos sonoros
   (src/games/shared/musicControl.ts). Sinuca: "Midnight Felt"; Minigolfe: "Sunday on the Velvet Green"; Air Hockey: "Ricochet Velocity"; Duelo de Rastros: "Apex Cornering";
-  Empilha: "Sunny Stacks"; Lig-4: "Calculated Gambit"; Pong: "Center Court Rally"; Blocos: "Seven Blue Tiles" (todas do Leon).
+  Empilha: "Sunny Stacks"; Lig-4: "Calculated Gambit"; Pong: "Center Court Rally"; Blocos: "Seven Blue Tiles"; Xadrez: "The Unwavering Line"; Damas: "The Afternoon Gambit"; Ludo: "Sunday Morning Roll"; Cobrinha: "Level Nine Dash" (todas do Leon).
 - **Música de jogo novo:** seguir docs/jogos/musica.md (direção musical do Leon: pacote com conceito, prompt, justificativa,
   critérios de aprovação e loop/volume).
 - Persistência: src/services/storage.ts (versão de esquema + validação; interface RemoteSync para o futuro).
