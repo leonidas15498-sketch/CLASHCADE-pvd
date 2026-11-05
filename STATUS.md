@@ -32,6 +32,12 @@
   Cobrinha "Level Nine Dash" (127 BPM, 45 s). Cortes em compassos inteiros + 2,5 s de fade; -13,9 LUFS (tabuleiro calmo) e
   -15,4 (Ludo/Cobrinha). QA `qa/musica-novos.cjs` OK. FALTA ouvir no celular. Sem música: só o Cabo de Guerra.
 
+## Backup / volta de versão (05/11)
+- Todo commit na `main` já é um ponto de volta (histórico completo no GitHub). Antes de cada rodada grande, Claude cria um
+  ramo `estavel/AAAA-MM-DD-...` apontando para a última versão publicada (tags não passam pelo proxy desta sessão).
+  Primeiro: `estavel/2026-11-05-antes-golfe` = 6c47d55. Voltar: publicar esse commit na `main` (git revert ou reset) ou,
+  na Cloudflare, usar o rollback de implantações.
+
 ## Golfe: obstáculos móveis, 3 buracos novos, ordem sorteada; sorteio de quem começa (05/11 tarde) — robôs; FALTA celular
 - **Física dos obstáculos móveis (pedido do Leon):** fuzz `npx vite-node scripts/golfe-moveis.ts 6000` (tacadas aleatórias de
   pontos de repouso válidos). Antes: Portão 2,2% das tacadas davam "fora" injusto (bola espremida contra a parede) e
