@@ -12,10 +12,10 @@ function distSeg(p: { x: number; y: number }, a: { x: number; y: number }, b: { 
   return Math.hypot(p.x - a.x - abx * t, p.y - a.y - aby * t);
 }
 
-describe('minigolfe — nove buracos', () => {
-  it('são 9 fases diferentes, com par e nome', () => {
-    expect(LEVELS.length).toBe(9);
-    expect(new Set(LEVELS.map((l) => l.name)).size).toBe(9);
+describe('minigolfe — buracos', () => {
+  it('são 12 fases diferentes, com par e nome', () => {
+    expect(LEVELS.length).toBe(12);
+    expect(new Set(LEVELS.map((l) => l.name)).size).toBe(12);
     expect(LEVELS.some((l) => l.movers.length > 0)).toBe(true);
     expect(LEVELS.slice(0, 3).every((l) => l.movers.length === 0)).toBe(true); // as 3 primeiras ensinam
   });

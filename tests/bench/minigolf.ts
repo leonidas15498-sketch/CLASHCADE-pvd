@@ -1,4 +1,4 @@
-/** Medição da IA do Minigolfe: tacadas da IA sozinha nos 9 buracos (menos = melhor). Números no STATUS.md. */
+/** Medição da IA do Minigolfe: tacadas da IA sozinha no circuito (menos = melhor). Números no STATUS.md. */
 import { makeRng } from '../../src/games/pool/ai/ai';
 import type { Difficulty } from '../../src/games/shared/shell';
 import { chooseGolfShot } from '../../src/games/minigolf/ai';

@@ -1,4 +1,5 @@
 import { onMountRollback } from '../shared/lifecycle';
+import { coinFlip } from '../shared/coin';
 import { isEn, T } from '../../i18n/lang';
 import { ParticleSystem } from '../shared/fx';
 import { Shell, StartConfig } from '../shared/shell';
@@ -112,6 +113,8 @@ class BlocksGame {
   private save: Save = store.load();
   /** 2P: de quem é a vez (cada um joga uma partida inteira). */
   private turn: 0 | 1 = 0;
+  /** 2 jogadores: quem joga primeiro (05/11: sorteado na 1ª partida, alterna nas revanches; quem joga depois sabe o placar a bater). */
+  private first: 0 | 1 = 0;
   private scores: [number | null, number | null] = [null, null];
   /** Semente da partida contra a IA (ela joga depois com as mesmas peças). */
   private seed = 0;
@@ -151,7 +154,8 @@ class BlocksGame {
       onStart: (cfg) => {
         this.cfg = cfg;
         this.scores = [null, null];
-        this.startTurn(0);
+        this.first = coinFlip();
+        this.startTurn(cfg.mode === 'local' ? this.first : 0);
       },
       onPause: (p) => {
         this.drag = null;
@@ -160,7 +164,7 @@ class BlocksGame {
       onRestart: () => {
         if (!this.cfg) return;
         this.scores = [null, null];
-        this.startTurn(0);
+        this.startTurn(this.cfg.mode === 'local' ? this.first : 0);
       },
       onMenu: () => {
         clearTimeout(this.overTimer);
@@ -195,7 +199,7 @@ class BlocksGame {
   // ------------------------------------------------------------ partida
   private startTurn(p: 0 | 1) {
     clearTimeout(this.overTimer);
-    if (p === 0) this.shell.beginMatch();
+    if (this.scores[0] === null && this.scores[1] === null) this.shell.beginMatch();
     this.turn = p;
     this.seed = (Math.random() * 2 ** 31) | 0;
     this.s = createBlocks(this.seed);
@@ -340,13 +344,14 @@ class BlocksGame {
         );
         return;
       }
-      if (this.turn === 0) {
+      const other = (1 - this.turn) as 0 | 1;
+      if (this.scores[other] === null) {
         this.shell.showResult(
-          `${cfg.names[0]}: ${fmt(snap.score)} ${snap.score === 1 ? T('ponto', 'point') : T('pontos', 'points')}`,
-          `${tierTxt}${T('Agora é a vez de', 'Now it is the turn of')} ${cfg.names[1]}. ${T('Passe o aparelho.', 'Pass the device.')}`,
-          () => this.startTurn(1),
+          `${cfg.names[this.turn]}: ${fmt(snap.score)} ${snap.score === 1 ? T('ponto', 'point') : T('pontos', 'points')}`,
+          `${tierTxt}${T('Agora é a vez de', 'Now it is the turn of')} ${cfg.names[other]}. ${T('Passe o aparelho.', 'Pass the device.')}`,
+          () => this.startTurn(other),
         );
-        this.shell.k('r-again').textContent = `${T('Começar', 'Start')} (${cfg.names[1]})`;
+        this.shell.k('r-again').textContent = `${T('Começar', 'Start')} (${cfg.names[other]})`;
         return;
       }
       const [a, b] = this.scores as [number, number];
@@ -355,7 +360,8 @@ class BlocksGame {
       this.shell.setTurn(a === b ? null : a > b ? 0 : 1);
       this.shell.showResult(title, `${cfg.names[0]} ${fmt(a)} × ${fmt(b)} ${cfg.names[1]}`, () => {
         this.scores = [null, null];
-        this.startTurn(0);
+        this.first = (1 - this.first) as 0 | 1;
+        this.startTurn(this.first);
       });
     }, 1500);
   }

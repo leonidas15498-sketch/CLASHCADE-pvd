@@ -1,4 +1,5 @@
 import { enterGameFullscreen, exitGameFullscreen } from '../../shared/fullscreen';
+import { coinFlip } from '../../shared/coin';
 import { onMountRollback } from '../../shared/lifecycle';
 import { isEn, T } from '../../../i18n/lang';
 import { newMatchId, reportMatch } from '../../../services/match';
@@ -263,14 +264,16 @@ export class App {
   private start(mode: Mode, names: [string, string]) {
     this.sound.unlock();
     this.cancelAI();
-    this.game = new GameController({ mode, difficulty: this.prefs.difficulty, names });
+    // 05/11: quem abre é sorteado (antes sempre o J1); a revanche já alternava
+    const breaker = coinFlip();
+    this.game = new GameController({ mode, difficulty: this.prefs.difficulty, names, breaker });
     this.matchId = newMatchId('sinuca');
     this.matchTime = 0;
     this.clearFx();
     this.prepareTurn();
     this.hideAll();
     this.paused = false;
-    this.toast(mode === 'ai' ? T(`Você contra a IA (${DIFF_LABEL[this.prefs.difficulty]}). Sua abertura!`, `You vs the AI (${DIFF_LABEL[this.prefs.difficulty]}). Your break!`) : `${names[0]} ${T('abre a partida.', 'breaks.')}`);
+    this.toast(mode === 'ai' ? T(`Você contra a IA (${DIFF_LABEL[this.prefs.difficulty]}). ${breaker === 0 ? 'Sua abertura!' : 'A IA abre.'}`, `You vs the AI (${DIFF_LABEL[this.prefs.difficulty]}). ${breaker === 0 ? 'Your break!' : 'The AI breaks.'}`) : `${names[breaker]} ${T('abre a partida (sorteio).', 'breaks (coin toss).')}`);
     this.updateHUD();
   }
 

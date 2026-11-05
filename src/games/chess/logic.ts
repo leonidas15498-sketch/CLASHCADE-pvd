@@ -53,7 +53,8 @@ const KING: Array<[number, number]> = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 
 const DIAG: Array<[number, number]> = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
 const ORTHO: Array<[number, number]> = [[-1, 0], [1, 0], [0, -1], [0, 1]];
 
-export function createChess(): ChessState {
+/** `first`: quem faz o 1º lance (05/11: sorteado). As peças de quem começa ficam embaixo no jogo (lado 0 = coral). */
+export function createChess(first: Side = 0): ChessState {
   const back = [R, KN, B, Q, K, B, KN, R];
   const board = Array(64).fill(0);
   for (let c = 0; c < 8; c++) {
@@ -62,7 +63,7 @@ export function createChess(): ChessState {
     board[idx(6, c)] = P;
     board[idx(7, c)] = back[c];
   }
-  const s: ChessState = { board, current: 0, castling: [true, true, true, true], ep: -1, halfmove: 0, plies: 0, seen: new Map(), winner: null, reason: null };
+  const s: ChessState = { board, current: first, castling: [true, true, true, true], ep: -1, halfmove: 0, plies: 0, seen: new Map(), winner: null, reason: null };
   s.seen.set(posKey(s), 1);
   return s;
 }

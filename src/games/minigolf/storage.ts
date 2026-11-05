@@ -5,8 +5,12 @@ export interface GolfSave {
   music: { enabled: boolean; volume: number };
   name1: string;
   names: [string, string];
-  /** Melhor total em 9 buracos (modo solo). */
+  /** Melhor total no circuito antigo de 9 buracos (só histórico; não é comparável com o de 12). */
   bestTotal: number | null;
+  /** Melhor total no circuito completo de 12 buracos (05/11; ordem sorteada, total comparável). */
+  best12?: number | null;
+  /** Rodadas completas de 12 buracos. */
+  rounds12?: number;
   /** Melhor resultado por buraco (solo, rodada completa ou treino). */
   bestHole: (number | null)[];
   /** Rodadas solo completas. */
@@ -29,7 +33,9 @@ const defaults = (): GolfSave => ({
   name1: '',
   names: ['', ''],
   bestTotal: null,
-  bestHole: Array(9).fill(null),
+  bestHole: Array(HOLES).fill(null),
+  best12: null,
+  rounds12: 0,
   rounds: 0,
   putter: 'classico',
 });
@@ -48,11 +54,23 @@ function valid(x: unknown): x is GolfSave {
     Array.isArray(s.names) &&
     isNumOrNull(s.bestTotal) &&
     Array.isArray(s.bestHole) &&
-    s.bestHole.length === 9 &&
+    (s.bestHole.length === 9 || s.bestHole.length === HOLES) &&
     s.bestHole.every(isNumOrNull) &&
     typeof s.rounds === 'number'
   );
 }
 
+/** Quantidade de buracos (05/11: 9 → 12). Saves antigos com 9 recebem os 3 novos vazios, sem perder nada. */
+const HOLES = 12;
+
+function recover(x: unknown): GolfSave {
+  if (!valid(x)) return defaults();
+  const s = x as GolfSave;
+  while (s.bestHole.length < HOLES) s.bestHole.push(null);
+  if (s.best12 === undefined) s.best12 = null;
+  if (s.rounds12 === undefined) s.rounds12 = 0;
+  return s;
+}
+
 /** Versão 1 do esquema; dados inválidos ou de outra versão voltam ao padrão. */
-export const golfStore = createStore<GolfSave>('jogaco.minigolf', 1, defaults, valid);
+export const golfStore = createStore<GolfSave>('jogaco.minigolf', 1, defaults, valid, recover);

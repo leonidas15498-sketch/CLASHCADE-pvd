@@ -1,4 +1,5 @@
 import { onMountRollback } from '../shared/lifecycle';
+import { coinFlip } from '../shared/coin';
 import { T } from '../../i18n/lang';
 import { ParticleSystem } from '../shared/fx';
 import { PLAYER_COLORS } from '../shared/players';
@@ -84,7 +85,7 @@ class CheckersGame {
       onExit,
       onStart: (cfg) => {
         this.wins = [0, 0];
-        this.first = 1;
+        this.first = coinFlip(); // 05/11: 1ª partida sorteada (start() troca a vez; continua 50/50), revanches alternam
         this.start(cfg);
       },
       onPause: (p) => {

@@ -43,7 +43,8 @@ import { COURSE_THEMES, courseById, CourseTheme, isCourseAvailable } from '../re
 import { GolfRenderer, Particle, PLAYER_COLORS } from '../render/renderer';
 import { setTurnColor } from '../../shared/players';
 import { burstsEnabled, drawTrail, isTrailAvailable, mountBurstToggle, ParticleSystem, TrailBuffer, TRAILS, TrailId, usableTrail } from '../../shared/fx';
-import { advance, applyShot, createMatch, GolfMatch, holeComplete, result, ShotOutcome } from '../rules/rules';
+import { advance, applyShot, createMatch, GolfMatch, holeComplete, result, ShotOutcome, starter } from '../rules/rules';
+import { coinFlip } from '../../shared/coin';
 import { golfStore, GolfSave } from '../storage';
 import { GolfSfx } from './sfx';
 
@@ -165,7 +166,7 @@ export class MinigolfApp {
     ($('mg-p1') as HTMLInputElement).value = this.save.names[0];
     ($('mg-p2') as HTMLInputElement).value = this.save.names[1];
     $('mg-back-catalog').addEventListener('click', () => this.onExit());
-    $('mg-play-solo').addEventListener('click', () => this.startSolo(LEVELS.map((_, i) => i)));
+    $('mg-play-solo').addEventListener('click', () => this.startSolo(circuit()));
     $('mg-pick').addEventListener('click', () => this.showLevels());
     $('mg-levels-close').addEventListener('click', () => this.hide('mg-levels'));
     const paintDiff = () => {
@@ -204,14 +205,14 @@ export class MinigolfApp {
       this.save.name1 = n;
       golfStore.save(this.save);
       const lbl = { easy: T('Fácil', 'Easy'), medium: T('Médio', 'Medium'), hard: T('Difícil', 'Hard') }[this.aiPick];
-      this.start('duo', [n || T('Você', 'You'), `${T('IA', 'AI')} (${lbl})`], LEVELS.map((_, i) => i), this.aiPick);
+      this.start('duo', [n || T('Você', 'You'), `${T('IA', 'AI')} (${lbl})`], circuit(), this.aiPick);
     });
     $('mg-play-duo').addEventListener('click', () => {
       const a = ($('mg-p1') as HTMLInputElement).value.trim();
       const b = ($('mg-p2') as HTMLInputElement).value.trim();
       this.save.names = [a, b];
       golfStore.save(this.save);
-      this.start('duo', [a || 'Jogador 1', b || 'Jogador 2'], LEVELS.map((_, i) => i));
+      this.start('duo', [a || 'Jogador 1', b || 'Jogador 2'], circuit());
     });
     $('mg-menu-help').addEventListener('click', () => this.show('mg-helpbox'));
     for (const id of ['mg-menu-putters', 'mg-pause-putters']) $(id).addEventListener('click', () => this.showPutters());
@@ -417,13 +418,13 @@ export class MinigolfApp {
     this.start('solo', [n || 'Você'], holes);
   }
 
-  start(mode: 'solo' | 'duo', names: string[], holes: number[], ai: Difficulty | null = null) {
+  start(mode: 'solo' | 'duo', names: string[], holes: number[], ai: Difficulty | null = null, first: number = coinFlip()) {
     this.aiDiff = mode === 'duo' ? ai : null;
     clearTimeout(this.aiTimer);
     // celular: partida em tela cheia, sem a barra do navegador (mesmo método da sinuca, pedido do Leon 03/11)
     enterGameFullscreen();
     this.sfx.unlock();
-    this.match = createMatch(mode, names, holes, LEVELS[holes[0]].tee);
+    this.match = createMatch(mode, names, holes, LEVELS[holes[0]].tee, mode === 'duo' ? first : 0);
     this.matchId = newMatchId('minigolfe');
     this.hideAll();
     this.paused = false;
@@ -486,7 +487,7 @@ export class MinigolfApp {
       ...m,
       players,
       ph: m.players.map(() => ({ strokes: 0, pos: { ...this.level.tee }, safe: { ...this.level.tee }, done: false })),
-      current: 0,
+      current: starter(m),
     };
     this.loadHole();
   }
@@ -552,7 +553,8 @@ export class MinigolfApp {
     const m = this.match!;
     if (m.finished) {
       // revanche com os mesmos jogadores e buracos
-      this.start(m.mode, m.players.map((p) => p.name), m.holes, this.aiDiff);
+      // revanche: nova ordem sorteada (se for o circuito completo) e inverte quem sai
+      this.start(m.mode, m.players.map((p) => p.name), m.holes.length === LEVELS.length ? circuit() : m.holes, this.aiDiff, 1 - m.first);
       return;
     }
     if (!holeComplete(m)) {
@@ -578,10 +580,10 @@ export class MinigolfApp {
       const s = p.scores[i];
       if (s !== null && (this.save.bestHole[lv] === null || s < this.save.bestHole[lv]!)) this.save.bestHole[lv] = s;
     });
-    if (m.holes.length === 9) {
+    if (m.holes.length === LEVELS.length) {
       const tot = result(m).totals[0];
-      this.save.rounds += 1;
-      if (this.save.bestTotal === null || tot < this.save.bestTotal) this.save.bestTotal = tot;
+      this.save.rounds12 = (this.save.rounds12 ?? 0) + 1;
+      if (this.save.best12 == null || tot < this.save.best12) this.save.best12 = tot;
     }
     golfStore.save(this.save);
   }
@@ -624,7 +626,7 @@ export class MinigolfApp {
         title.textContent = `Fim! ${r.totals[0]} tacadas`;
         msg.textContent =
           (diff === 0 ? 'No par do circuito.' : diff < 0 ? `${-diff} abaixo do par!` : `${diff} acima do par.`) +
-          (m.holes.length === 9 && this.save.bestTotal !== null ? ` Seu recorde: ${this.save.bestTotal}.` : '');
+          (m.holes.length === LEVELS.length && this.save.best12 != null ? ` Seu recorde: ${this.save.best12}.` : '');
       } else if (r.winner === null) {
         title.textContent = 'Empate!';
         msg.textContent = `Os dois fizeram ${r.totals[0]} tacadas e empataram também nos 3 últimos buracos.`;
@@ -849,7 +851,11 @@ export class MinigolfApp {
   private renderMenu() {
     const s = this.save;
     this.$('mg-best').textContent =
-      s.bestTotal !== null ? `Recorde em 9 buracos: ${s.bestTotal} tacadas (${s.rounds} rodada${s.rounds === 1 ? '' : 's'})` : 'Ainda sem recorde neste aparelho.';
+      s.best12 != null
+        ? `Recorde em ${LEVELS.length} buracos: ${s.best12} tacadas (${s.rounds12} rodada${s.rounds12 === 1 ? '' : 's'})`
+        : s.bestTotal !== null
+          ? `Recorde antigo (9 buracos): ${s.bestTotal}. Agora o circuito tem ${LEVELS.length} buracos, em ordem sorteada.`
+          : 'Ainda sem recorde neste aparelho.';
   }
 
   private toMenu() {
@@ -1249,4 +1255,20 @@ function paintTrailPreview(cv: HTMLCanvasElement, id: TrailId, grass: string) {
   ctx.beginPath();
   ctx.arc(b.x, b.y, u, 0, Math.PI * 2);
   ctx.fill();
+}
+
+/**
+ * Circuito completo em ordem sorteada (pedido do Leon 05/11: "não ter sempre uma sequência fixa").
+ * Todos os buracos sempre entram, então o total continua comparável para o recorde. O 1º buraco é sempre um dos
+ * 3 de aprendizado (sem obstáculo móvel), para não abrir a partida no buraco mais difícil.
+ */
+export function circuit(rng: () => number = Math.random): number[] {
+  const idx = LEVELS.map((_, i) => i);
+  for (let i = idx.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [idx[i], idx[j]] = [idx[j], idx[i]];
+  }
+  const easy = idx.findIndex((i) => i < 3);
+  [idx[0], idx[easy]] = [idx[easy], idx[0]];
+  return idx;
 }

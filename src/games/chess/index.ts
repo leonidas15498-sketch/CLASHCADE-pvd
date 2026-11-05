@@ -1,4 +1,5 @@
 import { onMountRollback } from '../shared/lifecycle';
+import { coinFlip } from '../shared/coin';
 import { T } from '../../i18n/lang';
 import { ParticleSystem } from '../shared/fx';
 import { PLAYER_COLORS } from '../shared/players';
@@ -9,14 +10,14 @@ import { chooseChess } from './ai';
 import { applyMove, B, ChessState, createChess, idx, inCheck, K, kind, kingSquare, KN, legalMoves, Move, moveName, N, P, Q, R, rc, Side, sideOf } from './logic';
 
 const HELP_PT = `<ul>
-<li>Toque numa peça sua e depois na casa de destino (os pontos mostram os lances possíveis). O coral (brancas) começa, embaixo.</li>
+<li>Toque numa peça sua e depois na casa de destino (os pontos mostram os lances possíveis). O coral fica embaixo; quem começa é sorteado e alterna a cada revanche.</li>
 <li>Regras oficiais: <b>roque</b> (toque no rei e depois duas casas para o lado), <b>en passant</b> e <b>promoção</b> (escolha dama, torre, bispo ou cavalo).</li>
 <li>Não é permitido deixar o próprio rei em xeque. O rei em xeque fica marcado em vermelho.</li>
 <li><b>Xeque-mate</b> vence. <b>Empate:</b> afogamento (sem lance e sem xeque), 50 lances sem captura nem movimento de peão, a mesma posição 3 vezes ou material insuficiente para dar mate.</li>
 <li>A IA Difícil pensa até 1,5 s por lance.</li>
 </ul>`;
 const HELP_EN = `<ul>
-<li>Tap one of your pieces, then the target square (dots show the legal moves). Coral (white) moves first, at the bottom.</li>
+<li>Tap one of your pieces, then the target square (dots show the legal moves). Coral is at the bottom; who moves first is drawn and alternates on each rematch.</li>
 <li>Official rules: <b>castling</b> (tap the king, then two squares sideways), <b>en passant</b> and <b>promotion</b> (choose queen, rook, bishop or knight).</li>
 <li>You may not leave your own king in check. A king in check is marked in red.</li>
 <li><b>Checkmate</b> wins. <b>Draw:</b> stalemate, 50 moves without a capture or pawn move, the same position 3 times, or not enough material to mate.</li>
@@ -44,6 +45,7 @@ class ChessGame {
   private s: ChessState | null = null;
   private cfg: StartConfig | null = null;
   private wins: [number, number] = [0, 0];
+  private first: Side = 1;
   private sel = -1;
   /** Escolha de promoção aberta: os lances possíveis (um por peça). */
   private promo: Move[] | null = null;
@@ -74,13 +76,14 @@ class ChessGame {
       title: T('Xadrez', 'Chess'),
       subtitle: T('Regras oficiais', 'Official rules'),
       modes: { ai: true, local: true },
-      localNote: T('Um de cada vez, no mesmo aparelho. O coral (brancas) começa embaixo.', 'Take turns on the same device. Coral (white) starts at the bottom.'),
+      localNote: T('Um de cada vez, no mesmo aparelho. Quem começa é sorteado.', 'Take turns on the same device. Who starts is drawn.'),
       musicUrl: './music/the-unwavering-line.mp3',
       helpHtml: T(HELP_PT, HELP_EN),
       shop: [{ slot: 'chess.board', tabPt: 'Tabuleiro', tabEn: 'Board', items: CHESS_BOARDS as never, preview: (c, w, h, it) => previewBoard(c, w, h, it.pal as CheckersBoardPal), onChange: () => { this.theme = equipped('chess.board', CHESS_BOARDS); } }],
       onExit,
       onStart: (cfg) => {
         this.wins = [0, 0];
+        this.first = coinFlip(); // 05/11: 1ª partida sorteada (start() troca; continua 50/50), revanches alternam
         this.start(cfg);
       },
       onPause: (p) => {
@@ -91,7 +94,7 @@ class ChessGame {
           if (!this.anim) this.maybeAI();
         }
       },
-      onRestart: () => this.cfg && this.start(this.cfg),
+      onRestart: () => this.cfg && this.start(this.cfg, true),
       onMenu: () => {
         clearTimeout(this.aiTimer);
         this.s = null;
@@ -118,11 +121,12 @@ class ChessGame {
     this.shell?.dispose();
   }
 
-  private start(cfg: StartConfig) {
+  private start(cfg: StartConfig, sameFirst = false) {
     this.shell.beginMatch();
     clearTimeout(this.aiTimer);
     this.cfg = cfg;
-    this.s = createChess();
+    if (!sameFirst) this.first = (1 - this.first) as Side;
+    this.s = createChess(this.first);
     this.sel = -1;
     this.promo = null;
     this.anim = null;
@@ -132,9 +136,9 @@ class ChessGame {
     this.thinking = false;
     this.resultShown = false;
     this.fx.clear();
-    this.shell.setTurn(0);
+    this.shell.setTurn(this.s.current);
     this.paintHud();
-    this.shell.toast(`${cfg.names[0]} ${T('começa (brancas).', 'starts (white).')}`, 1600);
+    this.shell.toast(`${cfg.names[this.s.current]} ${T('começa.', 'goes first.')}`, 1600);
     this.maybeAI();
   }
 

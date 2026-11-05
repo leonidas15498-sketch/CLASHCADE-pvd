@@ -112,7 +112,12 @@
 - Desaceleração quase constante 6 u/s² (sem freio proporcional à velocidade) — calibrado em 01/11.
 - Captura no buraco: limite = 13,5·(1−(d/R)²)^0,35 u/s. Evento `lip` só quando a bola sai do buraco sem cair
   (som + aviso "Forte demais!").
+- Circuito (05/11): 12 buracos em ordem SORTEADA a cada partida (1º sempre um dos 3 de aprendizado); quem sai é sorteado
+  e alterna a cada buraco. Buraco novo precisa: `route`, entrada em ACES (tests/minigolf/hole-in-one.test.ts), passar no
+  fuzz `scripts/golfe-moveis.ts` se tiver obstáculo móvel, e nunca deixar fresta < 1,6 u entre obstáculo móvel e parede
+  (bola tem 1,4 u: fresta menor espreme a bola).
 - Air Hockey: disco máx. 5,5 m/s, rebatedor 5 m/s (01/11; antes 9 e 7, rápido demais no celular).
+- **Quem começa (05/11, todos os jogos por turno/saque):** sorteado na 1ª partida (`shared/coin.ts`), alterna nas revanches.
 
 - **Torre de Bichos (04/11):** peças = 12 animais de perfil (src/games/stack/pieces.ts), forma física em várias partes
   convexas que seguem a silhueta; desenho com contorno único (blob). Bicho novo: mesma técnica, e o teste de "fica em pé

@@ -293,7 +293,7 @@ export const GOLF_EN: Record<string, string> = {
   'Mira fina': 'Fine aim',
   'Mira fina para a direita': 'Fine aim right',
   'Ilha do Pôr do Sol': 'Sunset Island',
-  'Jogar 9 buracos': 'Play 9 holes',
+  'Jogar 12 buracos': 'Play 12 holes',
   'Escolher buraco (treino)': 'Pick a hole (practice)',
   'Vez alternada no mesmo aparelho. Menor total vence.': 'Alternate turns on the same device. Lowest total wins.',
   'Tacos e campo': 'Putters & course',
@@ -317,8 +317,8 @@ export const GOLF_EN: Record<string, string> = {
   'Limite:': 'Limit:',
   '10 tacadas por buraco; ao chegar nele, o buraco fecha com 10.': '10 strokes per hole; reaching it closes the hole at 10.',
   '2 jogadores:': '2 players:',
-  'tacadas alternadas; cada um tem sua bola (anel laranja = Jogador 1, azul = Jogador 2). Quem terminar o buraco espera o outro. Menor total nos 9 buracos vence; empate é decidido pelos 3 últimos buracos e, se continuar igual, fica empate.':
-    'alternate strokes; each has their own ball (orange ring = Player 1, blue = Player 2). Whoever finishes the hole waits for the other. Lowest total over 9 holes wins; a tie is broken by the last 3 holes, and if still equal it is a draw.',
+  'tacadas alternadas; cada um tem sua bola (anel laranja = Jogador 1, azul = Jogador 2). Quem terminar o buraco espera o outro. Menor total nos 12 buracos vence; empate é decidido pelos 3 últimos buracos e, se continuar igual, fica empate.':
+    'alternate strokes; each has their own ball (orange ring = Player 1, blue = Player 2). Whoever finishes the hole waits for the other. Lowest total over 12 holes wins; a tie is broken by the last 3 holes, and if still equal it is a draw.',
   Rampas: 'Ramps',
   'empurram a bola no sentido das setas;': 'push the ball in the direction of the arrows;',
   areia: 'sand',
@@ -345,6 +345,9 @@ export const GOLF_EN: Record<string, string> = {
   'Zigue-Zague': 'Zigzag',
   'Portão Deslizante': 'Sliding Gate',
   'Grande Final': 'Grand Finale',
+  Fliperama: 'Pinball',
+  'Moinho Duplo': 'Twin Windmills',
+  'Lago Central': 'Center Lake',
   Empate: 'Draw',
   'Empate!': 'Draw!',
 };

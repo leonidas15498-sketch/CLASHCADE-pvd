@@ -9,13 +9,17 @@ import { LEVELS } from '../../src/games/minigolf/levels/levels';
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
 describe('V13 confirmed gameplay regressions', () => {
-  it('applies out-of-field rules after a moving obstacle correction', () => {
+  // 05/11: a correção agora procura o ponto livre mais próximo DENTRO do campo; antes empurrava só no eixo x e podia
+  // jogar a bola fora (aí este teste exigia 'out'). A regra de fora de campo continua aplicada depois da correção.
+  it('moves a ball resting in a moving obstacle sweep to a free spot inside the field (no unfair out)', () => {
     const level = { ...LEVELS[0], walls: [], zones: [], bumpers: [],
       green: [{x:0,y:0},{x:10,y:0},{x:10,y:10},{x:0,y:10}], hole: {x:9,y:9},
       movers: [{ kind: 'rotor' as const, center: {x:2,y:5}, length:3, r:0.2, arms:1, speed:0, phase:0 }] };
     const w = createWorld(level, {x:1,y:5}); w.status = 'moving'; w.vx = 0.01;
     step(w);
-    expect(w.status).toBe('out'); expect(w.events.some(e => e.type === 'out')).toBe(true);
+    expect(w.status).toBe('rest'); expect(w.events.some(e => e.type === 'out')).toBe(false);
+    expect(w.x).toBeGreaterThan(0.7); expect(w.x).toBeLessThan(9.3); expect(w.y).toBeGreaterThan(0.7); expect(w.y).toBeLessThan(9.3);
+    expect(Math.hypot(w.x - 2, w.y - 5)).toBeGreaterThanOrEqual(3 + 0.2 + 0.7);
   });
   it('does not discard a queued corner and accidentally reverse into its own trail', () => {
     const s = createRound();

@@ -1,4 +1,5 @@
 import { onMountRollback } from '../shared/lifecycle';
+import { coinFlip } from '../shared/coin';
 import { T } from '../../i18n/lang';
 import { ParticleSystem } from '../shared/fx';
 import { PLAYER_COLORS } from '../shared/players';
@@ -45,6 +46,8 @@ class StackGame {
   private rotBtn: HTMLButtonElement;
   private dropBtn: HTMLButtonElement;
   private cfg: StartConfig | null = null;
+  /** Quem começa (05/11: sorteado na 1ª partida, alterna a cada nova partida). */
+  private first: 0 | 1 = 1;
   private m: StackMatch | null = null;
   private raf = 0;
   private last = 0;
@@ -94,7 +97,10 @@ class StackGame {
       musicUrl: './music/sunny-stacks.mp3',
       helpHtml: T(HELP_PT, HELP_EN),
       onExit,
-      onStart: (cfg) => this.start(cfg),
+      onStart: (cfg) => {
+        this.first = coinFlip(); // start() troca a vez: continua 50/50
+        this.start(cfg);
+      },
       onPause: (p) => {
         this.drag = null;
         if (!p) this.last = performance.now();
@@ -162,6 +168,8 @@ class StackGame {
     this.shell.beginMatch();
     this.cfg = cfg;
     this.m = new StackMatch(cfg.mode === 'solo' ? 1 : 2);
+    this.first = (1 - this.first) as 0 | 1;
+    if (cfg.mode !== 'solo') this.m.current = this.first;
     // impactos: o impulso normal do passo (post-solve) diz a força real da batida; peças paradas geram ~0,13
     this.m.sw.world.on('post-solve', (contact, impulse) => {
       const imp = Math.max(...impulse.normalImpulses.slice(0, contact.getManifold().pointCount), 0);
@@ -183,9 +191,10 @@ class StackGame {
     this.planned = null;
     this.overT = 0;
     this.fx.clear();
-    this.shell.setTurn(cfg.mode === 'solo' ? null : 0);
+    this.shell.setTurn(cfg.mode === 'solo' ? null : this.m.current);
     this.paintHud();
-    this.shell.toast(T('Arraste ou toque para posicionar. Depois aperte SOLTAR.', 'Drag or tap to position. Then press DROP.'), 3000);
+    const who = cfg.mode === 'solo' ? '' : `${cfg.names[this.m.current]} ${T('começa. ', 'goes first. ')}`;
+    this.shell.toast(who + T('Arraste ou toque para posicionar. Depois aperte SOLTAR.', 'Drag or tap to position. Then press DROP.'), 3000);
   }
 
   private aiTurn(): boolean {

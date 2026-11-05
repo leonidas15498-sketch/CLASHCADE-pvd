@@ -1,4 +1,5 @@
 import { onMountRollback } from '../shared/lifecycle';
+import { coinFlip } from '../shared/coin';
 import { T } from '../../i18n/lang';
 import { ParticleSystem } from '../shared/fx';
 import { PLAYER_COLORS } from '../shared/players';
@@ -70,7 +71,10 @@ export class PongGame {
         { slot: 'pong.ball', tabPt: 'Bola', tabEn: 'Ball', items: PONG_BALLS as never, preview: (c, w, h, it) => previewPong(c, w, h, this.court.pal, it.pal as PongBallPal), onChange: () => { this.ball = equipped('pong.ball', PONG_BALLS); this.draw(); } },
       ],
       onExit,
-      onStart: (cfg) => this.start(cfg),
+      onStart: (cfg) => {
+        this.nextServe = coinFlip(); // 05/11: 1º saque sorteado (start() troca; continua 50/50), depois alterna
+        this.start(cfg);
+      },
       onPause: (p) => {
         this.keys.clear(); this.pointers.clear();
         if (!p) this.last = performance.now();

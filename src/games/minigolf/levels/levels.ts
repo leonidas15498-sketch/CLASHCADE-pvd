@@ -50,7 +50,7 @@ function build(id: number, s: Spec): Level {
   };
 }
 
-/** Nove buracos com dificuldade crescente. Coordenadas em unidades de jogo (u). */
+/** Buracos com dificuldade crescente (9 originais + 3 novos em 05/11). Coordenadas em unidades de jogo (u). */
 export const LEVELS: Level[] = [
   build(1, {
     name: 'Primeira Tacada',
@@ -141,7 +141,9 @@ export const LEVELS: Level[] = [
       { a: v(30, 8), b: v(30, 12.6), r: 0.5 },
       { a: v(30, 17.4), b: v(30, 22), r: 0.5 },
     ],
-    movers: [{ kind: 'slider', x: 34, y: 12.5, w: 2.4, h: 5, travel: v(0, 4.2), period: 3.2, phase: 0 }],
+    // 05/11: bloco 5→4 de altura e curso 4,2→3,4: antes sobrava só 0,3 u entre o bloco e a parede e a bola ficava espremida
+    // (presa até 25 s). Agora sobram 1,6 u (bola tem 1,4); a abertura no extremo segue ~3,8 u (antes 4,1).
+    movers: [{ kind: 'slider', x: 34, y: 13, w: 2.4, h: 4, travel: v(0, 3.4), period: 3.2, phase: 0 }],
     zones: [
       { kind: 'sand', poly: rect(44, 8, 6, 4) },
       { kind: 'sand', poly: rect(44, 18, 6, 4) },
@@ -163,5 +165,58 @@ export const LEVELS: Level[] = [
     hole: v(55, 8),
     route: [v(8, 23.5), v(34, 25), v(40, 15), v(44, 5), v(55, 8)],
     tip: 'Desça a rampa, vire para cima, escape do moinho e contorne o bloco final.',
+  }),
+  // ---- 05/11 (pedido do Leon: mais fases) ----
+  build(10, {
+    name: 'Fliperama',
+    par: 3,
+    green: rect(5, 5, 52, 22),
+    // para-choques elásticos em losango; as tabelas nos pinos abrem caminho
+    bumpers: [
+      { c: v(24, 11), r: 1.4, restitution: 0.9 },
+      { c: v(24, 21), r: 1.4, restitution: 0.9 },
+      { c: v(31, 16), r: 1.6, restitution: 0.9 }, // um pouco abaixo da linha: a reta passa raspando (hole in one difícil)
+      { c: v(38, 11), r: 1.4, restitution: 0.9 },
+      { c: v(38, 21), r: 1.4, restitution: 0.9 },
+    ],
+    tee: v(10, 16),
+    // copo um pouco acima do eixo: a reta bate no pino de cima; hole in one só de tabela (raro, como no Zigue-Zague)
+    hole: v(51, 12),
+    route: [v(10, 16), v(31, 13), v(51, 12)],
+    tip: 'Os pinos quicam forte. Passe entre eles ou use a tabela, mas sem exagerar na força.',
+  }),
+  build(11, {
+    name: 'Moinho Duplo',
+    par: 3,
+    green: rect(5, 8, 52, 14),
+    bumpers: [
+      { c: v(22, 15), r: 1.2 },
+      { c: v(40, 15), r: 1.2 },
+    ],
+    movers: [
+      // pás de 5 u: sobra uma fresta de 1,65 u junto às paredes (a bola tem 1,4) — caminho de precisão sem esperar
+      { kind: 'rotor', center: v(22, 15), arms: 2, length: 5, r: 0.35, speed: 1.6, phase: 0 },
+      { kind: 'rotor', center: v(40, 15), arms: 2, length: 5, r: 0.35, speed: -1.6, phase: 1.2 },
+    ],
+    tee: v(9, 15),
+    hole: v(52, 15),
+    route: [v(9, 15), v(22, 11), v(31, 15), v(40, 19), v(52, 15)],
+    tip: 'Dois moinhos girando em sentidos opostos. Dá para parar no meio deles e esperar a próxima abertura.',
+  }),
+  build(12, {
+    name: 'Lago Central',
+    par: 3,
+    green: rect(4, 4, 54, 24),
+    zones: [
+      { kind: 'water', poly: rect(20, 11.5, 22, 9) },
+      { kind: 'sand', poly: rect(12, 22.5, 7, 5.5) },
+    ],
+    // pino pequeno no ponto da tabela de baixo: o hole in one por tabela fica raro (antes saía fácil demais)
+    bumpers: [{ c: v(31, 7.7), r: 0.8 }, { c: v(31, 27.3), r: 0.5 }],
+    movers: [{ kind: 'rotor', center: v(31, 7.7), arms: 2, length: 2.8, r: 0.3, speed: 2.2, phase: 0 }],
+    tee: v(9, 16),
+    hole: v(53, 16),
+    route: [v(9, 16), v(16, 25), v(46, 25), v(53, 16)],
+    tip: 'Contorne o lago: por cima é rápido mas tem um moinho; por baixo é seguro, mas a areia freia.',
   }),
 ];

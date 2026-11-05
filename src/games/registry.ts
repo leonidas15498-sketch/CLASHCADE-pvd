@@ -39,7 +39,7 @@ export const GAMES: GameEntry[] = [
     route: 'minigolfe',
     cover: 'minigolf',
     modes: ['1P', '1P contra IA', '2P local por turnos'],
-    highlights: ['Circuito progressivo de 9 buracos', 'Física consistente', 'Mira e barra de força'],
+    highlights: ['Circuito de 12 buracos em ordem sorteada', 'Física consistente', 'Mira e barra de força'],
     status: 'available',
     load: () => import('./minigolf'),
   },

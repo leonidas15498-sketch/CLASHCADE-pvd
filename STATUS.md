@@ -32,6 +32,28 @@
   Cobrinha "Level Nine Dash" (127 BPM, 45 s). Cortes em compassos inteiros + 2,5 s de fade; -13,9 LUFS (tabuleiro calmo) e
   -15,4 (Ludo/Cobrinha). QA `qa/musica-novos.cjs` OK. FALTA ouvir no celular. Sem música: só o Cabo de Guerra.
 
+## Golfe: obstáculos móveis, 3 buracos novos, ordem sorteada; sorteio de quem começa (05/11 tarde) — robôs; FALTA celular
+- **Física dos obstáculos móveis (pedido do Leon):** fuzz `npx vite-node scripts/golfe-moveis.ts 6000` (tacadas aleatórias de
+  pontos de repouso válidos). Antes: Portão 2,2% das tacadas davam "fora" injusto (bola espremida contra a parede) e
+  Grande Final 1,1% paravam DENTRO da parede/bloco (correção empurrava só no eixo x). Depois: 0 em 18 mil tacadas.
+  Correções: obstáculo móvel resolvido antes das paredes (parede sempre vence); bola parada na área varrida vai para o
+  ponto livre mais próximo em qualquer direção (`settleAwayFromMovers`); portão 5→4 u e curso 4,2→3,4 (sobra 1,6 u na
+  parede, bola tem 1,4). Teste `tests/minigolf/movers.test.ts`.
+- **Buracos novos:** 10 Fliperama (pinos elásticos, par 3), 11 Moinho Duplo (2 moinhos opostos, par 3), 12 Lago Central
+  (lago no meio, moinho em cima, areia embaixo, par 3). Todos com solução, hole in one possível (raro) e sem bug de
+  obstáculo. Lago dentro do gramado agora é desenhado (antes a água interna era invisível).
+  IA no circuito de 12 (par 37, média de 4 rodadas): Fácil 45,5 · Médio 36,0 · Difícil 23,5.
+- **Circuito de 12 em ordem sorteada** (pedido do Leon): todos os buracos sempre entram (total comparável), 1º buraco é um
+  dos 3 de aprendizado; revanche sorteia de novo. Recorde novo "em 12 buracos" (o de 9 fica como recorde antigo; saves
+  antigos ganham os 3 buracos vazios, nada se perde).
+- **Quem começa é sorteado** (pedido do Leon: "sempre o J1"): Sinuca (quem abre), Golfe (quem sai; depois alterna a cada
+  buraco), Lig-4, Damas, Ludo, Xadrez, Torre, Blocos 2P (quem joga primeiro), Air Hockey e Pong (1º saque). Revanches
+  alternam. Cobrinha, Rastros, Sumô e Cabo são simultâneos (não há "quem começa"). Xadrez: o lado de baixo continua coral;
+  se o azul sorteado começa, ele faz o 1º lance. QA `qa/quem-comeca.cjs` (12 partidas por jogo: os dois começam) e IA
+  começando (golfe, sinuca, xadrez) conferida. **Online (Lig-4 e sinuca online) ainda começa o dono da sala** na 1ª
+  partida: mudar exige SQL no Supabase.
+- Testes: 301 passando.
+
 ## Minigolfe compacto no celular deitado (05/11) — medido no navegador automatizado; FALTA celular real
 - Pedido do Leon ("igual à sinuca"): cabeçalho 46→38–41 px, laterais 84→~50 px, sem "Puxe e solte" e sem o texto "Mira fina"
   (só os 2 botões), medidor mais fino. Só CSS (`@media landscape e altura ≤ 480`), física intacta.

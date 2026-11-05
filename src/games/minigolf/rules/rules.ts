@@ -22,28 +22,33 @@ export interface GolfPlayer {
 
 export interface GolfMatch {
   mode: GolfMode;
-  /** Índices das fases desta partida (9 buracos ou treino de 1). */
+  /** Índices das fases desta partida (circuito completo em ordem sorteada ou treino de 1). */
   holes: number[];
   holeIdx: number;
   players: GolfPlayer[];
   ph: PlayerHole[];
   current: number;
+  /** Quem tacou primeiro no buraco 1 (05/11: sorteado). Depois a saída alterna a cada buraco. */
+  first: number;
   finished: boolean;
   lastMessage: string;
 }
 
-export function createMatch(mode: GolfMode, names: string[], holes: number[], tee: Vec): GolfMatch {
+export function createMatch(mode: GolfMode, names: string[], holes: number[], tee: Vec, first = 0): GolfMatch {
   const players = (mode === 'solo' ? names.slice(0, 1) : names.slice(0, 2)).map((name) => ({ name, scores: holes.map(() => null) }));
-  const m: GolfMatch = { mode, holes, holeIdx: 0, players, ph: [], current: 0, finished: false, lastMessage: '' };
+  const m: GolfMatch = { mode, holes, holeIdx: 0, players, ph: [], current: 0, first: first % players.length, finished: false, lastMessage: '' };
   return startHole(m, tee);
 }
+
+/** Quem sai neste buraco: alterna a cada buraco a partir do sorteado (ninguém sai sempre primeiro). */
+export const starter = (m: GolfMatch) => (m.first + m.holeIdx) % m.players.length;
 
 export function startHole(m: GolfMatch, tee: Vec): GolfMatch {
   return {
     ...m,
     ph: m.players.map(() => ({ strokes: 0, pos: { ...tee }, safe: { ...tee }, done: false })),
-    current: 0,
-    lastMessage: `Buraco ${m.holeIdx + 1}. Vez de ${m.players[0].name}.`,
+    current: starter(m),
+    lastMessage: `Buraco ${m.holeIdx + 1}. Vez de ${m.players[starter(m)].name}.`,
   };
 }
 

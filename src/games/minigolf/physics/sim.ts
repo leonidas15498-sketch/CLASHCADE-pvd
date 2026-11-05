@@ -140,6 +140,7 @@ export function step(w: GolfWorld): void {
   if (w.status === 'moving' && w.shotTime > p.maxShotSeconds) {
     w.vx = w.vy = 0;
     w.status = 'rest';
+    settleAwayFromMovers(w);
   }
 }
 
@@ -192,9 +193,11 @@ function substep(w: GolfWorld, h: number): void {
       w.events.push({ type: 'wall', speed: -vn });
     }
   };
-  for (const s of w.level.walls) collideSeg(s.a, s.b, s.r, s.restitution ?? p.wallRestitution, ZERO);
-  for (const bmp of w.level.bumpers) collideSeg(bmp.c, bmp.c, bmp.r, bmp.restitution ?? 0.62, ZERO);
+  // 05/11: obstáculos móveis ANTES das paredes fixas — se o moinho/portão empurrar a bola contra a parede, a parede
+  // vence (antes a bola era espremida para fora do campo e contava como "fora", com penalidade).
   for (const m of w.level.movers) for (const s of moverSegments(m, tNow)) collideSeg(s.a, s.b, s.r, s.e, s.vel);
+  for (const bmp of w.level.bumpers) collideSeg(bmp.c, bmp.c, bmp.r, bmp.restitution ?? 0.62, ZERO);
+  for (const s of w.level.walls) collideSeg(s.a, s.b, s.r, s.restitution ?? p.wallRestitution, ZERO);
 
   // 3) buraco: cai se passar perto do centro devagar o bastante
   const hx = w.x - w.level.hole.x;
@@ -250,34 +253,68 @@ function substep(w: GolfWorld, h: number): void {
   }
 }
 
+/** A bola (centro p) ficaria na área varrida por algum obstáculo móvel em QUALQUER instante? */
+export function inMoverSweep(level: Level, p: Vec, R: number, margin = 0.15): boolean {
+  for (const m of level.movers) {
+    if (m.kind === 'rotor') {
+      if (Math.hypot(p.x - m.center.x, p.y - m.center.y) < m.length + m.r + R + margin) return true;
+    } else {
+      const ax = Math.abs(m.travel.x);
+      const ay = Math.abs(m.travel.y);
+      const e = R + margin;
+      if (p.x > m.x - ax - e && p.x < m.x + m.w + ax + e && p.y > m.y - ay - e && p.y < m.y + m.h + ay + e) return true;
+    }
+  }
+  return false;
+}
+
+/** Ponto onde uma bola pode ficar parada: no gramado, fora de água, rampa forte, paredes, blocos, para-choques e copo. */
+function restSpotOk(level: Level, p: Vec, params: GolfParams): boolean {
+  const R = params.ballR;
+  if (!pointInPoly(p, level.green)) return false;
+  for (const z of level.zones) {
+    if (!pointInPoly(p, z.poly)) continue;
+    if (z.kind === 'water') return false;
+    if (z.kind === 'slope' && Math.hypot(z.accel.x, z.accel.y) > params.rollDecel) return false;
+  }
+  for (const s of level.walls) {
+    const c = closest(p, s.a, s.b);
+    if (Math.hypot(p.x - c.x, p.y - c.y) < R + s.r + 0.05) return false;
+  }
+  for (const b of level.bumpers) if (Math.hypot(p.x - b.c.x, p.y - b.c.y) < R + b.r + 0.05) return false;
+  for (const bk of level.blocks) if (pointInPoly(p, bk)) return false;
+  if (Math.hypot(p.x - level.hole.x, p.y - level.hole.y) < params.holeR + R) return false;
+  return !inMoverSweep(level, p, R);
+}
+
 /**
- * Se a bola parar dentro da área varrida por um obstáculo móvel, ela é empurrada para fora
+ * Se a bola parar dentro da área varrida por um obstáculo móvel, ela vai para o ponto livre MAIS PRÓXIMO
  * (como se o obstáculo a tivesse empurrado) — evita pá atravessando bola parada.
+ * 05/11: busca em todas as direções e só aceita ponto válido (antes empurrava só no eixo x e podia jogar a bola
+ * dentro da parede, de um bloco ou para fora do campo nos buracos com o moinho num corredor vertical).
  */
 export function settleAwayFromMovers(w: GolfWorld): void {
   const R = w.params.ballR;
-  for (const m of w.level.movers) {
-    if (m.kind === 'rotor') {
-      const dx = w.x - m.center.x;
-      const dy = w.y - m.center.y;
-      const d = Math.hypot(dx, dy);
-      const need = m.length + R + m.r + 0.15;
-      if (d < need) {
-        // sai na direção do eixo do corredor (x), mantendo a altura
-        const sx = Math.sign(dx) || -1;
-        const ox = Math.sqrt(Math.max(0, need * need - dy * dy));
-        w.x = m.center.x + sx * ox;
-      }
-    } else {
-      const minY = m.y - Math.abs(m.travel.y) - R - 0.15;
-      const maxY = m.y + m.h + Math.abs(m.travel.y) + R + 0.15;
-      const minX = m.x - Math.abs(m.travel.x) - R - 0.15;
-      const maxX = m.x + m.w + Math.abs(m.travel.x) + R + 0.15;
-      if (w.x > minX && w.x < maxX && w.y > minY && w.y < maxY) {
-        // sai pelo lado mais próximo no eixo x (corredor horizontal)
-        w.x = w.x - minX < maxX - w.x ? minX : maxX;
+  if (!inMoverSweep(w.level, w, R)) return;
+  let best: Vec | null = null;
+  let bestD = Infinity;
+  const stepU = 0.2;
+  for (let ring = 1; ring <= 90 && !best; ring++) {
+    // anel quadrado de raio ring·step em volta da bola; para no primeiro anel com ponto válido (o mais próximo)
+    for (let i = -ring; i <= ring; i++) {
+      for (const [dx, dy] of [[i, -ring], [i, ring], [-ring, i], [ring, i]]) {
+        const p = { x: w.x + dx * stepU, y: w.y + dy * stepU };
+        const d = Math.hypot(dx, dy);
+        if (d < bestD && restSpotOk(w.level, p, w.params)) {
+          best = p;
+          bestD = d;
+        }
       }
     }
+  }
+  if (best) {
+    w.x = best.x;
+    w.y = best.y;
   }
   w.px = w.x;
   w.py = w.y;

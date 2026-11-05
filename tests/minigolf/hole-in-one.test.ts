@@ -15,8 +15,12 @@ const ACES: Record<number, [number, number, number]> = {
   5: [0, 0.67, 0],
   6: [339, 0.8, 0.7],
   7: [20, 0.72, 0],
-  8: [0, 0.98, 0],
+  8: [0, 0.67, 0.8], // 05/11: portão menor (bola não fica mais espremida); 852 combinações com folga na varredura
   9: [32, 0.96, 1.4],
+  // 05/11: buracos novos (raros de propósito: tabela no pino, passagem entre as pás, tabela raspando o pino)
+  10: [37, 1, 0],
+  11: [18, 0.84, 1.6],
+  12: [31, 0.96, 0],
 };
 
 describe('minigolfe — hole in one possível em todos os buracos', () => {

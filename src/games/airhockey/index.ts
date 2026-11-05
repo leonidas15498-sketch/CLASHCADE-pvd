@@ -1,4 +1,5 @@
 import { onMountRollback } from '../shared/lifecycle';
+import { coinFlip } from '../shared/coin';
 import { T } from '../../i18n/lang';
 import { PLAYER_COLORS } from '../shared/players';
 import { equipped, HOCKEY_PUCKS, HOCKEY_TABLES, type HockeyPuckPal, type HockeyTablePal } from '../shared/arenaThemes';
@@ -66,7 +67,10 @@ class AirHockeyGame {
         { slot: 'hockey.puck', tabPt: 'Disco', tabEn: 'Puck', items: HOCKEY_PUCKS as never, preview: (c, w, h, it) => previewHockey(c, w, h, this.table.pal, (it.pal as HockeyPuckPal), true), onChange: () => { this.puck = equipped('hockey.puck', HOCKEY_PUCKS); this.draw(); } },
       ],
       onExit,
-      onStart: (cfg) => this.start(cfg),
+      onStart: (cfg) => {
+        this.nextServe = coinFlip(); // 05/11: 1º saque sorteado (start() troca; continua 50/50), depois alterna
+        this.start(cfg);
+      },
       onPause: (p) => {
         this.keys.clear(); this.pointers.clear();
         if (!p) this.last = performance.now();

@@ -5,7 +5,7 @@
  * - Fácil: grade grossa e erro grande (≈ 9° e 25% de força).
  * - Médio: grade média e erro moderado (≈ 4° e 10%).
  * - Difícil: grade fina com refinamento em volta da melhor e erro pequeno (≈ 1,2° e 3,5%).
- * Medido em tests/bench/minigolf.ts (tacadas nos 9 buracos).
+ * Medido em tests/bench/minigolf.ts (tacadas no circuito).
  */
 import type { Difficulty } from '../shared/shell';
 import { findShot, routeRemaining } from './levels/solver';

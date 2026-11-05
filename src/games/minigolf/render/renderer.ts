@@ -190,7 +190,35 @@ export class GolfRenderer {
     }
     // zonas
     for (const z of level.zones) {
-      if (z.kind === 'sand') {
+      if (z.kind === 'water') {
+        // 05/11: lago DENTRO do gramado (Lago Central). Antes só a água fora do gramado era desenhada (Ponte da Ilha)
+        // e o lago ficava invisível — a bola "caía na água" no meio da grama.
+        poly(z.poly);
+        ctx.strokeStyle = th.shore[1];
+        ctx.lineWidth = 1.6;
+        ctx.stroke();
+        const g = ctx.createLinearGradient(0, z.poly[0].y, 0, z.poly[2].y);
+        g.addColorStop(0, th.water[0]);
+        g.addColorStop(1, th.water[1]);
+        ctx.fillStyle = g;
+        ctx.fill();
+        ctx.save();
+        ctx.clip();
+        ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+        ctx.lineWidth = 0.18;
+        const zx = z.poly[0].x;
+        const zy = z.poly[0].y;
+        const zw = z.poly[1].x - zx;
+        const zh = z.poly[2].y - zy;
+        for (let i = 0; i < 14; i++) {
+          const x = zx + 1.5 + ((i * 7.3) % Math.max(1, zw - 3));
+          const y = zy + 1.2 + ((i * 3.1) % Math.max(1, zh - 2.4));
+          ctx.beginPath();
+          ctx.arc(x, y, 1.1, Math.PI * 1.1, Math.PI * 1.9);
+          ctx.stroke();
+        }
+        ctx.restore();
+      } else if (z.kind === 'sand') {
         poly(z.poly);
         ctx.fillStyle = '#e8cf93';
         ctx.fill();
