@@ -32,6 +32,12 @@
   Cobrinha "Level Nine Dash" (127 BPM, 45 s). Cortes em compassos inteiros + 2,5 s de fade; -13,9 LUFS (tabuleiro calmo) e
   -15,4 (Ludo/Cobrinha). QA `qa/musica-novos.cjs` OK. FALTA ouvir no celular. Sem música: só o Cabo de Guerra.
 
+## Minigolfe compacto no celular deitado (05/11) — medido no navegador automatizado; FALTA celular real
+- Pedido do Leon ("igual à sinuca"): cabeçalho 46→38–41 px, laterais 84→~50 px, sem "Puxe e solte" e sem o texto "Mira fina"
+  (só os 2 botões), medidor mais fino. Só CSS (`@media landscape e altura ≤ 480`), física intacta.
+  QA `qa/golfe-tamanho.cjs`: área 564×287 → 645×300 (762×343) e 542×220 → 619×236 (732×276); campo +11% em média
+  (escala 9,20 → 10,20 e 8,04 → 8,91), buraco 1 +14%. Nada sai da tela. Não esticado (bola ficaria oval).
+
 ## Rodada noturna 04/11 (autonomia do Leon) — testado no navegador automatizado; FALTA celular real
 - **Torre de Bichos — 12 animais de verdade** (referência docs/arte/referencias-gpt/torre-catalogo.png): tartaruga, hipopótamo,
   elefante (Base); capivara, gorila, castor (Bloco); jacaré, canguru, caracol (Assimétrico); cavalo, raposa, coruja (Desafio).
