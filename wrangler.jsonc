@@ -1,0 +1,10 @@
+{
+  // Repositório de PUBLICAÇÃO do Clashcade (07/11): contém só o site pronto em ./site.
+  // Gerado por scripts/publicar.sh no repositório privado CLASHCADE- (código-fonte). Não editar aqui.
+  "name": "clashcade-pvd",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./site",
+    "not_found_handling": "single-page-application"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "clashcade-site",
+  "private": true,
+  "description": "Site pronto do Clashcade. O código-fonte fica em repositório privado.",
+  "scripts": {
+    "build": "echo \"site já compilado em ./site\""
+  }
+}
