@@ -20,7 +20,10 @@ self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.open(CACHE).then(async (c) => {
       const hit = await c.match(req);
-      const net = fetch(req).then((r) => { if (r.ok && r.status === 200) c.put(req, r.clone()); return r; }).catch(() => hit);
+      // Arquivo de versão antiga que não existe mais: o servidor devolve a página (HTML) no lugar. Não guardar isso
+      // como se fosse script/estilo/imagem (auditoria 12/11).
+      const wrong = (r) => (r.headers.get('content-type') || '').includes('text/html') && !/\.html?$|\/$/.test(new URL(req.url).pathname);
+      const net = fetch(req).then((r) => { if (r.ok && r.status === 200 && !wrong(r)) c.put(req, r.clone()); return r; }).catch(() => hit);
       return hit || net;
     }),
   );
